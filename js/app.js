@@ -1,0 +1,1013 @@
+angular
+    .module('coreApp', [
+		'ui.router',
+		'templates-app',
+		'ngSanitize',
+		//'ngAnimate',
+		'LocalStorageModule',
+		'common.config',
+		'common.models',
+		'common.services',
+		'common.interceptors',
+		'common.directives',
+		'common.filters',
+		'module.main',
+		'module.products',
+		'module.shoppingCart',
+		'module.product',
+		'module.category',
+		'module.faq'
+	])
+    .config(function ($stateProvider, $urlRouterProvider, DEFAULT_URL_PAGE,
+        localStorageServiceProvider, $httpProvider) {
+
+        // Routing
+        $stateProvider
+            .state('app', {
+                abstract: true,
+                url: '',
+                views: {
+                    'header': {
+                        templateUrl: '../dev/app/modules/shoppingCart/shoppingCart.tpl.html',
+                        controller: 'shoppingCartController as shoppingCartVm',
+                    },
+                    'footer': {
+                        templateUrl: '../dev/app/modules/navigationCart/navigationCart.tpl.html',
+                        controller: 'navigationCartController as navigationCartVm',
+                    }
+                },
+                resolve: {
+                    InitCurrency: function (currencyService) {
+                        return currencyService.initCurrencies();
+                    },
+                    InitProducts: function (productService) {
+                        return productService.initAllProducts()
+                    }
+                }
+            })
+            .state('app.faq', {
+                url: '/faq',
+                views: {
+                    'container@': {
+                        templateUrl: '../dev/app/modules/faq/faq.tpl.html',
+                        controller: 'faqController as faqVm'
+                    }
+                }
+            })
+            .state('app.shop', {
+                url: '/shop/{showCase}',
+                views: {
+                    'container@': {
+                        templateUrl: '../dev/app/modules/products/products.tpl.html',
+                        controller: 'productsController as productsVm'
+                    }
+                }
+            })
+            .state('app.shop.category', {
+                url: '/category/{categoryId}',
+                views: {
+                    'container@': {
+                        templateUrl: '../dev/app/modules/category/category.tpl.html',
+                        controller: 'categoryController as categoryVm'
+                    }
+                }
+            })
+            .state('app.shop.category.product', {
+                url: '/product/{productId}',
+                views: {
+                    'container@': {
+                        templateUrl: '../dev/app/modules/product/product.tpl.html',
+                        controller: 'productController as productVm'
+                    }
+                },
+            });
+
+        //default redirect to welcome page
+        $urlRouterProvider.otherwise(DEFAULT_URL_PAGE);
+
+        //register interceptors
+        $httpProvider.interceptors.push('spinnerInterceptor');
+
+        //remove default prefix
+        localStorageServiceProvider.setPrefix('');
+    })
+    .run(function ($rootScope, $location, $state, $timeout, ROUTING_TIMEOUT) {
+        $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
+            // toState.name === "app.shop.category.product" &&
+            if (!$rootScope.forceRedirect) {
+                e.preventDefault();
+                $timeout(function () {
+                    $rootScope.forceRedirect = true;
+                    $state.go(toState, toParams);
+                }, ROUTING_TIMEOUT);
+            } else {
+                $rootScope.forceRedirect = false;
+            }
+        });
+    });
+angular.module('common.directives', []);
+angular.module('common.filters', []);
+angular.module('common.interceptors', []);
+angular.module('common.models', []);
+angular.module('common.services', []);
+angular.module('module.category', []);
+angular.module('module.faq', []);
+
+angular.module('module.main',[]);
+
+angular.module('module.navigationCart', []);
+angular.module('module.product', []);
+angular.module('module.products', []);
+angular.module('module.shoppingCart', []);
+function categoryController(categoryService, productService, $stateParams, shoppingCartService) {
+	var categoryVm = {};
+
+	categoryVm.category = categoryService.getCategory($stateParams.categoryId);
+	categoryVm.products = productService.getProductForCategory($stateParams.categoryId);
+
+	return categoryVm;
+};
+
+angular
+	.module('module.category')
+	.controller('categoryController', categoryController);
+function faqController(faqService) {
+	var faqVm = {};
+
+	faqVm.questions = faqService.getQuestions();
+
+	return faqVm;
+};
+
+angular
+	.module('module.faq')
+	.controller('faqController', faqController);
+
+function MainCtrl($state, categoryService, $window, $stateParams,
+	ROUTING_SHOP_STATE, $scope, shoppingCartService, $rootScope,
+	EVENT_NAMES, $state, identityService) {
+	var mainVm = this;
+
+	function redirectIfNoAccess() {
+		if ($stateParams.showCase == ROUTING_SHOP_STATE.promo && shoppingCartService.getTotalUniqueProduct() < 3) {
+			$state.go('app.shop', {
+				showCase: ROUTING_SHOP_STATE.normal
+			})
+		}
+	}
+
+	$rootScope.translations = identityService.getTranslations();
+
+	//local function
+	mainVm.goBack = function() {
+		$window.history.back();
+	}
+	mainVm.ROUTING_SHOP_STATE = ROUTING_SHOP_STATE;
+	mainVm.$state = $state;
+	mainVm.$stateParams = $stateParams;
+	mainVm.categoryActive = $stateParams.categoryId;
+	mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
+	mainVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
+	mainVm.closePromoInformationPopup = function() {
+		identityService.closePromoInformationPopup();
+		mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+	}
+	mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+
+	// n means new, o means old (new is a reserved word for javascript => execution error)
+	$scope.$watch('mainVm.$stateParams.showCase', function(n, o) {
+		if (n) {
+			redirectIfNoAccess();
+			if (n == ROUTING_SHOP_STATE.promo) {
+				$rootScope.bodylayout = 'promo-layout';
+				mainVm.categories = categoryService.getPromoCategories();
+			} else {
+				$rootScope.bodylayout = 'normal-layout';
+				mainVm.categories = categoryService.getNormalCategories();
+			}
+		}
+	});
+
+	$scope.$watch('mainVm.$stateParams.categoryId', function(n, o) {
+		mainVm.categoryActive = $stateParams.categoryId;
+	});
+
+	$rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function() {
+		redirectIfNoAccess();
+		mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
+	});
+
+	return mainVm;
+}
+
+angular
+	.module('module.main')
+	.controller('mainController', MainCtrl);
+
+function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, DEFAULT_IMAGE_URL, $state) {
+
+    var navigationCartVm = {
+        products: [],
+        placeholders: []
+    };
+
+    var Placeholder = function (nb) {
+        return {
+            number: nb,
+            urlImage: DEFAULT_IMAGE_URL
+        }
+    }
+
+    function initPlaceholders(products) {
+        var placeholders = [];
+        if (products.length < 3) {
+            if (products.length < 1)
+                placeholders.push(new Placeholder(1));
+            if (products.length < 2)
+                placeholders.push(new Placeholder(2));
+            if (products.length < 3)
+                placeholders.push(new Placeholder(3));
+        }
+
+        return placeholders;
+    }
+
+
+    function updatePlaceholders(placeholders, products) {
+
+        if (placeholders.length > 3 - products.length) placeholders.splice(0, 1);
+
+        if (products.length < 3) {
+            if (products.length < 3 && placeholders.length < 1)
+                placeholders.unshift(new Placeholder(3));
+            if (products.length < 2 && placeholders.length < 2)
+                placeholders.unshift(new Placeholder(2));
+            if (products.length < 1 && placeholders.length < 3)
+                placeholders.unshift(new Placeholder(1));
+        }
+
+        return placeholders;
+    }
+
+    navigationCartVm.goToProduct = function (product) {
+        $state.go('app.shop.category.product', {
+            productId: product.sku,
+            categoryId: product.categoryId
+        });
+    }
+
+    navigationCartVm.cartSrv = shoppingCartService;
+    navigationCartVm.products = shoppingCartService.getProducts();
+    navigationCartVm.placeholders = initPlaceholders(navigationCartVm.products);
+
+    $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
+        navigationCartVm.products = shoppingCartService.getProducts();
+        navigationCartVm.placeholders = updatePlaceholders(navigationCartVm.placeholders, navigationCartVm.products);
+    });
+
+    return navigationCartVm;
+    navigationCartVm.redirectToCheckout = shoppingCartService.checkout;
+};
+
+angular
+    .module('module.shoppingCart')
+    .controller('navigationCartController', navigationCartController);
+function productController(productService, $stateParams, shoppingCartService, $state) {
+
+    var productVm = {
+        products: []
+    };
+
+    productVm.goToProduct = function (product) {
+        productVm.products = [];
+        $state.go('app.shop.category.product', {
+            productId: product.sku,
+            categoryId: product.categoryId
+        });
+    }
+
+    productVm.products = productService.getProductsFromSameCategory($stateParams.productId);
+
+    productVm.cartSrv = shoppingCartService;
+    productVm.showLongDecription = false;
+    productVm.displayLongDecription = function () {
+        productVm.showLongDecription = !productVm.showLongDecription;
+    }
+
+    return productVm;
+};
+
+angular
+    .module('module.product')
+    .controller('productController', productController);
+function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $state) {
+    var productsVm = {
+        products: []
+    }
+    if ($stateParams.showCase == ROUTING_SHOP_STATE.promo) {
+        productsVm.products = productService.getPromoProducts();
+    } else {
+        productsVm.products = productService.getNormalProducts();
+    }
+
+    productsVm.goToProduct = function (product) {
+        productsVm.products = [];
+        $state.go('app.shop.category.product', {
+            productId: product.sku,
+            categoryId: product.categoryId
+        });
+    }
+
+    productsVm.goToProductCategory = function (product) {
+        productsVm.products = [];
+        $state.go('app.shop.category.product', {
+            productId: product.sku,
+            categoryId: product.categoryId
+        });
+    }
+
+    return productsVm;
+};
+
+angular
+    .module('module.products')
+    .controller('productsController', productsController)
+    /*.animation('.product', ['$animateCss', function ($animateCss) {
+        return {
+            enter: function (element) {
+                console.log(element);
+                // this will trigger `.slide.ng-enter` and `.slide.ng-enter-active`.
+                return $animateCss(element, {
+                    event: 'enter',
+                    structural: true
+                });
+            }
+        }
+}])*/
+function shoppingCartController(shoppingCartService, $rootScope,
+	EVENT_NAMES, $window, CHECKOUT_URL) {
+
+	var shoppingCartVm = {};
+
+	function initVm() {
+		shoppingCartVm.totalQuantity = shoppingCartService.getTotalQuantity();
+		shoppingCartVm.products = shoppingCartService.getProducts();
+		shoppingCartVm.canCheckout = shoppingCartService.canCheckout();
+		shoppingCartVm.totalPrice = shoppingCartService.getTotalPrice();
+	}
+
+	shoppingCartVm.cartSrv = shoppingCartService;
+	shoppingCartVm.showCart = false;
+	shoppingCartVm.redirectToCheckout = shoppingCartService.checkout;
+	shoppingCartVm.displayCart = function() {
+		shoppingCartVm.showCart = !shoppingCartVm.showCart;
+	}
+
+	initVm();
+
+	$rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function() {
+		initVm();
+	});
+
+	return shoppingCartVm;
+};
+
+angular
+	.module('module.shoppingCart')
+	.controller('shoppingCartController', shoppingCartController);
+function categoryService(categoryModel, PROMO_PRODUCTS_KEY) {
+	var api = {};
+
+	function formatCategory(category) {
+		return categoryModel.convertTo(
+			category.key,
+			category.name,
+			category.description);
+	}
+
+	function formatCategories(list) {
+		var result = [];
+
+		for (var i = 0; i < list.length; i++) {
+			var category = list[i];
+			result.push(
+				formatCategory(category)
+			)
+		}
+
+		return result;
+	}
+
+	// categories
+	api.getNormalCategories = function() {
+		var list = _.filter(nuskin.summerPromo.categories.data, function(c) {
+			return c.key != PROMO_PRODUCTS_KEY;
+		});
+		return formatCategories(list);
+	};
+
+	api.getPromoCategories = function() {
+		var list = _.filter(nuskin.summerPromo.categories.data, function(c) {
+			return c.key == PROMO_PRODUCTS_KEY;
+		});
+		return formatCategories(list);
+	};
+
+	api.getCategory = function(key) {
+		var category = _.find(nuskin.summerPromo.categories.data, function(c) {
+			return c.key == key;
+		});
+		return formatCategory(category);
+	}
+
+	return api;
+}
+
+angular
+	.module('common.services')
+	.service('categoryService', categoryService);
+function currencyService(CURRENCY_WEBSERVICE_URL, $http, identityService) {
+	var api = {};
+	var currency = {};
+
+	function number_format(number, decimals, dec_point, thousands_sep) {
+		number = (number + '').replace(/[^0-9+\-Ee.]/g, '')
+		var n = !isFinite(+number) ? 0 : +number,
+			prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+			sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+			dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+			s = '',
+			toFixedFix = function(n, prec) {
+				var k = Math.pow(10, prec)
+				return '' + (Math.round(n * k) / k)
+					.toFixed(prec)
+			}
+			// Fix for IE parseFloat(0.55).toFixed(0) = 0;
+		s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
+			.split('.')
+		if (s[0].length > 3) {
+			s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep)
+		}
+		if ((s[1] || '')
+			.length < prec) {
+			s[1] = s[1] || ''
+			s[1] += new Array(prec - s[1].length + 1)
+				.join('0')
+		}
+		return s.join(dec)
+	}
+
+	api.currencyFormat = function(amount) {
+		var price = number_format(amount, currency.accuracy, currency.decimal, currency.delimiter);
+		return (currency.after == 'true') ? price + currency.symbol : currency.symbol + price;
+	}
+
+	api.initCurrencies = function() {
+		var countryCode = identityService.getCountryCode();
+		return $http.get(CURRENCY_WEBSERVICE_URL).then(function(response) {
+			currency = _.find(response.data, function(line) {
+				return line.id == countryCode;
+			});
+
+			return response;
+		});
+	}
+
+	return api;
+}
+
+angular
+	.module('common.services')
+	.service('currencyService', currencyService);
+function faqService() {
+	var api = {};
+
+	api.getQuestions = function() {
+		return nuskin.summerPromo.faq;
+	}
+
+	return api;
+}
+
+angular
+	.module('common.services')
+	.service('faqService', faqService);
+
+function identityService(LOCAL_STORAGE_KEYS, localStorageService) {
+	var api = {};
+
+	api.getCountryCode = function() {
+		return nuskin.util.countryCode;
+	}
+
+	api.getLanguageCode = function() {
+		return nuskin.util.languageCode;
+	}
+
+	api.getTranslations = function() {
+		return nuskin.summerPromo.translations;
+	}
+
+	api.getUserType = function() {
+		return userType;
+	}
+
+	api.hasClosedPromoInformationPopup = function() {
+		return localStorageService.get(LOCAL_STORAGE_KEYS.hasClosedPromoInformationPopup);
+	}
+
+	api.closePromoInformationPopup = function() {
+		localStorageService.set(LOCAL_STORAGE_KEYS.hasClosedPromoInformationPopup, true);
+	}
+
+	return api;
+}
+
+angular
+	.module('common.services')
+	.service('identityService', identityService);
+
+function productService($http, identityService, productModel,
+	PRODUCT_WEBSERVICE_URL_TEMPLATE, $q,
+	ROUTING_SHOP_STATE, PROMO_PRODUCTS_KEY, categoryService, USER_TYPES) {
+
+	var api = {};
+	var productsCache = {};
+
+	// utilities
+	function lightWeightProductsFormat(products, categoryKey) {
+		var result = [];
+		for (var i = 0; i < products.length; i++) {
+			var product = products[i];
+			result.push(
+				productModel.convertTo(
+					product.sku,
+					categoryKey,
+					null,
+					null,
+					null,
+					null,
+					product.isOutOfStock,
+					product.isInPresales
+				)
+			)
+		}
+		return result;
+	}
+
+	function getProductsForCategories(categories) {
+		var products = [];
+		for (var i = 0; i < categories.length; i++) {
+			var category = _.find(nuskin.summerPromo.categories.items, function(c) {
+				return c.key == categories[i].key
+			});
+			products = products.concat(
+				lightWeightProductsFormat(category.products, category.key)
+			);
+		}
+		return products;
+	}
+
+	function getCategoryForProduct(sku) {
+		var category = _.find(nuskin.summerPromo.categories.items, function(c) {
+			return _.any(c.products, function(p) {
+				return p.sku == sku
+			});
+		});
+		return category;
+	}
+
+	function getProductRawData(sku) {
+		var languageCode = identityService.getLanguageCode();
+		var countryCode = identityService.getCountryCode();
+		var product = {};
+
+		var productWebserviceUrl = PRODUCT_WEBSERVICE_URL_TEMPLATE.format(
+			sku.substr(0, 2),
+			sku.substr(2, 2),
+			sku.substr(4, 2),
+			sku,
+			languageCode,
+			countryCode
+		)
+
+		return $http.get(productWebserviceUrl).then(function(response) {
+			if (response && response.data) {
+				return response.data;
+			}
+			return product;
+		});
+	}
+
+	// products
+	api.getNormalProducts = function() {
+		var categories = categoryService.getNormalCategories();
+		return getProductsForCategories(categories);
+	}
+
+	api.getPromoProducts = function() {
+		var categories = categoryService.getPromoCategories();
+		return getProductsForCategories(categories);
+	}
+
+	api.getProductForCategory = function(categoryKey) {
+		var category = _.find(nuskin.summerPromo.categories.items, function(c) {
+			return c.key == categoryKey;
+		});
+		return category ? lightWeightProductsFormat(category.products, category.key) : null;
+	}
+
+	api.getProductsFromSameCategory = function(sku) {
+		var category = getCategoryForProduct(sku);
+		var products = [];
+		for (var i = 0; i < category.products.length; i++) {
+			var product = _.find(productsCache, function(p) {
+				return p.sku == category.products[i].sku;
+			});
+			product.selected = product.sku == sku;
+			products.push(
+				product
+			)
+		}
+		return products;
+	}
+
+	api.initAllProducts = function() {
+		var allProducts = [];
+		var products = _.chain(nuskin.summerPromo.categories.items)
+			.pluck('products')
+			.flatten(true)
+			.value();
+
+		for (var i = 0; i < products.length; i++) {
+			var product = products[i];
+			allProducts.push(
+				api.getProduct(product.sku, product.isOutOfStock, product.isInPresales)
+			)
+		}
+		return $q.all(allProducts).then(function(data) {
+			productsCache = data;
+			return data;
+		}, function(err) {
+			return err;
+		})
+	}
+
+	api.getProduct = function(sku, isOutOfStock, isInPresales) {
+		return getProductRawData(sku).then(function(rawData) {
+			var product = {};
+			var userType = identityService.getUserType();
+
+			var category = getCategoryForProduct(rawData.sku);
+			product = productModel.convertTo(
+				rawData.sku,
+				category ? category.key : null,
+				rawData.contents.language[0].shortDescription,
+				rawData.contents.language[0].longDescription,
+				rawData.contents.language[0].name, {
+					fullPrice: userType == USER_TYPES.CUSTOMERS || userType == USER_TYPES.NOT_LOGGED_IN ? rawData.market.Retail : rawData.market.Wholesale,
+					priceReduced: userType == USER_TYPES.CUSTOMERS || userType == USER_TYPES.NOT_LOGGED_IN ? rawData.market.WebRetail : rawData.market.WebWholesale
+				},
+				isOutOfStock,
+				isInPresales
+			)
+
+			return product;
+		});
+	}
+
+	return api;
+}
+
+angular
+	.module('common.services')
+	.service('productService', productService);
+
+function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
+	LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
+	CHECKOUT_URL) {
+	var api = {}
+
+	var cart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForWebApp) || {
+		products: []
+	};
+
+	function transformShoppingCart() {
+		var result = {
+			categoryProducts: [],
+			promoProducts: []
+		}
+
+		for (var i = 0; i < cart.products.length; i++) {
+			var product = cart.products[i];
+			if (product.categoryId == PROMO_PRODUCTS_KEY) {
+				result.promoProducts.push({
+					sku: product.sku,
+					quantity: product.quantity
+				});
+			} else {
+				result.categoryProducts.push({
+					sku: product.sku,
+					quantity: product.quantity
+				});
+			}
+		}
+
+		return result;
+	}
+
+	$rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function() {
+		localStorageService.set(LOCAL_STORAGE_KEYS.shoppingCartForWebApp, cart);
+		localStorageService.set(LOCAL_STORAGE_KEYS.shoppingCartForNuskin, transformShoppingCart());
+	});
+
+	api.getProducts = function() {
+		return cart.products;
+	}
+
+	api.resetCart = function() {
+		cart.products = [];
+	};
+
+	api.getTotalUniqueProduct = function() {
+		return cart.products.length;
+	}
+
+	api.getTotalQuantity = function() {
+		var totalProducts = 0;
+		if (cart.products) {
+			for (var i = 0; i < cart.products.length; i++) {
+				totalProducts += cart.products[i].quantity;
+			}
+		}
+		return totalProducts;
+	};
+
+	api.hasProducts = function() {
+		return cart.products && cart.products.length > 0;
+	};
+
+	api.addProduct = function(product) {
+		var productCart = _.find(cart.products, function(p) {
+			return p.sku == product.sku;
+		});
+
+		if (!productCart) {
+			var productToAdd = angular.copy(product);
+			cart.products.push(productToAdd);
+		} else {
+			productCart.quantity += product.quantity;
+		}
+		$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+	};
+
+	api.removeProduct = function(product) {
+		var skuList = _.pluck(cart.products, "sku");
+		var indexProductToRemove = _.indexOf(skuList, product.sku);
+
+		if (indexProductToRemove != -1) {
+			cart.products.splice(indexProductToRemove, 1);
+			var productsToRemove = _.filter(cart.products, function(p) {
+				return p.categoryId == PROMO_PRODUCTS_KEY
+			});
+			if (productsToRemove) {
+				for (var i = 0; i < productsToRemove.length; i++) {
+					skuList = _.pluck(cart.products, "sku");
+					indexProductToRemove = _.indexOf(skuList, productsToRemove[i].sku);
+					cart.products.splice(indexProductToRemove, 1);
+				}
+			}
+
+			$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+		}
+	};
+
+	api.incrementQuantityOfProduct = function(product) {
+		var productCart = _.find(cart.products, function(p) {
+			return p.sku == product.sku;
+		});
+		if (productCart != null) {
+			productCart.quantity++;
+			$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+		}
+	};
+
+	api.decrementQuantityOfProduct = function(product) {
+		var productCart = _.find(cart.products, function(p) {
+			return p.sku == product.sku;
+		});
+		if (productCart != null) {
+			if ((productCart.quantity - 1) > 0) {
+				productCart.quantity--;
+				$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+			}
+		}
+	};
+
+	api.getTotalPrice = function() {
+		var totalPrice = 0;
+		if (cart.products) {
+			for (var i = 0; i < cart.products.length; i++) {
+				totalPrice += cart.products[i].quantity * cart.products[i].price;
+			}
+		}
+		return totalPrice;
+	};
+
+	api.checkout = function() {
+		$window.location.href = CHECKOUT_URL;
+	}
+
+	api.addAndCheckout = function(product) {
+		api.resetCart();
+		api.addProduct(product);
+		api.checkout();
+	}
+
+	api.canBuyPromoProducts = function() {
+		return api.getTotalUniqueProduct() > 2;
+	};
+
+	api.canCheckout = function() {
+		return api.getTotalUniqueProduct() > 2;
+	};
+
+	api.getErrorFromCheckout = function() {
+		var nuskinCart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForNuskin) || {};
+		return {
+			hasError: nuskinCart.errorMsg != undefined && cart.errorMsg != '',
+			message: nuskinCart.errorMsg,
+			products: nuskinCart.productsOutOfStock
+		};
+	}
+
+	return api;
+};
+
+angular
+	.module('common.services')
+	.service('shoppingCartService', ShoppingCartService);
+
+function categoryModel(IMAGES_URL) {
+	var api = {};
+
+	function Category(key, name, description) {
+		var category = {
+			key: key,
+			name: name,
+			description: description
+		}
+
+		return category;
+	}
+
+	api.convertTo = function(key, name, description) {
+		return new Category(key, name, description)
+	}
+
+	return api;
+}
+
+angular
+	.module('common.models')
+	.service('categoryModel', categoryModel);
+function productModel(IMAGES_URL) {
+    var api = {};
+
+    function Product(sku, categoryId, shortDescription, longDescription, name, priceData, isOutOfStock, isInPresales) {
+        var product = {
+            sku: sku,
+            categoryId: categoryId,
+            urlImage: IMAGES_URL.format(sku),
+            shortDescription: shortDescription,
+            longDescription: longDescription,
+            name: name,
+            price: null,
+            priceReduced: null,
+            reduction: 0,
+            quantity: 1,
+            selected: false,
+            isOutOfStock: isOutOfStock || false,
+            isInPresales: isInPresales || false,
+            incrementQuantity: function () {
+                this.quantity++;
+            },
+            decrementQuantity: function () {
+                if (this.quantity > 1)
+                    this.quantity--;
+            }
+        }
+		if (priceData) {
+			var reduction = Math.round(
+				100 - (
+					(priceData.priceReduced / priceData.fullPrice) * 100
+				)
+			);
+			product.reduction = reduction + ' %';
+			product.price = priceData.fullPrice;
+			product.priceReduced = priceData.priceReduced;
+		}
+
+
+        var skuIndex = _.chain(nuskin.summerPromo.categories.items)
+            .pluck('products')
+            .flatten(true)
+            .pluck('sku')
+            .indexOf(sku)
+            .value();
+
+        product.skuIndex = skuIndex;
+
+        return product;
+    }
+
+
+    api.convertTo = function (sku, categoryId, shortDescription, longDescription, name, price, isOutOfStock, isInPresales) {
+        return new Product(sku, categoryId, shortDescription, longDescription, name, price, isOutOfStock, isInPresales)
+    }
+
+    return api;
+}
+
+angular
+    .module('common.models')
+    .service('productModel', productModel);
+function spinnerInterceptor($rootScope, $q, EVENT_NAMES) {
+	var numLoadings = 0;
+
+	return {
+		request: function(config) {
+
+			numLoadings++;
+
+			// Show loader
+			$rootScope.$broadcast(EVENT_NAMES.loader_show);
+			return config || $q.when(config);
+		},
+		response: function(response) {
+
+			if ((--numLoadings) === 0) {
+				// Hide loader
+				$rootScope.$broadcast(EVENT_NAMES.loader_hide);
+			}
+
+			return response || $q.when(response);
+
+		},
+		responseError: function(response) {
+
+			if (!(--numLoadings)) {
+				// Hide loader
+				$rootScope.$broadcast(EVENT_NAMES.loader_hide);
+			}
+
+			return $q.reject(response);
+		}
+	};
+}
+
+angular
+	.module('common.interceptors')
+	.factory('spinnerInterceptor', spinnerInterceptor);
+function dynamicDirective($compile) {
+	return {
+		restrict: 'A',
+		replace: true,
+		link: function(scope, ele, attrs) {
+			scope.$watch(attrs.dynamic, function(html) {
+				ele.html(html);
+				$compile(ele.contents())(scope);
+			});
+		}
+	};
+}
+
+angular
+	.module('common.directives')
+	.directive("dynamic", dynamicDirective);
+
+function spinnerDirective(EVENT_NAMES) {
+	return function($scope, element) {
+		$scope.$on(EVENT_NAMES.loader_show, function() {
+			element[0].style.display = "inline";
+			return element;
+		});
+		return $scope.$on(EVENT_NAMES.loader_hide, function() {
+			element[0].style.display = "none";
+			return element;
+		});
+	};
+}
+
+angular
+	.module('common.directives')
+	.directive("spinnerLoader", spinnerDirective);
+function customCurrency(currencyService) {
+	return function(input) {
+		return currencyService.currencyFormat(input);
+	}
+}
+
+angular
+	.module('common.filters')
+	.filter('customCurrency', customCurrency);

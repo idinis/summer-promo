@@ -1,0 +1,683 @@
+.disabled {
+    pointer-events: none !important;
+    cursor: default;
+}
+
+*,
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+/***
+ * Header
+ */
+
+#header-wrapper {
+    position: relative;
+    z-index: 20;
+    overflow: hidden;
+    width: 100%;
+    min-height: 40px;
+}
+
+#main-header {
+    position: relative;
+    padding: 10px;
+    width: 100%;
+    overflow: hidden;
+    z-index: 50;
+}
+
+
+/***
+ * Cart
+ */
+
+#cart-toggle {
+    float: right;
+    display: inline-block;
+    color: #fff;
+    background-color: #008ab0;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border: none;
+}
+
+#cart {
+    position: relative;
+    clear: both;
+    z-index: 20;
+    background-color: #fff;
+    max-height: 400px;
+    overflow: scroll;
+    /*    transition: all 0.5s ease-out;*/
+}
+
+#cart.hide {
+    display: none;
+}
+
+#main-wrapper {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+}
+
+
+/***
+ * Background handling
+ */
+
+.background.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0;
+    z-index: 0;
+    height: 100vh;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    margin-top: -54px;
+}
+
+.background .wall {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    height: 68%;
+    max-height: 683px;
+    left: 0;
+    width: 100%;
+    background: url(../img/wall.jpg) bottom left no-repeat, url(../img/wall-pattern.jpg) bottom left repeat-x;
+}
+
+.background .halos {
+    position: absolute;
+    z-index: 15;
+    top: 0;
+    left: 0;
+    height: calc(68% + 126px);
+    max-height: 809px;
+    width: 200vw;
+    transition: transform 1s ease-in-out;
+}
+
+.background .halos .halo {
+    width: 100vw;
+    float: left;
+    height: 100%;
+}
+
+.background .halos .halo.blue {
+    background: url(../img/halo-blue.png) bottom center no-repeat;
+}
+
+.background .halos .halo.yellow {
+    background: url(../img/halo-blue.png) bottom center no-repeat;
+}
+
+.background .floor {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200vw;
+    background: url(../img/floor.jpg) bottom center;
+    transition: transform 1s ease-in-out;
+}
+
+.promo-layout .background .floor,
+.promo-layout .background .halos {
+    transform: translate3d(-50%, 0, 0)
+}
+
+h1 {
+    display: none;
+}
+
+#nav-rituals {
+    display: none;
+}
+
+#section-wrapper {
+    position: relative;
+}
+
+
+/***
+ * Branded item button
+ */
+
+#promo-button {
+    position: absolute;
+    left: 70%;
+    top: 50%;
+}
+
+
+/***
+ * Back button
+ */
+
+#back-button {
+    position: absolute;
+}
+
+
+/***
+ * Products stands
+ */
+
+#products {
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    max-width: 764px;
+    max-height: 755px;
+    height: calc(68vh + 126px - 54px);
+}
+
+#products .product {
+    position: absolute;
+    z-index: 8888;
+}
+
+#products .product.ng-animate {
+    -webkit-transition: all linear 0.3s;
+    transition: 0.5s linear all;
+}
+
+#products .product.ng-leave.ng-leave-active,
+#products .product.ng-move,
+#products .product.ng-enter {
+    opacity: 0;
+    transform: translate3d(-100px, 0, 0);
+}
+
+#products .product.ng-leave,
+#products .product.ng-move.ng-move-active,
+#products .product.ng-enter.ng-enter-active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+#products .product.ng-leave-stagger {
+    -webkit-transition-delay: 0.5s;
+    transition-delay: 0.5s;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+}
+
+.ng-enter-stagger {
+    -webkit-transition-delay: 0.5s;
+    transition-delay: 0.5s;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+    -webkit-animation-delay: .2s;
+    animation-delay: .2s;
+    -o-transition-duration: 0s;
+    transition-duration: 0s;
+    background: #f00 !important;
+}
+
+#products .product .product-image {
+    display: block;
+    transform: translateY(calc(-100% + 11px));
+}
+
+#products .product .product-image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+#products.overview .product-image:before {
+    content: "";
+    position: absolute;
+    vertical-align: middle;
+    margin-top: -15px;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: url(../img/plus-sign.png) center no-repeat rgba(255, 255, 255, 0.66);
+    border-radius: 50%;
+}
+
+#products .product .product-display {
+    display: block;
+    position: relative;
+}
+
+#products .product:after {
+    content: "";
+    left: -11px;
+    bottom: -55px;
+    position: absolute;
+    width: 261px;
+    height: 97px;
+    z-index: -1;
+    background: url(../img/stands/stand-1-shadow.png) top left no-repeat;
+}
+
+#products .product-1 .product-display,
+#products .product-4 .product-display,
+#products .product-7 .product-display {
+    z-index: 5;
+}
+
+#products .product-2 .product-display,
+#products .product-5 .product-display,
+#products .product-8 .product-display {
+    z-index: 10;
+}
+
+#products .product-3 .product-display,
+#products .product-6 .product-display,
+#products .product-9 .product-display {
+    z-index: 15;
+}
+
+#products .product-1 {
+    bottom: 86px;
+    left: 160px;
+}
+
+#products .product-1 .product-display {
+    background: url(../img/stands/stand-1.png) top left no-repeat;
+    width: 88px;
+    height: 235px;
+}
+
+#products .product-1 .product-image {
+    transform: translateY(-94%);
+}
+
+#products .product-1:after {
+    left: -22px;
+    bottom: -57px;
+    background-image: url(../img/stands/stand-1-shadow.png);
+}
+
+#products .product-2 {
+    bottom: 62px;
+    left: 212px;
+}
+
+#products .product-2 .product-display {
+    background: url(../img/stands/stand-2.png) top left no-repeat;
+    width: 96px;
+    height: 160px;
+}
+
+#products .product-2:after {
+    left: 0;
+    bottom: -55px;
+    background-image: url(../img/stands/stand-2-shadow.png);
+}
+
+#products .product-3 {
+    bottom: 35px;
+    left: 96px;
+}
+
+#products .product-3 .product-display {
+    background: url(../img/stands/stand-3.png) top left no-repeat;
+    width: 99px;
+    height: 169px;
+}
+
+#products .product-3:after {
+    left: 3px;
+    background-image: url(../img/stands/stand-3-shadow.png);
+}
+
+#products .product-4 {
+    bottom: 73px;
+    left: 315px;
+}
+
+#products .product-4 .product-display {
+    background: url(../img/stands/stand-4.png) top left no-repeat;
+    width: 89px;
+    height: 243px;
+}
+
+#products .product-4:after {
+    left: -21px;
+    bottom: -56px;
+    background-image: url(../img/stands/stand-4-shadow.png);
+}
+
+#products .product-5 {
+    bottom: 37px;
+    left: 371px;
+}
+
+#products .product-5 .product-display {
+    background: url(../img/stands/stand-5.png) top left no-repeat;
+    width: 94px;
+    height: 169px;
+}
+
+#products .product-5:after {
+    left: 0;
+    bottom: -55px;
+    background-image: url(../img/stands/stand-5-shadow.png);
+}
+
+#products .product-6 {
+    bottom: 17px;
+    left: 264px;
+}
+
+#products .product-6 .product-display {
+    background: url(../img/stands/stand-6.png) top left no-repeat;
+    width: 100px;
+    height: 118px;
+}
+
+#products .product-6:after {
+    left: 1px;
+    top: 75px;
+    background-image: url(../img/stands/stand-6-shadow.png);
+}
+
+#products .product-7 {
+    bottom: 96px;
+    left: 459px;
+}
+
+#products .product-7 .product-display {
+    background: url(../img/stands/stand-7.png) top left no-repeat;
+    width: 83px;
+    height: 230px;
+}
+
+#products .product-7:after {
+    left: -18px;
+    bottom: -56px;
+    background-image: url(../img/stands/stand-7-shadow.png);
+}
+
+#products .product-8 {
+    bottom: 66px;
+    left: 538px;
+}
+
+#products .product-8 .product-display {
+    background: url(../img/stands/stand-8.png) top left no-repeat;
+    width: 89px;
+    height: 157px;
+}
+
+#products .product-8:after {
+    left: 0px;
+    bottom: -59px;
+    background-image: url(../img/stands/stand-8-shadow.png);
+}
+
+#products .product-9 {
+    bottom: 16px;
+    left: 429px;
+}
+
+#products .product-9 .product-display {
+    background: url(../img/stands/stand-9.png) top left no-repeat;
+    width: 101px;
+    height: 120px;
+}
+
+#products .product-9:after {
+    left: -11px;
+    bottom: -55px;
+    background-image: url(../img/stands/stand-9-shadow.png);
+}
+
+
+/***
+ * Products quick menu
+ */
+
+#products .product .product-menu {
+    display: none;
+}
+
+
+/***
+ * Products details
+ */
+
+#products.products-details .product.selected:after {
+    content: none;
+}
+
+#products.products-details .product {
+    left: auto;
+    right: 80px;
+    bottom: 66px;
+}
+
+#products.products-details .product.selected {
+    left: 86px;
+    right: auto;
+    bottom: 66px;
+}
+
+#products.products-details .product-idx-3 {
+    bottom: 26px;
+    right: 130px;
+}
+
+
+/***
+ * Product infos
+ */
+
+#products .product-infos {
+    max-width: 400px;
+    margin-left: 100px;
+}
+
+
+/***
+ * Quantity controls
+ */
+
+.quantity {
+    position: relative;
+}
+
+.quantity .ctrl {
+    position: relative;
+    height: 100%;
+    background-color: #000;
+    color: #fff;
+    border: 0;
+    outline: 0;
+}
+
+.quantity .ctrl.disabled {
+    color: #ccc;
+}
+
+
+/***
+ * Cart overview
+ */
+
+#main-footer {
+    position: relative;
+    min-height: 110px;
+    height: calc(32% - 126px);
+}
+
+
+/***
+ * Cart overview
+ */
+
+#cart-overview {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0;
+}
+
+#cart-overview .box {
+    display: inline-block;
+    min-height: 105px;
+    width: 100px;
+    vertical-align: bottom;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+#cart-overview .box.placeholder {
+    background: url(../img/plus-sign-cart-nav.png) center no-repeat #e4e4e4;
+    border-left: 1px solid #fff;
+}
+
+#cart-overview .box.alert {
+    width: 100%;
+    max-width: 310px;
+    padding: 20px;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+#cart-overview .product-display {
+    background-color: #fff;
+    height: 100px;
+    line-height: 100px;
+}
+
+#cart-overview .product img {
+    display: inline-block;
+    height: auto;
+    width: auto;
+    max-width: 80px;
+    max-height: 80px;
+    vertical-align: middle;
+}
+
+#cart-overview .product-action {
+    overflow: hidden;
+    background-color: #fff;
+    max-height: 0px;
+    transition: all 0.3s ease-out;
+}
+
+#cart-overview .product:hover .product-action {
+    max-height: 50px;
+}
+
+#cart-overview .product.ng-enter {
+    animation: growInBottom 0.3s both ease-in;
+    z-index: 9999;
+}
+
+#cart-overview .product.ng-leave {
+    animation: slideOutBottom 0.3s both ease-in;
+    z-index: 9999;
+    position: absolute;
+}
+
+
+/* ANIMATIONS
+============================================================================= */
+
+
+/*
+.product.ng-enter {
+    animation: slideInLeft 0.3s both ease-in;
+    z-index: 8888;
+}
+
+.product.ng-enter-stagger {
+    animation-delay: 0.1s;
+}
+
+#main-view.ng-leave {
+    transition: 0.5s linear all;
+}
+
+#main-view.ng-leave .product {
+    animation: slideOutLeft 0.3s both ease-in;
+    z-index: 9999;
+}
+
+#main-view.ng-leave .product {
+    animation-delay: 0.1s;
+}
+*/
+
+
+/* leaving animations ----------------------------------------- */
+
+@keyframes slideOutLeft {
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutBottom {
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+
+/* entering animations --------------------------------------- */
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes growInBottom {
+    from {
+        transform: scale3d(0.2, 0.2, 1);
+        opacity: 0;
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+        opacity: 1;
+    }
+}
