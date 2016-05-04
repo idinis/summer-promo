@@ -2,6 +2,8 @@ angular
     .module('coreApp', [
 		'ui.router',
 		'templates-app',
+        '720kb.socialshare',
+        //'slick',
 		'ngSanitize',
 		//'ngAnimate',
 		'LocalStorageModule',
@@ -21,7 +23,7 @@ angular
     .config(function ($stateProvider, $urlRouterProvider, DEFAULT_URL_PAGE,
         localStorageServiceProvider, $httpProvider) {
 
-        // Routing
+        // Routing 
         $stateProvider
             .state('app', {
                 abstract: true,
@@ -41,7 +43,7 @@ angular
                         return currencyService.initCurrencies();
                     },
                     InitProducts: function (productService) {
-                        return productService.initAllProducts()
+                        return productService.initAllProducts();
                     }
                 }
             })
@@ -96,10 +98,11 @@ angular
             // toState.name === "app.shop.category.product" &&
             if (!$rootScope.forceRedirect) {
                 e.preventDefault();
+                clearStage();
                 $timeout(function () {
                     $rootScope.forceRedirect = true;
                     $state.go(toState, toParams);
-                }, ROUTING_TIMEOUT);
+                }, 600);
             } else {
                 $rootScope.forceRedirect = false;
             }
@@ -119,18 +122,54 @@ angular.module('module.navigationCart', []);
 angular.module('module.product', []);
 angular.module('module.products', []);
 angular.module('module.shoppingCart', []);
-function categoryController(categoryService, productService, $stateParams, shoppingCartService) {
-	var categoryVm = {};
+function categoryController(categoryService, productService, $stateParams, shoppingCartService, $state) {
+    var categoryVm = {};
 
-	categoryVm.category = categoryService.getCategory($stateParams.categoryId);
-	categoryVm.products = productService.getProductForCategory($stateParams.categoryId);
 
-	return categoryVm;
+    categoryVm.goToProduct = function (product) {
+        $state.go('app.shop.category.product', {
+            productId: product.sku,
+            categoryId: product.categoryId
+        });
+    }
+
+
+    categoryVm.category = categoryService.getCategory($stateParams.categoryId);
+    categoryVm.products = productService.getProductForCategory($stateParams.categoryId);
+
+    return categoryVm;
 };
 
 angular
-	.module('module.category')
-	.controller('categoryController', categoryController);
+    .module('module.category')
+    .controller('categoryController', categoryController)
+    .directive('categoryRepeatDirective', function () {
+        return function (scope, element, attrs) {
+
+            TweenMax.fromTo(element, 0.5, {
+                opacity: 0,
+                //x: -100
+            }, {
+                opacity: 1,
+                //x: 0,
+                delay: scope.$index * 0.05
+            });
+
+
+        };
+    })
+    .directive('categoryDirective', function () {
+        return function (scope, element, attrs) {
+
+            var $desc = element.find('.ritual-description');
+            TweenMax.fromTo($desc, 0.5, {
+                autoAlpha: 0,
+            }, {
+                autoAlpha: 1,
+                delay: 0.55
+            });
+        };
+    })
 function faqController(faqService) {
 	var faqVm = {};
 
@@ -144,66 +183,93 @@ angular
 	.controller('faqController', faqController);
 
 function MainCtrl($state, categoryService, $window, $stateParams,
-	ROUTING_SHOP_STATE, $scope, shoppingCartService, $rootScope,
-	EVENT_NAMES, $state, identityService) {
-	var mainVm = this;
+    ROUTING_SHOP_STATE, $scope, shoppingCartService, $rootScope,
+    EVENT_NAMES, $state, identityService, productService) {
+    var mainVm = this;
 
-	function redirectIfNoAccess() {
-		if ($stateParams.showCase == ROUTING_SHOP_STATE.promo && shoppingCartService.getTotalUniqueProduct() < 3) {
-			$state.go('app.shop', {
-				showCase: ROUTING_SHOP_STATE.normal
-			})
-		}
-	}
+    function redirectIfNoAccess() {
+        if ($stateParams.showCase == ROUTING_SHOP_STATE.promo && shoppingCartService.getTotalUniqueProduct() < 3) {
+            $state.go('app.shop', {
+                showCase: ROUTING_SHOP_STATE.normal
+            })
+        }
+    }
 
-	$rootScope.translations = identityService.getTranslations();
+    $rootScope.translations = identityService.getTranslations();
 
-	//local function
-	mainVm.goBack = function() {
-		$window.history.back();
-	}
-	mainVm.ROUTING_SHOP_STATE = ROUTING_SHOP_STATE;
-	mainVm.$state = $state;
-	mainVm.$stateParams = $stateParams;
-	mainVm.categoryActive = $stateParams.categoryId;
-	mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
-	mainVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
-	mainVm.closePromoInformationPopup = function() {
-		identityService.closePromoInformationPopup();
-		mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
-	}
-	mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+    //local function
+    mainVm.goBack = function () {
+        $window.history.back();
+    }
+    mainVm.ROUTING_SHOP_STATE = ROUTING_SHOP_STATE;
+    mainVm.$state = $state;
+    mainVm.$stateParams = $stateParams;
+    mainVm.productActive = $stateParams.productId;
+    mainVm.categoryActive = $stateParams.categoryId;
+    mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
+    mainVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
+    mainVm.productService = productService;
+    mainVm.closePromoInformationPopup = function () {
+        identityService.closePromoInformationPopup();
+        console.log(identityService.hasClosedPromoInformationPopup());
+        mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+    }
+    mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+    // n means new, o means old (new is a reserved word for javascript => execution error)
+    $scope.$watch('mainVm.$stateParams.showCase', function (n, o) {
+        if (n) {
+            redirectIfNoAccess();
+            if (n == ROUTING_SHOP_STATE.promo) {
+                $rootScope.bodylayout = 'promo-layout';
+                mainVm.categories = categoryService.getPromoCategories();
+            } else {
+                $rootScope.bodylayout = 'normal-layout';
+                mainVm.categories = categoryService.getNormalCategories();
+            }
+        }
+    });
 
-	// n means new, o means old (new is a reserved word for javascript => execution error)
-	$scope.$watch('mainVm.$stateParams.showCase', function(n, o) {
-		if (n) {
-			redirectIfNoAccess();
-			if (n == ROUTING_SHOP_STATE.promo) {
-				$rootScope.bodylayout = 'promo-layout';
-				mainVm.categories = categoryService.getPromoCategories();
-			} else {
-				$rootScope.bodylayout = 'normal-layout';
-				mainVm.categories = categoryService.getNormalCategories();
-			}
-		}
-	});
+    $scope.$watch('mainVm.$stateParams.categoryId', function (n, o) {
+        mainVm.categoryActive = $stateParams.categoryId;
 
-	$scope.$watch('mainVm.$stateParams.categoryId', function(n, o) {
-		mainVm.categoryActive = $stateParams.categoryId;
-	});
+        TweenMax.to($('#site-title'), 0.5, {
+            opacity: 0,
+            scale: 1.1,
+            onComplete: function () {
 
-	$rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function() {
-		redirectIfNoAccess();
-		mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
-	});
+                if (mainVm.categoryActive == undefined) {
+                    mainVm.siteTitle = $rootScope.translations.common.siteTitle;
+                } else {
+                    var cat = categoryService.getCategory(mainVm.categoryActive);
+                    mainVm.siteTitle = cat.name;
+                }
+                $scope.$apply();
 
-	return mainVm;
+                TweenMax.fromTo($('#site-title'), 0.5, {
+                    opacity: 0,
+                    scale: 0.8,
+                }, {
+                    opacity: 1,
+                    scale: 1,
+                });
+
+            }
+        });
+
+
+    });
+
+    $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
+        redirectIfNoAccess();
+        mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
+    });
+
+    return mainVm;
 }
 
 angular
-	.module('module.main')
-	.controller('mainController', MainCtrl);
-
+    .module('module.main')
+    .controller('mainController', MainCtrl);
 function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, DEFAULT_IMAGE_URL, $state) {
 
     var navigationCartVm = {
@@ -233,16 +299,16 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
     }
 
 
-    function updatePlaceholders(placeholders, products) {
+    function updatePlaceholders(placeholders, productsLength) {
 
-        if (placeholders.length > 3 - products.length) placeholders.splice(0, 1);
+        if (placeholders.length > 3 - productsLength) placeholders.splice(0, 1);
 
-        if (products.length < 3) {
-            if (products.length < 3 && placeholders.length < 1)
+        if (productsLength < 3) {
+            if (productsLength < 3 && placeholders.length < 1)
                 placeholders.unshift(new Placeholder(3));
-            if (products.length < 2 && placeholders.length < 2)
+            if (productsLength < 2 && placeholders.length < 2)
                 placeholders.unshift(new Placeholder(2));
-            if (products.length < 1 && placeholders.length < 3)
+            if (productsLength < 1 && placeholders.length < 3)
                 placeholders.unshift(new Placeholder(1));
         }
 
@@ -260,13 +326,16 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
     navigationCartVm.products = shoppingCartService.getProducts();
     navigationCartVm.placeholders = initPlaceholders(navigationCartVm.products);
 
+
     $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
-        navigationCartVm.products = shoppingCartService.getProducts();
-        navigationCartVm.placeholders = updatePlaceholders(navigationCartVm.placeholders, navigationCartVm.products);
+        var _tempArray = shoppingCartService.getProducts();
+        navigationCartVm.placeholders = updatePlaceholders(navigationCartVm.placeholders, _tempArray.length);
+        navigationCartVm.products = _tempArray;
+
     });
+    navigationCartVm.redirectToCheckout = shoppingCartService.checkout;
 
     return navigationCartVm;
-    navigationCartVm.redirectToCheckout = shoppingCartService.checkout;
 };
 
 angular
@@ -279,7 +348,7 @@ function productController(productService, $stateParams, shoppingCartService, $s
     };
 
     productVm.goToProduct = function (product) {
-        productVm.products = [];
+        //productVm.products = [];
         $state.go('app.shop.category.product', {
             productId: product.sku,
             categoryId: product.categoryId
@@ -287,6 +356,7 @@ function productController(productService, $stateParams, shoppingCartService, $s
     }
 
     productVm.products = productService.getProductsFromSameCategory($stateParams.productId);
+
 
     productVm.cartSrv = shoppingCartService;
     productVm.showLongDecription = false;
@@ -299,19 +369,38 @@ function productController(productService, $stateParams, shoppingCartService, $s
 
 angular
     .module('module.product')
-    .controller('productController', productController);
-function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $state) {
+    .controller('productController', productController)
+    .directive('productRepeatDirective', function () {
+        return function (scope, element, attrs) {
+
+            TweenMax.fromTo(element, 0.5, {
+                opacity: 0,
+                x: -100
+            }, {
+                opacity: 1,
+                x: 0,
+                delay: scope.$index * 0.05
+            });
+
+        };
+    })
+function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $state, shoppingCartService) {
     var productsVm = {
-        products: []
+        products: [],
+        activeCategory: '',
     }
+
+    var _tempProducts;
     if ($stateParams.showCase == ROUTING_SHOP_STATE.promo) {
         productsVm.products = productService.getPromoProducts();
     } else {
         productsVm.products = productService.getNormalProducts();
     }
 
+    productsVm.cartSrv = shoppingCartService;
+
     productsVm.goToProduct = function (product) {
-        productsVm.products = [];
+        //productsVm.products = [];
         $state.go('app.shop.category.product', {
             productId: product.sku,
             categoryId: product.categoryId
@@ -319,12 +408,17 @@ function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $s
     }
 
     productsVm.goToProductCategory = function (product) {
-        productsVm.products = [];
+        //productsVm.products = [];
         $state.go('app.shop.category.product', {
             productId: product.sku,
             categoryId: product.categoryId
         });
     }
+
+    productsVm.setActiveCategory = function (category) {
+        productsVm.activeCategory = category;
+    }
+
 
     return productsVm;
 };
@@ -332,100 +426,115 @@ function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $s
 angular
     .module('module.products')
     .controller('productsController', productsController)
-    /*.animation('.product', ['$animateCss', function ($animateCss) {
-        return {
-            enter: function (element) {
-                console.log(element);
-                // this will trigger `.slide.ng-enter` and `.slide.ng-enter-active`.
-                return $animateCss(element, {
-                    event: 'enter',
-                    structural: true
+    .directive('productsRepeatDirective', function () {
+        return function (scope, element, attrs) {
+            if (scope.$index < 4 || scope.$index == 5) {
+                TweenMax.fromTo(element, 0.5, {
+                    opacity: 0,
+                    x: -100
+                }, {
+                    opacity: 1,
+                    x: 0,
+                    delay: scope.$index * 0.05
                 });
+            } else {
+                TweenMax.fromTo(element, 0.5, {
+                    opacity: 0,
+                    x: 100
+                }, {
+                    opacity: 1,
+                    x: 0,
+                    delay: scope.$index * 0.05
+                });
+
             }
-        }
-}])*/
+
+        };
+    })
 function shoppingCartController(shoppingCartService, $rootScope,
-	EVENT_NAMES, $window, CHECKOUT_URL) {
+    EVENT_NAMES, $window, CHECKOUT_URL) {
 
-	var shoppingCartVm = {};
+    var shoppingCartVm = {};
 
-	function initVm() {
-		shoppingCartVm.totalQuantity = shoppingCartService.getTotalQuantity();
-		shoppingCartVm.products = shoppingCartService.getProducts();
-		shoppingCartVm.canCheckout = shoppingCartService.canCheckout();
-		shoppingCartVm.totalPrice = shoppingCartService.getTotalPrice();
-	}
+    function initVm() {
+        shoppingCartVm.totalQuantity = shoppingCartService.getTotalQuantity();
+        shoppingCartVm.products = shoppingCartService.getProducts();
+        shoppingCartVm.canCheckout = shoppingCartService.canCheckout();
+        shoppingCartVm.totalPrice = shoppingCartService.getTotalPrice();
+        shoppingCartVm.totalDiscountPrice = shoppingCartService.getTotalDiscountPrice();
+    }
 
-	shoppingCartVm.cartSrv = shoppingCartService;
-	shoppingCartVm.showCart = false;
-	shoppingCartVm.redirectToCheckout = shoppingCartService.checkout;
-	shoppingCartVm.displayCart = function() {
-		shoppingCartVm.showCart = !shoppingCartVm.showCart;
-	}
+    shoppingCartVm.cartSrv = shoppingCartService;
+    shoppingCartVm.showCart = false;
+    shoppingCartVm.redirectToCheckout = shoppingCartService.checkout;
+    shoppingCartVm.displayCart = function () {
+        shoppingCartVm.showCart = !shoppingCartVm.showCart;
+    }
 
-	initVm();
+    initVm();
 
-	$rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function() {
-		initVm();
-	});
+    $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
+        initVm();
+    });
 
-	return shoppingCartVm;
+    return shoppingCartVm;
 };
 
 angular
-	.module('module.shoppingCart')
-	.controller('shoppingCartController', shoppingCartController);
+    .module('module.shoppingCart')
+    .controller('shoppingCartController', shoppingCartController);
 function categoryService(categoryModel, PROMO_PRODUCTS_KEY) {
-	var api = {};
+    var api = {};
 
-	function formatCategory(category) {
-		return categoryModel.convertTo(
-			category.key,
-			category.name,
-			category.description);
-	}
+    function formatCategory(category) {
+        return categoryModel.convertTo(
+            category.key,
+            category.name,
+            category.title,
+            category.description);
+    }
 
-	function formatCategories(list) {
-		var result = [];
+    function formatCategories(list) {
+        var result = [];
 
-		for (var i = 0; i < list.length; i++) {
-			var category = list[i];
-			result.push(
-				formatCategory(category)
-			)
-		}
+        for (var i = 0; i < list.length; i++) {
+            var category = list[i];
+            result.push(
+                formatCategory(category)
+            )
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	// categories
-	api.getNormalCategories = function() {
-		var list = _.filter(nuskin.summerPromo.categories.data, function(c) {
-			return c.key != PROMO_PRODUCTS_KEY;
-		});
-		return formatCategories(list);
-	};
+    // categories
+    api.getNormalCategories = function () {
+        var list = _.filter(nuskin.summerPromo.categories.data, function (c) {
+            return c.key != PROMO_PRODUCTS_KEY;
+        });
+        return formatCategories(list);
+    };
 
-	api.getPromoCategories = function() {
-		var list = _.filter(nuskin.summerPromo.categories.data, function(c) {
-			return c.key == PROMO_PRODUCTS_KEY;
-		});
-		return formatCategories(list);
-	};
+    api.getPromoCategories = function () {
+        var list = _.filter(nuskin.summerPromo.categories.data, function (c) {
+            return c.key == PROMO_PRODUCTS_KEY;
+        });
+        return formatCategories(list);
+    };
 
-	api.getCategory = function(key) {
-		var category = _.find(nuskin.summerPromo.categories.data, function(c) {
-			return c.key == key;
-		});
-		return formatCategory(category);
-	}
+    api.getCategory = function (key) {
+        var category = _.find(nuskin.summerPromo.categories.data, function (c) {
+            return c.key == key;
+        });
+        return formatCategory(category);
+    }
 
-	return api;
+    return api;
 }
 
 angular
-	.module('common.services')
-	.service('categoryService', categoryService);
+    .module('common.services')
+    .service('categoryService', categoryService);
 function currencyService(CURRENCY_WEBSERVICE_URL, $http, identityService) {
 	var api = {};
 	var currency = {};
@@ -528,349 +637,370 @@ angular
 	.service('identityService', identityService);
 
 function productService($http, identityService, productModel,
-	PRODUCT_WEBSERVICE_URL_TEMPLATE, $q,
-	ROUTING_SHOP_STATE, PROMO_PRODUCTS_KEY, categoryService, USER_TYPES) {
+    PRODUCT_WEBSERVICE_URL_TEMPLATE, $q,
+    ROUTING_SHOP_STATE, PROMO_PRODUCTS_KEY, categoryService, USER_TYPES) {
 
-	var api = {};
-	var productsCache = {};
+    var api = {
+        isInPresales: false,
+    };
+    var productsCache = {};
 
-	// utilities
-	function lightWeightProductsFormat(products, categoryKey) {
-		var result = [];
-		for (var i = 0; i < products.length; i++) {
-			var product = products[i];
-			result.push(
-				productModel.convertTo(
-					product.sku,
-					categoryKey,
-					null,
-					null,
-					null,
-					null,
-					product.isOutOfStock,
-					product.isInPresales
-				)
-			)
-		}
-		return result;
-	}
+    // utilities
+    function lightWeightProductsFormat(products, categoryKey) {
+        var result = [];
+        for (var i = 0; i < products.length; i++) {
+            var product = products[i];
+            product.menuOpened = false;
+            result.push(
+                productModel.convertTo(
+                    product.sku,
+                    categoryKey,
+                    null,
+                    null,
+                    null,
+                    null,
+                    product.isOutOfStock,
+                    product.isInPresales
+                )
+            )
+        }
+        return result;
+    }
 
-	function getProductsForCategories(categories) {
-		var products = [];
-		for (var i = 0; i < categories.length; i++) {
-			var category = _.find(nuskin.summerPromo.categories.items, function(c) {
-				return c.key == categories[i].key
-			});
-			products = products.concat(
-				lightWeightProductsFormat(category.products, category.key)
-			);
-		}
-		return products;
-	}
+    function getProductsForCategories(categories) {
+        var products = [];
+        for (var i = 0; i < categories.length; i++) {
+            var category = _.find(nuskin.summerPromo.categories.items, function (c) {
+                return c.key == categories[i].key
+            });
+            products = products.concat(
+                lightWeightProductsFormat(category.products, category.key)
+            );
+        }
+        return products;
+    }
 
-	function getCategoryForProduct(sku) {
-		var category = _.find(nuskin.summerPromo.categories.items, function(c) {
-			return _.any(c.products, function(p) {
-				return p.sku == sku
-			});
-		});
-		return category;
-	}
+    function getCategoryForProduct(sku) {
+        var category = _.find(nuskin.summerPromo.categories.items, function (c) {
+            return _.any(c.products, function (p) {
+                return p.sku == sku
+            });
+        });
+        return category;
+    }
 
-	function getProductRawData(sku) {
-		var languageCode = identityService.getLanguageCode();
-		var countryCode = identityService.getCountryCode();
-		var product = {};
+    function getProductRawData(sku) {
+        var languageCode = identityService.getLanguageCode();
+        var countryCode = identityService.getCountryCode();
+        var product = {};
 
-		var productWebserviceUrl = PRODUCT_WEBSERVICE_URL_TEMPLATE.format(
-			sku.substr(0, 2),
-			sku.substr(2, 2),
-			sku.substr(4, 2),
-			sku,
-			languageCode,
-			countryCode
-		)
+        var productWebserviceUrl = PRODUCT_WEBSERVICE_URL_TEMPLATE.format(
+            sku.substr(0, 2),
+            sku.substr(2, 2),
+            sku.substr(4, 2),
+            sku,
+            languageCode,
+            countryCode
+        )
 
-		return $http.get(productWebserviceUrl).then(function(response) {
-			if (response && response.data) {
-				return response.data;
-			}
-			return product;
-		});
-	}
+        return $http.get(productWebserviceUrl).then(function (response) {
+            if (response && response.data) {
+                return response.data;
+            }
+            return product;
+        });
+    }
 
-	// products
-	api.getNormalProducts = function() {
-		var categories = categoryService.getNormalCategories();
-		return getProductsForCategories(categories);
-	}
+    // products
+    api.getSelectedProduct = function () {
+        console.log(productsCache);
+        return getProductsForCategories(categories);
+    }
+    api.getNormalProducts = function () {
+        var categories = categoryService.getNormalCategories();
+        return getProductsForCategories(categories);
+    }
 
-	api.getPromoProducts = function() {
-		var categories = categoryService.getPromoCategories();
-		return getProductsForCategories(categories);
-	}
+    api.getPromoProducts = function () {
+        var categories = categoryService.getPromoCategories();
+        return getProductsForCategories(categories);
+    }
 
-	api.getProductForCategory = function(categoryKey) {
-		var category = _.find(nuskin.summerPromo.categories.items, function(c) {
-			return c.key == categoryKey;
-		});
-		return category ? lightWeightProductsFormat(category.products, category.key) : null;
-	}
+    api.getProductForCategory = function (categoryKey) {
+        var category = _.find(nuskin.summerPromo.categories.items, function (c) {
+            return c.key == categoryKey;
+        });
+        return category ? lightWeightProductsFormat(category.products, category.key) : null;
+    }
 
-	api.getProductsFromSameCategory = function(sku) {
-		var category = getCategoryForProduct(sku);
-		var products = [];
-		for (var i = 0; i < category.products.length; i++) {
-			var product = _.find(productsCache, function(p) {
-				return p.sku == category.products[i].sku;
-			});
-			product.selected = product.sku == sku;
-			products.push(
-				product
-			)
-		}
-		return products;
-	}
+    api.getProductsFromSameCategory = function (sku) {
+        var category = getCategoryForProduct(sku);
+        var products = [];
+        for (var i = 0; i < category.products.length; i++) {
+            var product = _.find(productsCache, function (p) {
+                return p.sku == category.products[i].sku;
+            });
+            product.menuOpened = false;
+            product.selected = product.sku == sku;
+            if (product.selected) api.isInPresales = (product.selected && product.isInPresales);
+            products.push(
+                product
+            );
+        }
+        return products;
+    }
 
-	api.initAllProducts = function() {
-		var allProducts = [];
-		var products = _.chain(nuskin.summerPromo.categories.items)
-			.pluck('products')
-			.flatten(true)
-			.value();
 
-		for (var i = 0; i < products.length; i++) {
-			var product = products[i];
-			allProducts.push(
-				api.getProduct(product.sku, product.isOutOfStock, product.isInPresales)
-			)
-		}
-		return $q.all(allProducts).then(function(data) {
-			productsCache = data;
-			return data;
-		}, function(err) {
-			return err;
-		})
-	}
+    api.initAllProducts = function () {
+        var allProducts = [];
+        var products = _.chain(nuskin.summerPromo.categories.items)
+            .pluck('products')
+            .flatten(true)
+            .value();
 
-	api.getProduct = function(sku, isOutOfStock, isInPresales) {
-		return getProductRawData(sku).then(function(rawData) {
-			var product = {};
-			var userType = identityService.getUserType();
+        for (var i = 0; i < products.length; i++) {
+            var product = products[i];
+            product.menuOpened = false;
+            allProducts.push(
+                api.getProduct(product.sku, product.isOutOfStock, product.isInPresales)
+            )
+        }
+        return $q.all(allProducts).then(function (data) {
+            productsCache = data;
+            return data;
+        }, function (err) {
+            return err;
+        })
+    }
 
-			var category = getCategoryForProduct(rawData.sku);
-			product = productModel.convertTo(
-				rawData.sku,
-				category ? category.key : null,
-				rawData.contents.language[0].shortDescription,
-				rawData.contents.language[0].longDescription,
-				rawData.contents.language[0].name, {
-					fullPrice: userType == USER_TYPES.CUSTOMERS || userType == USER_TYPES.NOT_LOGGED_IN ? rawData.market.Retail : rawData.market.Wholesale,
-					priceReduced: userType == USER_TYPES.CUSTOMERS || userType == USER_TYPES.NOT_LOGGED_IN ? rawData.market.WebRetail : rawData.market.WebWholesale
-				},
-				isOutOfStock,
-				isInPresales
-			)
+    api.getProduct = function (sku, isOutOfStock, isInPresales) {
+        return getProductRawData(sku).then(function (rawData) {
+            var product = {};
+            var userType = identityService.getUserType();
 
-			return product;
-		});
-	}
+            var category = getCategoryForProduct(rawData.sku);
+            product = productModel.convertTo(
+                rawData.sku,
+                category ? category.key : null,
+                rawData.contents.language[0].shortDescription,
+                rawData.contents.language[0].longDescription,
+                rawData.contents.language[0].name, {
+                    fullPrice: userType == USER_TYPES.CUSTOMERS || userType == USER_TYPES.NOT_LOGGED_IN ? rawData.market.Retail : rawData.market.Wholesale,
+                    priceReduced: userType == USER_TYPES.CUSTOMERS || userType == USER_TYPES.NOT_LOGGED_IN ? rawData.market.WebRetail : rawData.market.WebWholesale,
+                    psv: userType == USER_TYPES.DISTRIBUTORS ? rawData.populateWholesalePricing.psvValue : null
+                },
+                isOutOfStock,
+                isInPresales
+            )
 
-	return api;
+            return product;
+        });
+    }
+
+    return api;
 }
 
 angular
-	.module('common.services')
-	.service('productService', productService);
-
+    .module('common.services')
+    .service('productService', productService);
 function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
-	LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
-	CHECKOUT_URL) {
-	var api = {}
+    LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
+    CHECKOUT_URL) {
+    var api = {}
 
-	var cart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForWebApp) || {
-		products: []
-	};
+    var cart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForWebApp) || {
+        products: []
+    };
 
-	function transformShoppingCart() {
-		var result = {
-			categoryProducts: [],
-			promoProducts: []
-		}
+    function transformShoppingCart() {
+        var result = {
+            categoryProducts: [],
+            promoProducts: []
+        }
 
-		for (var i = 0; i < cart.products.length; i++) {
-			var product = cart.products[i];
-			if (product.categoryId == PROMO_PRODUCTS_KEY) {
-				result.promoProducts.push({
-					sku: product.sku,
-					quantity: product.quantity
-				});
-			} else {
-				result.categoryProducts.push({
-					sku: product.sku,
-					quantity: product.quantity
-				});
-			}
-		}
+        for (var i = 0; i < cart.products.length; i++) {
+            var product = cart.products[i];
+            if (product.categoryId == PROMO_PRODUCTS_KEY) {
+                result.promoProducts.push({
+                    sku: product.sku,
+                    quantity: product.quantity
+                });
+            } else {
+                result.categoryProducts.push({
+                    sku: product.sku,
+                    quantity: product.quantity
+                });
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	$rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function() {
-		localStorageService.set(LOCAL_STORAGE_KEYS.shoppingCartForWebApp, cart);
-		localStorageService.set(LOCAL_STORAGE_KEYS.shoppingCartForNuskin, transformShoppingCart());
-	});
+    $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
+        localStorageService.set(LOCAL_STORAGE_KEYS.shoppingCartForWebApp, cart);
+        localStorageService.set(LOCAL_STORAGE_KEYS.shoppingCartForNuskin, transformShoppingCart());
+    });
 
-	api.getProducts = function() {
-		return cart.products;
-	}
+    api.getProducts = function () {
+        return cart.products;
+    }
 
-	api.resetCart = function() {
-		cart.products = [];
-	};
+    api.resetCart = function () {
+        cart.products = [];
+    };
 
-	api.getTotalUniqueProduct = function() {
-		return cart.products.length;
-	}
+    api.getTotalUniqueProduct = function () {
+        return cart.products.length;
+    }
 
-	api.getTotalQuantity = function() {
-		var totalProducts = 0;
-		if (cart.products) {
-			for (var i = 0; i < cart.products.length; i++) {
-				totalProducts += cart.products[i].quantity;
-			}
-		}
-		return totalProducts;
-	};
+    api.getTotalQuantity = function () {
+        var totalProducts = 0;
+        if (cart.products) {
+            for (var i = 0; i < cart.products.length; i++) {
+                totalProducts += cart.products[i].quantity;
+            }
+        }
+        return totalProducts;
+    };
 
-	api.hasProducts = function() {
-		return cart.products && cart.products.length > 0;
-	};
+    api.hasProducts = function () {
+        return cart.products && cart.products.length > 0;
+    };
 
-	api.addProduct = function(product) {
-		var productCart = _.find(cart.products, function(p) {
-			return p.sku == product.sku;
-		});
+    api.addProduct = function (product) {
+        var productCart = _.find(cart.products, function (p) {
+            return p.sku == product.sku;
+        });
 
-		if (!productCart) {
-			var productToAdd = angular.copy(product);
-			cart.products.push(productToAdd);
-		} else {
-			productCart.quantity += product.quantity;
-		}
-		$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
-	};
+        if (!productCart) {
+            var productToAdd = angular.copy(product);
+            cart.products.push(productToAdd);
+        } else {
+            productCart.quantity += product.quantity;
+        }
+        $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+    };
 
-	api.removeProduct = function(product) {
-		var skuList = _.pluck(cart.products, "sku");
-		var indexProductToRemove = _.indexOf(skuList, product.sku);
+    api.removeProduct = function (product) {
+        var skuList = _.pluck(cart.products, "sku");
+        var indexProductToRemove = _.indexOf(skuList, product.sku);
 
-		if (indexProductToRemove != -1) {
-			cart.products.splice(indexProductToRemove, 1);
-			var productsToRemove = _.filter(cart.products, function(p) {
-				return p.categoryId == PROMO_PRODUCTS_KEY
-			});
-			if (productsToRemove) {
-				for (var i = 0; i < productsToRemove.length; i++) {
-					skuList = _.pluck(cart.products, "sku");
-					indexProductToRemove = _.indexOf(skuList, productsToRemove[i].sku);
-					cart.products.splice(indexProductToRemove, 1);
-				}
-			}
+        if (indexProductToRemove != -1) {
+            cart.products.splice(indexProductToRemove, 1);
+            var productsToRemove = _.filter(cart.products, function (p) {
+                return p.categoryId == PROMO_PRODUCTS_KEY
+            });
+            if (productsToRemove) {
+                for (var i = 0; i < productsToRemove.length; i++) {
+                    skuList = _.pluck(cart.products, "sku");
+                    indexProductToRemove = _.indexOf(skuList, productsToRemove[i].sku);
+                    cart.products.splice(indexProductToRemove, 1);
+                }
+            }
 
-			$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
-		}
-	};
+            $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+        }
+    };
 
-	api.incrementQuantityOfProduct = function(product) {
-		var productCart = _.find(cart.products, function(p) {
-			return p.sku == product.sku;
-		});
-		if (productCart != null) {
-			productCart.quantity++;
-			$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
-		}
-	};
+    api.incrementQuantityOfProduct = function (product) {
+        var productCart = _.find(cart.products, function (p) {
+            return p.sku == product.sku;
+        });
+        if (productCart != null) {
+            productCart.quantity++;
+            $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+        }
+    };
 
-	api.decrementQuantityOfProduct = function(product) {
-		var productCart = _.find(cart.products, function(p) {
-			return p.sku == product.sku;
-		});
-		if (productCart != null) {
-			if ((productCart.quantity - 1) > 0) {
-				productCart.quantity--;
-				$rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
-			}
-		}
-	};
+    api.decrementQuantityOfProduct = function (product) {
+        var productCart = _.find(cart.products, function (p) {
+            return p.sku == product.sku;
+        });
+        if (productCart != null) {
+            if ((productCart.quantity - 1) > 0) {
+                productCart.quantity--;
+                $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+            }
+        }
+    };
 
-	api.getTotalPrice = function() {
-		var totalPrice = 0;
-		if (cart.products) {
-			for (var i = 0; i < cart.products.length; i++) {
-				totalPrice += cart.products[i].quantity * cart.products[i].price;
-			}
-		}
-		return totalPrice;
-	};
+    api.getTotalPrice = function () {
+        var totalPrice = 0;
+        if (cart.products) {
+            for (var i = 0; i < cart.products.length; i++) {
+                totalPrice += cart.products[i].quantity * cart.products[i].price;
+            }
+        }
+        return totalPrice;
+    };
 
-	api.checkout = function() {
-		$window.location.href = CHECKOUT_URL;
-	}
+    api.getTotalDiscountPrice = function () {
+        var totalPrice = 0;
+        if (cart.products) {
+            for (var i = 0; i < cart.products.length; i++) {
+                totalPrice += cart.products[i].quantity * cart.products[i].priceReduced;
+            }
+        }
+        return totalPrice;
+    };
 
-	api.addAndCheckout = function(product) {
-		api.resetCart();
-		api.addProduct(product);
-		api.checkout();
-	}
+    api.checkout = function () {
+        $window.location.href = CHECKOUT_URL;
+    }
 
-	api.canBuyPromoProducts = function() {
-		return api.getTotalUniqueProduct() > 2;
-	};
+    api.addAndCheckout = function (product) {
+        api.resetCart();
+        api.addProduct(product);
+        api.checkout();
+    }
 
-	api.canCheckout = function() {
-		return api.getTotalUniqueProduct() > 2;
-	};
+    api.canBuyPromoProducts = function () {
+        return api.getTotalUniqueProduct() > 2;
+    };
 
-	api.getErrorFromCheckout = function() {
-		var nuskinCart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForNuskin) || {};
-		return {
-			hasError: nuskinCart.errorMsg != undefined && cart.errorMsg != '',
-			message: nuskinCart.errorMsg,
-			products: nuskinCart.productsOutOfStock
-		};
-	}
+    api.canCheckout = function () {
+        return api.getTotalUniqueProduct() > 2;
+    };
 
-	return api;
+    api.getErrorFromCheckout = function () {
+        var nuskinCart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForNuskin) || {};
+        return {
+            hasError: nuskinCart.errorMsg != undefined && cart.errorMsg != '',
+            message: nuskinCart.errorMsg,
+            products: nuskinCart.productsOutOfStock
+        };
+    }
+
+    return api;
 };
 
 angular
-	.module('common.services')
-	.service('shoppingCartService', ShoppingCartService);
-
+    .module('common.services')
+    .service('shoppingCartService', ShoppingCartService);
 function categoryModel(IMAGES_URL) {
-	var api = {};
+    var api = {};
 
-	function Category(key, name, description) {
-		var category = {
-			key: key,
-			name: name,
-			description: description
-		}
+    function Category(key, name, title, description) {
+        var category = {
+            key: key,
+            name: name,
+            title: title,
+            description: description
+        }
 
-		return category;
-	}
+        return category;
+    }
 
-	api.convertTo = function(key, name, description) {
-		return new Category(key, name, description)
-	}
+    api.convertTo = function (key, name, title, description) {
+        return new Category(key, name, title, description)
+    }
 
-	return api;
+    return api;
 }
 
 angular
-	.module('common.models')
-	.service('categoryModel', categoryModel);
+    .module('common.models')
+    .service('categoryModel', categoryModel);
 function productModel(IMAGES_URL) {
     var api = {};
 
@@ -878,15 +1008,18 @@ function productModel(IMAGES_URL) {
         var product = {
             sku: sku,
             categoryId: categoryId,
-            urlImage: IMAGES_URL.format(sku),
+            urlThumbnail: IMAGES_URL.format(sku + '-th', (isOutOfStock === true) ? '-disabled' : ''),
+            urlImage: IMAGES_URL.format(sku, (isOutOfStock === true) ? '-disabled' : ''),
             shortDescription: shortDescription,
             longDescription: longDescription,
             name: name,
             price: null,
             priceReduced: null,
+            psv: null,
             reduction: 0,
             quantity: 1,
             selected: false,
+            menuOpened: false,
             isOutOfStock: isOutOfStock || false,
             isInPresales: isInPresales || false,
             incrementQuantity: function () {
@@ -897,16 +1030,18 @@ function productModel(IMAGES_URL) {
                     this.quantity--;
             }
         }
-		if (priceData) {
-			var reduction = Math.round(
-				100 - (
-					(priceData.priceReduced / priceData.fullPrice) * 100
-				)
-			);
-			product.reduction = reduction + ' %';
-			product.price = priceData.fullPrice;
-			product.priceReduced = priceData.priceReduced;
-		}
+
+        if (priceData) {
+            var reduction = Math.round(
+                100 - (
+                    (priceData.priceReduced / priceData.fullPrice) * 100
+                )
+            );
+            product.reduction = reduction + ' %';
+            product.price = priceData.fullPrice;
+            product.priceReduced = priceData.priceReduced;
+            product.psv = priceData.psv;
+        }
 
 
         var skuIndex = _.chain(nuskin.summerPromo.categories.items)
@@ -987,21 +1122,23 @@ angular
 	.directive("dynamic", dynamicDirective);
 
 function spinnerDirective(EVENT_NAMES) {
-	return function($scope, element) {
-		$scope.$on(EVENT_NAMES.loader_show, function() {
-			element[0].style.display = "inline";
-			return element;
-		});
-		return $scope.$on(EVENT_NAMES.loader_hide, function() {
-			element[0].style.display = "none";
-			return element;
-		});
-	};
+    return function ($scope, element) {
+        $scope.$on(EVENT_NAMES.loader_show, function () {
+            element[0].style.display = "inline";
+            return element;
+        });
+        return $scope.$on(EVENT_NAMES.loader_hide, function () {
+            TweenMax.to(element, 1, {
+                autoAlpha: 0,
+            });
+            return element;
+        });
+    };
 }
 
 angular
-	.module('common.directives')
-	.directive("spinnerLoader", spinnerDirective);
+    .module('common.directives')
+    .directive("spinnerLoader", spinnerDirective);
 function customCurrency(currencyService) {
 	return function(input) {
 		return currencyService.currencyFormat(input);

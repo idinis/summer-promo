@@ -25,7 +25,10 @@
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="assets/style/spinner.css">
+    <link rel="stylesheet" href="assets/slick/slick.css">
     <link rel="stylesheet" href="vendor/normalize.css">
+    <link rel="stylesheet" href="assets/fonts/dearjoe/stylesheet.css">
+    <link rel="stylesheet" href="assets/fonts/libby/stylesheet.css">
     <link rel="stylesheet" href="assets/style/main.css">
     <!-- REMOVE THAT FOR PRODCUTION -->
     <script>
@@ -58,46 +61,34 @@
                 categories: {
                     data: [{
                         "key": "category1",
-                        "name": "SPARKLE EYES",
-                        "description": [
-                            "<h2>AVE LOREP IPSUM</h2>",
-                            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>",
-                            "<ul><li>1 blalblblblblbllblblblblbl</li><li>2 ckckckckckckckckckkckckckckck</li><li>3 mdmdmdmdmmdmdmdmdmdddmdmd</li></ul>"
-                        ].join('')
+                        "name": "<small>Category 1</small><div>Big title</div>",
+                        "title": "Tru Face®<br>Line Corrector",
+                        "description": "<h2>AVE LOREP IPSUM</h2><iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/UdpWdhi0pdI\" frameborder=\"0\" allowfullscreen></iframe><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>"
                     }, {
                         "key": "category2",
-                        "name": "FIRMING",
-                        "description": [
-                            "<h2>AVE LOREP IPSUM</h2>",
-                            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>",
-                            "<ul><li>1 blalblblblblbllblblblblbl</li><li>2 ckckckckckckckckckkckckckckck</li><li>3 mdmdmdmdmmdmdmdmdmdddmdmd</li></ul>"
-                        ].join('')
+                        "name": "<small>Category 2</small><div>Big title</div>",
+                        "title": "Tru Face®<br>Line Corrector",
+                        "description": "<h2>AVE LOREP IPSUM</h2><iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/UdpWdhi0pdI\" frameborder=\"0\" allowfullscreen></iframe><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>"
                     }, {
                         "key": "category3",
-                        "name": "SUNNY DAY",
-                        "description": [
-                            "<h2>AVE LOREP IPSUM</h2>",
-                            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>",
-                            "<ul><li>1 blalblblblblbllblblblblbl</li><li>2 ckckckckckckckckckkckckckckck</li><li>3 mdmdmdmdmmdmdmdmdmdddmdmd</li></ul>"
-                        ].join('')
+                        "name": "<small>Category 3</small><div>Big title</div>",
+                        "title": "Tru Face®<br>Line Corrector",
+                        "description": "<h2>AVE LOREP IPSUM</h2><iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/UdpWdhi0pdI\" frameborder=\"0\" allowfullscreen></iframe><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>"
                     }, {
                         "key": "promoProducts",
-                        "name": "EXCLUSIVE",
-                        "description": [
-                            "<h2>AVE LOREP IPSUM</h2>",
-                            "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>",
-                            "<ul><li>1 blalblblblblbllblblblblbl</li><li>2 ckckckckckckckckckkckckckckck</li><li>3 mdmdmdmdmmdmdmdmdmdddmdmd</li></ul>"
-                        ].join('')
+                        "name": "<small>Category 3</small><div>Big title</div>",
+                        "title": "Tru Face®<br>Line Corrector",
+                        "description": "<h2>AVE LOREP IPSUM</h2><iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/UdpWdhi0pdI\" frameborder=\"0\" allowfullscreen></iframe><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus porta leo sit amet hendrerit scelerisque. Nulla venenatis in justo ac vestibulum. Nam eu ultrices mauris. Vivamus aliquet consectetur lacus at ullamcorper. Sed quis congue turpis. Fusce luctus, nunc vel gravida rutrum, odio nibh tristique dui, mattis vulputate ipsum mi nec enim. Nam vel magna in massa congue cursus. Aliquam ut nisl rutrum, tincidunt risus vitae, elementum ex. Cras molestie fringilla neque sed fermentum. Pellentesque interdum, lectus a rutrum lobortis, augue lectus pharetra libero, sit amet venenatis diam ligula in sem.</p>"
                     }],
                     items: [{
                         "key": "category1",
-                        "name": "SPARKLE EYES",
                         "products": [{
-                            "sku": "97101241",
+                            //"sku": "97161801",
+                            "sku": "85883742",
                             "isOutOfStock": false,
                             "isInPresales": true
                         }, {
-                            "sku": "97101218",
+                            "sku": "97101241",
                             "isOutOfStock": true,
                             "isInPresales": false
                         }, {
@@ -107,12 +98,7 @@
                         }]
                     }, {
                         "key": "category2",
-                        "name": "FIRMING",
                         "products": [{
-                            "sku": "97003883",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
                             "sku": "97102704",
                             "isOutOfStock": false,
                             "isInPresales": false
@@ -120,15 +106,14 @@
                             "sku": "97003903",
                             "isOutOfStock": false,
                             "isInPresales": false
+                        }, {
+                            "sku": "97003906",
+                            "isOutOfStock": false,
+                            "isInPresales": false
                         }]
                     }, {
                         "key": "category3",
-                        "name": "SUNNY DAY",
                         "products": [{
-                            "sku": "97110369",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
                             "sku": "97101220",
                             "isOutOfStock": false,
                             "isInPresales": false
@@ -136,18 +121,21 @@
                             "sku": "97001344",
                             "isOutOfStock": false,
                             "isInPresales": false
+                        }, {
+                            "sku": "97110369",
+                            "isOutOfStock": false,
+                            "isInPresales": false
                         }]
 
                     }, {
                         "key": "promoProducts",
-                        "name": "EXCLUSIVE",
                         "products": [{
                             "sku": "97003882",
                             "isOutOfStock": false,
                             "isInPresales": false
                         }, {
                             "sku": "97102707",
-                            "isOutOfStock": true,
+                            "isOutOfStock": false,
                             "isInPresales": false
                         }, {
                             "sku": "97110809",
@@ -158,23 +146,53 @@
                 },
                 translations: {
                     common: {
-                        newProduct: 'New',
+                        siteTitle: '<small>so summer</small><div>Collections</div>',
+                        presaleLabel: 'Avant premiere 24h!',
                         addToCart: 'Add to cart',
                         viewProduct: 'View this product',
                         discoverRitual: 'Discover the ritual',
-                        checkout: 'Checkout',
+                        checkout: 'Go to payment',
                         moreInformations: 'More informations',
                         remove: 'Remove',
-                        goBack: 'Go back',
-                        discoverBrandedItems: 'Discover the branded items now',
-                        ritual: 'The ritual',
+                        goBack: 'Back',
+                        discoverBrandedItems: 'Discover <br> the <strong>branded <br> items</strong>',
+                        discoverBrandedItemsActive: 'Discover <br> the <strong>branded <br> items</strong> now',
+                        ritual: 'Discover the collection',
                         titleProduct: 'Product',
-                        basket: 'Basket',
+                        basket: 'Cart',
                         loading: 'Loading',
-                        cartInvitation1: '2 more left',
-                        cartInvitation2: '1 more left',
-                        cartInvitation3: "The exclusive collection is now available, <a ui-sref=\"app.shop({showCase: 'promo'})\">discover them</a> or <button ng-click=\"navigationCartVm.redirectToCheckout()\">checkout</button>",
-                        promoInformation: 'Buy at least <b>3 different products</b> to discover the <b>exclusive collection ! </b>'
+                        cartInvitation0: 'Choose <strong>3 products</strong> out of 9 <br> to get <strong>20%</strong> and access <br> the <strong>exclusive branded items</strong>',
+                        cartInvitation1: 'Add <strong>2 more products</strong> out of 9<br/> to get 20% and access<br/> the exclusive branded items',
+                        cartInvitation2: 'Nearly there! <strong>1 more product</strong><br/> to get <strong>20</strong>% and access<br/> the <strong>exclusive branded items</strong>',
+                        cartInvitation3: "well done, you have <strong>20%</strong>!<br/> you have access to the<br/> <strong>exclusive branded items</strong>",
+                        cartButton1: "Continue shopping",
+                        cartButton2: "Go to checkout",
+                        cartButton3: "Discover branded items",
+                        promoInformation: 'Buy at least <strong>3 different products</strong> to discover the <strong>unique branded items</strong>',
+                        priceLabel: 'Price:',
+                        psvLabel: 'PSV:',
+                        quantityLabel: 'Quantity :',
+                        suggestedProducts: 'You may<br/>also like',
+                        presaleDetailTitle: 'Avant premiere 24h!',
+                        disclaimer: "*This promotion is valid until 31 July 2015 or until stocks last. The 20% discount is calculated on the standard price, and no additional discounts will be taken into account (web). The protection package discount is calculated on the Sunright SPF 35 and Sunright Lipbalm SPF 15, the Sunright SPF 50 will have the same price as on its official launch date, namely 01/07/2015. The promotion is available only through the web, single order. 70% off shipping rate applies. However, this rate only applies for standard shipping, and not to express shipping. If you add any other products to this order you will need to pay full shipping.  The Nu Skin So Summer bag will only be added to your order when you purchase the packages together in 1 order with SKU XXX. Market registration restrictions may apply. Nu Skin EMEA ©",
+                        basketTitle: "Your basket",
+                        emptyBasket: "Your basket is empty.",
+                        totalTitle: "Total",
+                        basketTotalLabel: "Order total: ",
+                        basketDiscountTotalLabel: "Discount price: ",
+                        cartCheckoutDisabledMessage: "Ooops, you need to have minimum <strong>3 different products</strong> to be able to check out",
+                        discountBadge: '-<strong>20<span class="percent">%</span></strong><sup>*</sup>',
+                        shippingBadge: '-<strong>70<span class="percent">%</span></strong><sup>*</sup><br/> <span class="label">shipping</span>',
+                        soldOutLabel: 'Sold out',
+                        soldOutPresale: 'The product will be part of out portfolio on nuskin.com as of X of August',
+                        quickBuyHome: 'Quick buy',
+                        quickBuy: 'Quick Buy',
+                        quickBuyToolTip: 'You will be redirected to the check out',
+                        pinterestDescription: "Lorem Ipsum",
+                        facebookDescription: "Lorem Ipsum",
+                        twitterDescription: "Lorem Ipsum",
+                        twitterHashtags: "nuskin, summer",
+                        shareURL: "https://goo.gl/dzow3r",
                     }
                 }
             }
@@ -189,18 +207,12 @@
             <div class="loader" ng-bind="$root.translations.common.loading"></div>
         </div>
     </div>
-    <!-- WELCOME -->
-    <h1>
-      <a ui-sref="app.shop({showCase: 'normal'})">Accueil</a>
-    </h1>
 
     <!-- PROMO INFORMATION POPUP -->
-    <!--
-<div ng-class="{'hide': mainVm.hasClosedPromoInformationPopup === true}">
-    <div ng-click="mainVm.closePromoInformationPopup()">Fermer</div>
-    <div dynamic="$root.translations.common.promoInformation"></div>
-</div>
--->
+    <div id="promo-info-popup" ng-class="{'hide': mainVm.hasClosedPromoInformationPopup == true}">
+        <button class="close-button" ng-click="mainVm.closePromoInformationPopup()"></button>
+        <div ng-bind-html="$root.translations.common.promoInformation"></div>
+    </div>
 
     <!-- SHOPPING CART ERROR MESSAGE -->
     <!--
@@ -211,38 +223,42 @@
     </div>
 </div>
 -->
+    <div class="background">
+        <div class="wall"></div>
+        <div class="floor"></div>
+        <div class="halos">
+            <div class="halo regular"></div>
+            <div class="halo promo"></div>
+        </div>
+    </div>
 
     <div id="main-wrapper">
         <!-- ZONE HEADER -->
-
-        <div class="background header">
-            <div class="wall"></div>
-            <div class="halos">
-                <div class="halo blue"></div>
-                <div class="halo yellow"></div>
-            </div>
-        </div>
 
         <div id="header-wrapper">
             <div ui-view="header"></div>
         </div>
 
 
-        <div class="background">
-            <div class="wall"></div>
-            <div class="floor"></div>
-            <div class="halos">
-                <div class="halo blue"></div>
-                <div class="halo yellow"></div>
-            </div>
-        </div>
-
         <div id="section-wrapper">
+
+            <!-- WELCOME -->
+            <h1 id="site-title" dynamic="mainVm.siteTitle"></h1>
+
+            <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
             <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
             <!-- ng-click="mainVm.goBack()" -->
-            <a id="promo-button" ui-sref="app.shop({showCase:'{{::mainVm.ROUTING_SHOP_STATE.promo}}'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}" ng-bind="$root.translations.common.discoverBrandedItems"></a>
+            <a id="promo-button" ui-sref="app.shop.category({categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
+                <span ng-if="!mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItems"></span>
+                <span ng-if="mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItemsActive"></span>
+            </a>
 
-            <section id="section-products" ng-animate-children="true">
+            <div id="discount-badges">
+                <div class="badge discount" ng-if="!mainVm.productService.isInPresales || mainVm.$state.current.name == 'app.shop' || mainVm.$state.current.name == 'app.shop.category'" ng-bind-html="$root.translations.common.discountBadge"></div>
+                <div class="badge shipping" ng-bind-html="$root.translations.common.shippingBadge"></div>
+            </div>
+
+            <section id="section-products">
                 <!-- ZONE CATEGORIES -->
                 <nav id="nav-rituals">
                     <a ui-sref="app.shop.category({categoryId:'{{::category.key}}'})" ng-repeat="category in mainVm.categories" ng-bind="::category.name" ng-class="{'active': mainVm.categoryActive == category.key}"></a>
@@ -253,6 +269,8 @@
         </div>
 
         <div id="main-footer" ui-view="footer"></div>
+
+        <div id="disclaimer" ng-bind="$root.translations.common.disclaimer"></div>
 
     </div>
 </body>
@@ -269,13 +287,17 @@
     }
 </script>
 <!-- Vendors -->
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="assets/slick/slick.min.js"></script>
 <script type="text/javascript" src="vendor/underscore.js"></script>
 <script type="text/javascript" src="vendor/angular.js"></script>
 <script type="text/javascript" src="vendor/angular-ui-router.js"></script>
 <script type="text/javascript" src="vendor/angular-sanitize.js"></script>
 <script type="text/javascript" src="vendor/angular-local-storage.js"></script>
-<script type="text/javascript" src="vendor/angular-animate.js"></script>
+<script type="text/javascript" src="vendor/angular-socialshare.min.js"></script>
 <script type="text/javascript" src="vendor/TweenMax.js"></script>
+<script type="text/javascript" src="assets/js/main.js"></script>
 <!-- App -->
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/templates.js"></script>

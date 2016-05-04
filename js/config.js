@@ -13,7 +13,7 @@ var events = {
     'loader_hide': 'loader_hide'
 }
 var defaultUrlPage = '/shop/normal';
-var productWebServiceUrlTemplate = 'http://www.nuskin.com/content/products/{0}/{1}/{2}/{3}/{4}.service.{5}.json'
+var productWebServiceUrlTemplate = 'http://test.nuskin.com/content/products/{0}/{1}/{2}/{3}/{4}.service.{5}.json'
 var localStorageKeys = {
         shoppingCartForNuskin: 'summerPromoCart',
         shoppingCartForWebApp: 'shoppingCart',
@@ -39,11 +39,14 @@ var userTypes = {
 	To adapt for release
 */
 var app_version = '0.0.1';
-var imagesUrl = 'assets/img/products/{0}.png'
+var imagesUrl = 'assets/img/products/{0}{1}.png';
+var thumbnailUrl = 'assets/img/products/{0}-th{1}.png';
 var checkoutUrl = 'http://www.google.com';
-var currencyWebServiceUrl = 'http://www.nuskin.com/content/configuration/currencies.jsons';
-var defaultImageURL = 'assets/img/default.jpg';
+var currencyWebServiceUrl = 'http://test.nuskin.com/content/configuration/currencies.jsons';
+var defaultImageURL = '/assets/img/default.jpg';
 var routingTimeout = 300;
+var siteURL = 'http://localhost:9111/';
+
 
 angular
     .module('common.config', [])
@@ -52,6 +55,7 @@ angular
     .constant('DEFAULT_URL_PAGE', defaultUrlPage)
     .constant('PRODUCT_WEBSERVICE_URL_TEMPLATE', productWebServiceUrlTemplate)
     .constant('IMAGES_URL', imagesUrl)
+    .constant('THUMBNAILS_URL', thumbnailUrl)
     .constant('LOCAL_STORAGE_KEYS', localStorageKeys)
     .constant('ROUTING_SHOP_STATE', routingShopState)
     .constant('PROMO_PRODUCTS_KEY', promoProductsKey)
@@ -59,4 +63,5 @@ angular
     .constant('CURRENCY_WEBSERVICE_URL', currencyWebServiceUrl)
     .constant('DEFAULT_IMAGE_URL', defaultImageURL)
     .constant('USER_TYPES', userTypes)
-    .constant('ROUTING_TIMEOUT', routingTimeout);
+    .constant('ROUTING_TIMEOUT', routingTimeout)
+    .constant('SITE_URL', siteURL);
