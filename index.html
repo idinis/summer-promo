@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="assets/style/main.css">
     <!-- REMOVE THAT FOR PRODCUTION -->
     <script>
-        var userType = "20";
+        var userType = "10";
         var nuskin = {
             util: {
                 languageCode: 'fr',
@@ -193,6 +193,7 @@
                         twitterDescription: "Lorem Ipsum",
                         twitterHashtags: "nuskin, summer",
                         shareURL: "https://goo.gl/dzow3r",
+                        brandItemsDisabledMessage: "you need to have minimum <strong>3 different products</strong> to be able to purchase a branded item",
                     }
                 }
             }
@@ -209,7 +210,7 @@
     </div>
 
     <!-- PROMO INFORMATION POPUP -->
-    <div id="promo-info-popup" ng-class="{'hide': mainVm.hasClosedPromoInformationPopup == true}">
+    <div id="promo-info-popup" ng-class="{'show': !mainVm.hasClosedPromoInformationPopup && mainVm.$state.current.name == 'app.shop'}">
         <button class="close-button" ng-click="mainVm.closePromoInformationPopup()"></button>
         <div ng-bind-html="$root.translations.common.promoInformation"></div>
     </div>
@@ -248,13 +249,13 @@
             <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
             <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
             <!-- ng-click="mainVm.goBack()" -->
-            <a id="promo-button" ui-sref="app.shop.category({categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
+            <a id="promo-button" ui-sref="app.shop.category({showCase: 'promo', categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
                 <span ng-if="!mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItems"></span>
                 <span ng-if="mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItemsActive"></span>
             </a>
 
             <div id="discount-badges">
-                <div class="badge discount" ng-if="!mainVm.productService.isInPresales || mainVm.$state.current.name == 'app.shop' || mainVm.$state.current.name == 'app.shop.category'" ng-bind-html="$root.translations.common.discountBadge"></div>
+                <div class="badge discount" ng-if="(!mainVm.productService.isInPresales || mainVm.$state.current.name == 'app.shop' || mainVm.$state.current.name == 'app.shop.category') && (mainVm.$stateParams.showCase !== mainVm.ROUTING_SHOP_STATE.promo)" ng-bind-html="$root.translations.common.discountBadge"></div>
                 <div class="badge shipping" ng-bind-html="$root.translations.common.shippingBadge"></div>
             </div>
 

@@ -125,7 +125,6 @@ angular.module('module.shoppingCart', []);
 function categoryController(categoryService, productService, $stateParams, shoppingCartService, $state) {
     var categoryVm = {};
 
-
     categoryVm.goToProduct = function (product) {
         $state.go('app.shop.category.product', {
             productId: product.sku,
@@ -133,6 +132,11 @@ function categoryController(categoryService, productService, $stateParams, shopp
         });
     }
 
+    categoryVm.closeMenus = function () {
+        categoryVm.products.forEach(function (el, index) {
+            el.menuOpened = false;
+        });
+    }
 
     categoryVm.category = categoryService.getCategory($stateParams.categoryId);
     categoryVm.products = productService.getProductForCategory($stateParams.categoryId);
@@ -210,15 +214,14 @@ function MainCtrl($state, categoryService, $window, $stateParams,
     mainVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
     mainVm.productService = productService;
     mainVm.closePromoInformationPopup = function () {
-        identityService.closePromoInformationPopup();
-        console.log(identityService.hasClosedPromoInformationPopup());
-        mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+        //identityService.closePromoInformationPopup();
+        mainVm.hasClosedPromoInformationPopup = true; //identityService.hasClosedPromoInformationPopup();
     }
-    mainVm.hasClosedPromoInformationPopup = identityService.hasClosedPromoInformationPopup();
+    mainVm.hasClosedPromoInformationPopup = false; //identityService.hasClosedPromoInformationPopup();
     // n means new, o means old (new is a reserved word for javascript => execution error)
     $scope.$watch('mainVm.$stateParams.showCase', function (n, o) {
         if (n) {
-            redirectIfNoAccess();
+            //redirectIfNoAccess();
             if (n == ROUTING_SHOP_STATE.promo) {
                 $rootScope.bodylayout = 'promo-layout';
                 mainVm.categories = categoryService.getPromoCategories();
@@ -260,7 +263,7 @@ function MainCtrl($state, categoryService, $window, $stateParams,
     });
 
     $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
-        redirectIfNoAccess();
+        //redirectIfNoAccess();
         mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
     });
 
@@ -274,7 +277,8 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
 
     var navigationCartVm = {
         products: [],
-        placeholders: []
+        placeholders: [],
+        regularProductsLength: 0,
     };
 
     var Placeholder = function (nb) {
@@ -331,9 +335,11 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
         var _tempArray = shoppingCartService.getProducts();
         navigationCartVm.placeholders = updatePlaceholders(navigationCartVm.placeholders, _tempArray.length);
         navigationCartVm.products = _tempArray;
+        navigationCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
 
     });
     navigationCartVm.redirectToCheckout = shoppingCartService.checkout;
+    navigationCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
 
     return navigationCartVm;
 };
@@ -346,6 +352,11 @@ function productController(productService, $stateParams, shoppingCartService, $s
     var productVm = {
         products: []
     };
+    productVm.closeMenus = function () {
+        productVm.products.forEach(function (el, index) {
+            el.menuOpened = false;
+        });
+    }
 
     productVm.goToProduct = function (product) {
         //productVm.products = [];
@@ -398,6 +409,12 @@ function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $s
     }
 
     productsVm.cartSrv = shoppingCartService;
+
+    productsVm.closeMenus = function () {
+        productsVm.products.forEach(function (el, index) {
+            el.menuOpened = false;
+        });
+    }
 
     productsVm.goToProduct = function (product) {
         //productsVm.products = [];
@@ -454,7 +471,9 @@ angular
 function shoppingCartController(shoppingCartService, $rootScope,
     EVENT_NAMES, $window, CHECKOUT_URL) {
 
-    var shoppingCartVm = {};
+    var shoppingCartVm = {
+        regularProductsLength: 0,
+    };
 
     function initVm() {
         shoppingCartVm.totalQuantity = shoppingCartService.getTotalQuantity();
@@ -465,17 +484,17 @@ function shoppingCartController(shoppingCartService, $rootScope,
     }
 
     shoppingCartVm.cartSrv = shoppingCartService;
-    shoppingCartVm.showCart = false;
+    //shoppingCartVm.showCart = false;
     shoppingCartVm.redirectToCheckout = shoppingCartService.checkout;
-    shoppingCartVm.displayCart = function () {
-        shoppingCartVm.showCart = !shoppingCartVm.showCart;
-    }
+    shoppingCartVm.displayCart = shoppingCartService.displayCart;
 
     initVm();
 
     $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
         initVm();
+        shoppingCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
     });
+    shoppingCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
 
     return shoppingCartVm;
 };
@@ -647,21 +666,17 @@ function productService($http, identityService, productModel,
 
     // utilities
     function lightWeightProductsFormat(products, categoryKey) {
+
         var result = [];
         for (var i = 0; i < products.length; i++) {
-            var product = products[i];
+
+            var product = _.find(productsCache, function (p) {
+                return p.sku == products[i].sku;
+            });
+
             product.menuOpened = false;
             result.push(
-                productModel.convertTo(
-                    product.sku,
-                    categoryKey,
-                    null,
-                    null,
-                    null,
-                    null,
-                    product.isOutOfStock,
-                    product.isInPresales
-                )
+                product
             )
         }
         return result;
@@ -690,6 +705,7 @@ function productService($http, identityService, productModel,
     }
 
     function getProductRawData(sku) {
+
         var languageCode = identityService.getLanguageCode();
         var countryCode = identityService.getCountryCode();
         var product = {};
@@ -713,7 +729,6 @@ function productService($http, identityService, productModel,
 
     // products
     api.getSelectedProduct = function () {
-        console.log(productsCache);
         return getProductsForCategories(categories);
     }
     api.getNormalProducts = function () {
@@ -790,7 +805,8 @@ function productService($http, identityService, productModel,
                     psv: userType == USER_TYPES.DISTRIBUTORS ? rawData.populateWholesalePricing.psvValue : null
                 },
                 isOutOfStock,
-                isInPresales
+                isInPresales,
+                rawData.contents.fullImage
             )
 
             return product;
@@ -807,6 +823,8 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
     LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
     CHECKOUT_URL) {
     var api = {}
+
+    api.showCart = false;
 
     var cart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForWebApp) || {
         products: []
@@ -844,6 +862,9 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
     api.getProducts = function () {
         return cart.products;
     }
+    api.displayCart = function () {
+        api.showCart = !api.showCart;
+    }
 
     api.resetCart = function () {
         cart.products = [];
@@ -851,6 +872,14 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
 
     api.getTotalUniqueProduct = function () {
         return cart.products.length;
+    }
+    api.getTotalRegularProduct = function () {
+
+        var regularProducts = _.filter(cart.products, function (p) {
+            return !p.isPromo
+        });
+
+        return regularProducts.length;
     }
 
     api.getTotalQuantity = function () {
@@ -887,16 +916,16 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
 
         if (indexProductToRemove != -1) {
             cart.products.splice(indexProductToRemove, 1);
-            var productsToRemove = _.filter(cart.products, function (p) {
-                return p.categoryId == PROMO_PRODUCTS_KEY
-            });
-            if (productsToRemove) {
-                for (var i = 0; i < productsToRemove.length; i++) {
-                    skuList = _.pluck(cart.products, "sku");
-                    indexProductToRemove = _.indexOf(skuList, productsToRemove[i].sku);
-                    cart.products.splice(indexProductToRemove, 1);
-                }
-            }
+            //            var productsToRemove = _.filter(cart.products, function (p) {
+            //                return p.categoryId == PROMO_PRODUCTS_KEY
+            //            });
+            //            if (productsToRemove) {
+            //                for (var i = 0; i < productsToRemove.length; i++) {
+            //                    skuList = _.pluck(cart.products, "sku");
+            //                    indexProductToRemove = _.indexOf(skuList, productsToRemove[i].sku);
+            //                    cart.products.splice(indexProductToRemove, 1);
+            //                }
+            //            }
 
             $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
         }
@@ -938,7 +967,7 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
         var totalPrice = 0;
         if (cart.products) {
             for (var i = 0; i < cart.products.length; i++) {
-                totalPrice += cart.products[i].quantity * cart.products[i].priceReduced;
+                totalPrice += cart.products[i].quantity * (cart.products[i].isPromo ? cart.products[i].price : cart.products[i].priceReduced);
             }
         }
         return totalPrice;
@@ -955,11 +984,11 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
     }
 
     api.canBuyPromoProducts = function () {
-        return api.getTotalUniqueProduct() > 2;
+        return api.getTotalRegularProduct() > 2;
     };
 
     api.canCheckout = function () {
-        return api.getTotalUniqueProduct() > 2;
+        return api.getTotalRegularProduct() > 2;
     };
 
     api.getErrorFromCheckout = function () {
@@ -1001,15 +1030,30 @@ function categoryModel(IMAGES_URL) {
 angular
     .module('common.models')
     .service('categoryModel', categoryModel);
-function productModel(IMAGES_URL) {
+function productModel(IMAGES_URL, PROMO_PRODUCTS_KEY) {
     var api = {};
 
-    function Product(sku, categoryId, shortDescription, longDescription, name, priceData, isOutOfStock, isInPresales) {
+    function Product(sku, categoryId, shortDescription, longDescription, name, priceData, isOutOfStock, isInPresales, fullImage) {
+
+        var imagePathArray = fullImage.split('/');
+
+        var imageSizeArray = imagePathArray[8].split('.');
+        imageSizeArray[2] = "120";
+        imageSizeArray[3] = "300";
+        imagePathArray[8] = imageSizeArray.join('.');
+        var fullImagePath = imagePathArray.join('/');
+
+        var thumbnailSizeArray = imagePathArray[8].split('.');
+        thumbnailSizeArray[2] = "130";
+        thumbnailSizeArray[3] = "214";
+        imagePathArray[8] = thumbnailSizeArray.join('.');
+        var thumbnailImagePath = imagePathArray.join('/');
+
         var product = {
             sku: sku,
             categoryId: categoryId,
-            urlThumbnail: IMAGES_URL.format(sku + '-th', (isOutOfStock === true) ? '-disabled' : ''),
-            urlImage: IMAGES_URL.format(sku, (isOutOfStock === true) ? '-disabled' : ''),
+            urlThumbnail: IMAGES_URL + thumbnailImagePath,
+            urlImage: IMAGES_URL + fullImagePath,
             shortDescription: shortDescription,
             longDescription: longDescription,
             name: name,
@@ -1052,13 +1096,14 @@ function productModel(IMAGES_URL) {
             .value();
 
         product.skuIndex = skuIndex;
+        product.isPromo = categoryId == PROMO_PRODUCTS_KEY;
 
         return product;
     }
 
 
-    api.convertTo = function (sku, categoryId, shortDescription, longDescription, name, price, isOutOfStock, isInPresales) {
-        return new Product(sku, categoryId, shortDescription, longDescription, name, price, isOutOfStock, isInPresales)
+    api.convertTo = function (sku, categoryId, shortDescription, longDescription, name, price, isOutOfStock, isInPresales, fullImage) {
+        return new Product(sku, categoryId, shortDescription, longDescription, name, price, isOutOfStock, isInPresales, fullImage)
     }
 
     return api;

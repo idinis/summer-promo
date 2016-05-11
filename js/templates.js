@@ -20,7 +20,7 @@ angular.module("../dev/app/modules/category/category.tpl.html", []).run(["$templ
     "            </div>\n" +
     "\n" +
     "\n" +
-    "            <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"product.menuOpened = !product.menuOpened\">\n" +
+    "            <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"categoryVm.closeMenus(); product.menuOpened = !product.menuOpened\">\n" +
     "                <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
     "                    <a ng-click=\"product.menuOpened = false; categoryVm.goToProduct(product);\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
     "                </div>\n" +
@@ -59,7 +59,7 @@ angular.module("../dev/app/modules/navigationCart/navigationCart.tpl.html", []).
     "                <span class=\"qty\" ng-bind=\"product.quantity\"></span>\n" +
     "                <button class=\"ctrl plus\" ng-click=\"navigationCartVm.cartSrv.incrementQuantityOfProduct(product)\">+</button>\n" +
     "            </div>\n" +
-    "            <!--<button class=\"add-to-cart\" ng-click=\"navigationCartVm.cartSrv.removeProduct(product)\" ng-bind=\"$root.translations.common.remove\"></button>-->\n" +
+    "            <button class=\"remove\" ng-click=\"navigationCartVm.cartSrv.removeProduct(product)\">x</button>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <!-- PLACEHOLDERS -->\n" +
@@ -67,7 +67,7 @@ angular.module("../dev/app/modules/navigationCart/navigationCart.tpl.html", []).
     "    </div>\n" +
     "\n" +
     "    <div class=\"box alert\">\n" +
-    "        <div ng-switch=\"navigationCartVm.products.length\">\n" +
+    "        <div ng-switch=\"navigationCartVm.regularProductsLength\">\n" +
     "            <div ng-switch-when=\"0\">\n" +
     "                <div class=\"alert-text text-0\" ng-bind-html=\"$root.translations.common.cartInvitation0\"></div>\n" +
     "            </div>\n" +
@@ -86,9 +86,9 @@ angular.module("../dev/app/modules/navigationCart/navigationCart.tpl.html", []).
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div ng-if=\"navigationCartVm.products.length > 2\" class=\"box alert-cta\">\n" +
-    "        <button ng-click=\"navigationCartVm.redirectToCheckout()\" class=\"button-2\" ng-bind-html=\"$root.translations.common.cartButton2\"></button>\n" +
-    "        <a class=\"button-3\" ui-sref=\"app.shop.category({categoryId:'promoProducts'})\" ng-bind-html=\"$root.translations.common.cartButton3\"></a>\n" +
+    "    <div ng-if=\"navigationCartVm.regularProductsLength > 2\" class=\"box alert-cta\">\n" +
+    "        <button ng-click=\"navigationCartVm.cartSrv.displayCart()\" class=\"button-2\" ng-bind-html=\"$root.translations.common.cartButton2\"></button>\n" +
+    "        <a class=\"button-3\" ui-sref=\"app.shop.category({showCase: 'promo', categoryId:'promoProducts'})\" ng-bind-html=\"$root.translations.common.cartButton3\"></a>\n" +
     "    </div>\n" +
     "</div>");
 }]);
@@ -112,10 +112,10 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "\n" +
     "            <div class=\"product-action\" ng-if=\"::!product.isOutOfStock\">\n" +
     "                <div class=\"first-row\">\n" +
-    "                    <div class=\"product-price\">\n" +
+    "                    <div class=\"product-price\" ng-class=\"{promo: product.isPromo}\">\n" +
     "                        <div class=\"label\" ng-bind=\"$root.translations.common.priceLabel\"></div>\n" +
     "                        <div class=\"price regular\" ng-bind=\"::product.price | customCurrency\"></div>\n" +
-    "                        <div class=\"price discount\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
+    "                        <div class=\"price discount\" ng-if=\"!product.isPromo\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
     "                    </div>\n" +
     "                    <div class=\"product-psv\" ng-if=\"::product.psv !== null\">\n" +
     "                        <div class=\"label\" ng-bind=\"$root.translations.common.psvLabel\"></div>\n" +
@@ -134,13 +134,20 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "                    <button class=\"quick-buy\" ng-if=\"product.isInPresales\" ng-click=\"productVm.cartSrv.addAndCheckout(product)\" ng-bind=\"$root.translations.common.quickBuy\"></button>\n" +
     "                    <div class=\"quick-buy-tooltip\" ng-bind=\"$root.translations.common.quickBuyToolTip\"></div>\n" +
     "                </div>\n" +
-    "                <button class=\"add-to-cart\" ng-click=\"productVm.cartSrv.addProduct(product)\" ng-bind=\"$root.translations.common.addToCart\"></button>\n" +
+    "                <button class=\"add-to-cart\" ng-if=\"!product.isPromo || (product.isPromo && mainVm.canBuyPromoProducts)\" ng-click=\"productVm.cartSrv.addProduct(product)\" ng-bind=\"$root.translations.common.addToCart\"></button>\n" +
+    "                <button class=\"add-to-cart\" disabled ng-if=\"product.isPromo && !mainVm.canBuyPromoProducts\" ng-bind=\"$root.translations.common.addToCart\">\n" +
+    "                </button>\n" +
+    "\n" +
+    "                <div class=\"branded-items-disabled-message\" ng-if=\"product.isPromo && !mainVm.canBuyPromoProducts\" ng-bind-html=\"$root.translations.common.brandItemsDisabledMessage\">\n" +
+    "\n" +
+    "\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "            <div class=\"product-soldout-notification\" ng-if=\"::product.isOutOfStock\">\n" +
     "                <div class=\"button\" ng-bind=\"$root.translations.common.soldOutLabel\">\n" +
     "\n" +
     "                </div>\n" +
-    "                <p class=\"description\" ng-bind=\"$root.translations.common.soldOutPresale\"></p>\n" +
+    "                <p class=\"description\" ng-bind=\"$root.translations.common.soldOutPresale\" ng-if=\"::product.isOutOfStock && product.isInPresales\"></p>\n" +
     "            </div>\n" +
     "            <div ng-class=\"{'hide': !productVm.showLongDecription}\">\n" +
     "                <div class=\"product-long-description\" ng-bind-html=\"product.longDescription\"></div>\n" +
@@ -155,10 +162,9 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "            <!--            <div ng-if=\"::product.isInPresales\" ng-bind=\"$root.translations.common.newProduct\"></div>-->\n" +
     "            <span class=\"product-image\"><img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\"></span>\n" +
     "\n" +
-    "            <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-{{$index+1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\">\n" +
+    "            <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-{{$index+1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"productVm.closeMenus(); product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\">\n" +
     "                <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
-    "                    <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\">\n" +
-    "                    </a>\n" +
+    "                    <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
     "                    <a class=\"ritual-link\" ui-sref=\"app.shop.category({categoryId: '{{::product.categoryId}}'})\" ng-bind=\"$root.translations.common.discoverRitual\" ng-if=\"product.menuOpened\"></a>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -203,7 +209,7 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "        </div>\n" +
     "    </article>\n" +
     "\n" +
-    "    <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-{{$index+1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\" ng-mouseleave=\"productsVm.setActiveCategory('');\" ng-repeat=\"product in productsVm.products\" products-repeat-directive>\n" +
+    "    <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-{{$index+1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"productsVm.closeMenus(); product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\" ng-mouseleave=\"productsVm.setActiveCategory('');\" ng-repeat=\"product in productsVm.products\" products-repeat-directive>\n" +
     "        <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
     "            <a ng-click=\"product.menuOpened = false; productsVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
     "            <a class=\"ritual-link\" ng-click=\"product.menuOpened = false;\" ui-sref=\"app.shop.category({categoryId: '{{::product.categoryId}}'})\" ng-bind=\"$root.translations.common.discoverRitual\" ng-if=\"product.menuOpened\"></a>\n" +
@@ -232,7 +238,7 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "    <button id=\"cart-toggle\" ng-click=\"shoppingCartVm.displayCart()\">\n" +
     "        <span ng-bind=\"$root.translations.common.basket\"></span> <span class=\"num-product\">(<span ng-bind=\"shoppingCartVm.totalQuantity\"></span>)</span>\n" +
     "    </button>\n" +
-    "    <div id=\"cart\" ng-class=\"{'hide': !shoppingCartVm.showCart}\">\n" +
+    "    <div id=\"cart\" ng-class=\"{'hide': !shoppingCartVm.cartSrv.showCart}\">\n" +
     "        <button class=\"close-button\" ng-click=\"shoppingCartVm.displayCart()\"></button>\n" +
     "        <div class=\"content\">\n" +
     "            <div ng-if=\"shoppingCartVm.products.length > 0\">\n" +
@@ -248,8 +254,8 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "                            </td>\n" +
     "                            <td class=\"product-name\" ng-bind=\"::product.name\"></td>\n" +
     "                            <td>\n" +
-    "                                <div class=\"product-price regular\" ng-bind=\"::product.price | customCurrency\"></div>\n" +
-    "                                <div class=\"product-price discount\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
+    "                                <div class=\"product-price regular\" ng-class=\"{promo: product.isPromo}\" ng-bind=\"::product.price | customCurrency\"></div>\n" +
+    "                                <div class=\"product-price discount\" ng-if=\"!product.isPromo\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
     "                            </td>\n" +
     "                            <td>\n" +
     "                                <div class=\"quantity\">\n" +
@@ -271,7 +277,7 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "                    <button ng-if=\"mainVm.canBuyPromoProducts\" class=\"checkout-button\" ng-class=\"{'disabled': !mainVm.canBuyPromoProducts}\" ng-bind=\"$root.translations.common.checkout\"></button>\n" +
     "                    <div ng-if=\"!mainVm.canBuyPromoProducts\" class=\"checkout-disabled\" ng-bind-html=\"$root.translations.common.cartCheckoutDisabledMessage\"></div>\n" +
     "                    <a ng-click=\"shoppingCartVm.displayCart()\" href=\"#\" class=\"continue-button\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
-    "                    <a ng-click=\"shoppingCartVm.displayCart()\" class=\"promo-button\" ui-sref=\"app.shop.category({categoryId:'promoProducts'})\" ng-bind-html=\"$root.translations.common.cartButton3\"></a>\n" +
+    "                    <a ng-if=\"!mainVm.canBuyPromoProducts\" ng-click=\"shoppingCartVm.displayCart()\" class=\"promo-button\" ui-sref=\"app.shop.category({showCase: 'promo', categoryId:'promoProducts'})\" ng-bind-html=\"$root.translations.common.cartButton3\"></a>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "\n" +

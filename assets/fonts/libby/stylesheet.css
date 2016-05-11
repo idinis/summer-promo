@@ -1,15 +1,13 @@
 @font-face {
     font-family: 'libby';
-    src: url('libbybold-webfont.eot');
-    src: url('libbybold-webfont.eot?#iefix') format('embedded-opentype'), url('libbybold-webfont.woff2') format('woff2'), url('libbybold-webfont.woff') format('woff'), url('libbybold-webfont.ttf') format('truetype');
+    src: url('libbybold-webfont.woff2') format('woff2'), url('libbybold-webfont.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'libby';
-    src: url('libbyregular-webfont.eot');
-    src: url('libbyregular-webfont.eot?#iefix') format('embedded-opentype'), url('libbyregular-webfont.woff2') format('woff2'), url('libbyregular-webfont.woff') format('woff'), url('libbyregular-webfont.ttf') format('truetype');
+    src: url('libbyregular-webfont.woff2') format('woff2'), url('libbyregular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }

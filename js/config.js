@@ -39,8 +39,7 @@ var userTypes = {
 	To adapt for release
 */
 var app_version = '0.0.1';
-var imagesUrl = 'assets/img/products/{0}{1}.png';
-var thumbnailUrl = 'assets/img/products/{0}-th{1}.png';
+var imagesUrl = 'http://www.nuskin.com';
 var checkoutUrl = 'http://www.google.com';
 var currencyWebServiceUrl = 'http://test.nuskin.com/content/configuration/currencies.jsons';
 var defaultImageURL = '/assets/img/default.jpg';
@@ -55,7 +54,6 @@ angular
     .constant('DEFAULT_URL_PAGE', defaultUrlPage)
     .constant('PRODUCT_WEBSERVICE_URL_TEMPLATE', productWebServiceUrlTemplate)
     .constant('IMAGES_URL', imagesUrl)
-    .constant('THUMBNAILS_URL', thumbnailUrl)
     .constant('LOCAL_STORAGE_KEYS', localStorageKeys)
     .constant('ROUTING_SHOP_STATE', routingShopState)
     .constant('PROMO_PRODUCTS_KEY', promoProductsKey)
