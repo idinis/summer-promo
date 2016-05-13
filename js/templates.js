@@ -47,24 +47,34 @@ angular.module("../dev/app/modules/navigationCart/navigationCart.tpl.html", []).
     "<div id=\"cart-overview\">\n" +
     "    <!-- Products -->\n" +
     "\n" +
-    "    <div class=\"box product\" ng-repeat=\"product in navigationCartVm.products\">\n" +
     "\n" +
-    "        <a ng-click=\"navigationCartVm.goToProduct(product)\" class=\"product-display\">\n" +
-    "            <img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\">\n" +
-    "        </a>\n" +
     "\n" +
-    "        <div class=\"product-action\">\n" +
-    "            <div class=\"quantity\">\n" +
-    "                <button class=\"ctrl minus\" ng-class=\"{'disabled': product.quantity == 1}\" ng-click=\"navigationCartVm.cartSrv.decrementQuantityOfProduct(product)\">-</button>\n" +
-    "                <span class=\"qty\" ng-bind=\"product.quantity\"></span>\n" +
-    "                <button class=\"ctrl plus\" ng-click=\"navigationCartVm.cartSrv.incrementQuantityOfProduct(product)\">+</button>\n" +
+    "    <div class=\"carousel-prev\" ng-click=\"navigationCartVm.carouselPrev();\" ng-if=\"navigationCartVm.products.length > 3\"></div>\n" +
+    "\n" +
+    "    <div class=\"carousel\">\n" +
+    "\n" +
+    "        <div class=\"inner\">\n" +
+    "            <div class=\"box product\" ng-repeat=\"product in navigationCartVm.products\">\n" +
+    "\n" +
+    "                <a ng-click=\"navigationCartVm.goToProduct(product)\" class=\"product-display\">\n" +
+    "                    <img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\">\n" +
+    "                </a>\n" +
+    "\n" +
+    "                <div class=\"product-action\">\n" +
+    "                    <div class=\"quantity\">\n" +
+    "                        <button class=\"ctrl minus\" ng-class=\"{'disabled': product.quantity == 1}\" ng-click=\"navigationCartVm.cartSrv.decrementQuantityOfProduct(product)\">-</button>\n" +
+    "                        <span class=\"qty\" ng-bind=\"product.quantity\"></span>\n" +
+    "                        <button class=\"ctrl plus\" ng-click=\"navigationCartVm.cartSrv.incrementQuantityOfProduct(product)\">+</button>\n" +
+    "                    </div>\n" +
+    "                    <button class=\"remove\" ng-click=\"navigationCartVm.cartSrv.removeProduct(product)\">x</button>\n" +
+    "                </div>\n" +
     "            </div>\n" +
-    "            <button class=\"remove\" ng-click=\"navigationCartVm.cartSrv.removeProduct(product)\">x</button>\n" +
+    "            <!-- PLACEHOLDERS -->\n" +
+    "            <div class=\"box product placeholder placeholder-{{::product.number}}\" ng-repeat=\"product in navigationCartVm.placeholders\">\n" +
+    "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "    <!-- PLACEHOLDERS -->\n" +
-    "    <div class=\"box product placeholder placeholder-{{::product.number}}\" ng-repeat=\"product in navigationCartVm.placeholders\">\n" +
-    "    </div>\n" +
+    "\n" +
     "\n" +
     "    <div class=\"box alert\">\n" +
     "        <div ng-switch=\"navigationCartVm.regularProductsLength\">\n" +
@@ -117,9 +127,9 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "                        <div class=\"price regular\" ng-bind=\"::product.price | customCurrency\"></div>\n" +
     "                        <div class=\"price discount\" ng-if=\"!product.isPromo\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
     "                    </div>\n" +
-    "                    <div class=\"product-psv\" ng-if=\"::product.psv !== null\">\n" +
+    "                    <div class=\"product-psv\" ng-if=\"::product.psv !== null && !product.isPromo\">\n" +
     "                        <div class=\"label\" ng-bind=\"$root.translations.common.psvLabel\"></div>\n" +
-    "                        <div class=\"psv\" ng-bind=\"::product.price\"></div>\n" +
+    "                        <div class=\"psv\" ng-bind=\"::product.psv\"></div>\n" +
     "                    </div>\n" +
     "\n" +
     "                    <div class=\"quantity\">\n" +

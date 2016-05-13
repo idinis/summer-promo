@@ -1701,10 +1701,15 @@ body {
     width: 300px;
     overflow: hidden;
     display: inline-block;
+    text-align: left;
+}
+#cart-overview .elements {
+    display: none;
 }
 
 /*.slick-prev */
-#cart-overview .slick-arrow {
+#cart-overview .carousel-prev {
+    display: inline-block;
     border: none;
     padding: 0;
     background: url(../img/arrow-left-3.png) center no-repeat;
@@ -1712,7 +1717,8 @@ body {
     height: 18px;
     position: absolute;
     bottom: 50px;
-    right: 100%;
+    left: 50%;
+    transform: translateX(-460px);
     margin-bottom: -9px;
     margin-right: 20px;
     text-indent: 100%;
@@ -1724,7 +1730,7 @@ body {
     display: none;
 }
 #cart-overview .box {
-    position: relative;
+    position: relative !important;
     display: inline-block;
     float: none;
     min-height: 104px;
@@ -1732,6 +1738,7 @@ body {
     vertical-align: bottom;
     background-color: #fff;
     font-size: 16px;
+    text-align: center;
 }
 #cart-overview .box.placeholder {
     background: url(../img/cart-icon-spray.png) center no-repeat #e4e4e4;

@@ -302,7 +302,6 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
         return placeholders;
     }
 
-
     function updatePlaceholders(placeholders, productsLength) {
 
         if (placeholders.length > 3 - productsLength) placeholders.splice(0, 1);
@@ -337,16 +336,61 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
         navigationCartVm.products = _tempArray;
         navigationCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
 
+        var oldCartLength = $carousel.find('.box').length;
+
+        setTimeout(function () {
+            var newCartLength = $carousel.find('.box').length;
+            var deltaCartLength = newCartLength - oldCartLength;
+
+            var $carouselInnerWidth = 100 * $carousel.find('.box').length;
+            $carouselInner.width($carouselInnerWidth + 100);
+
+            var currentScrollIndex = Math.round($carousel.scrollLeft() / 100);
+            //if (currentScrollIndex-- <= 0) {
+            //    currentScrollIndex = $carousel.find('.box').length - 3;
+            //}
+
+
+            if (deltaCartLength > 0) {
+                currentScrollIndex++;
+            } else if (deltaCartLength < 0) {
+                currentScrollIndex--;
+            }
+
+            $carousel.stop().scrollLeft(currentScrollIndex * 100);
+
+        }, 0);
+
     });
     navigationCartVm.redirectToCheckout = shoppingCartService.checkout;
     navigationCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
+
+
+    var $carousel = $('#cart-overview .carousel'),
+        $carouselInner = $carousel.find('.inner');
+
+    setTimeout(function () {
+        var $carouselInnerWidth = 100 * $carousel.find('.box').length;
+        $carouselInner.width($carouselInnerWidth + 100);
+        $carousel.scrollLeft($carouselInnerWidth - $carousel.width());
+    }, 0);
+
+    navigationCartVm.carouselPrev = function () {
+        var currentScrollIndex = Math.round($carousel.scrollLeft() / 100);
+        if (currentScrollIndex-- <= 0) {
+            currentScrollIndex = $carousel.find('.box').length - 3;
+        }
+        $carousel.stop().animate({
+            scrollLeft: currentScrollIndex * 100
+        }, 750);
+    }
 
     return navigationCartVm;
 };
 
 angular
     .module('module.shoppingCart')
-    .controller('navigationCartController', navigationCartController);
+    .controller('navigationCartController', navigationCartController)
 function productController(productService, $stateParams, shoppingCartService, $state) {
 
     var productVm = {
