@@ -28,7 +28,9 @@
     <link rel="stylesheet" href="vendor/normalize.css">
     <link rel="stylesheet" href="assets/fonts/dearjoe/stylesheet.css">
     <link rel="stylesheet" href="assets/fonts/libby/stylesheet.css">
+    <link rel="stylesheet" href="assets/style/perfect-scrollbar.css">
     <link rel="stylesheet" href="assets/style/main.css">
+
     <!-- REMOVE THAT FOR PRODCUTION -->
     <script>
         var userType = "10";
@@ -83,7 +85,7 @@
                         "key": "category1",
                         "products": [{
                             //"sku": "97161801",
-                            "sku": "85883742",
+                            "sku": "85883742", //97003887
                             "isOutOfStock": false,
                             "isInPresales": true
                         }, {
@@ -200,18 +202,12 @@
     </script>
 </head>
 
-<body ng-controller="mainController as mainVm" class="{{bodylayout}}">
+<body ng-controller="mainController as mainVm" class="{{bodylayout}}" ng-class="{'cart-open' : mainVm.cartSrv.showCart}">
     <!-- SPINNER -->
     <div id="spinner" spinner-loader>
         <div class="ajax-loader">
             <div class="loader" ng-bind="$root.translations.common.loading"></div>
         </div>
-    </div>
-
-    <!-- PROMO INFORMATION POPUP -->
-    <div id="promo-info-popup" ng-class="{'show': !mainVm.hasClosedPromoInformationPopup && mainVm.$state.current.name == 'app.shop'}">
-        <button class="close-button" ng-click="mainVm.closePromoInformationPopup()"></button>
-        <div ng-bind-html="$root.translations.common.promoInformation"></div>
     </div>
 
     <!-- SHOPPING CART ERROR MESSAGE -->
@@ -248,14 +244,23 @@
             <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
             <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
             <!-- ng-click="mainVm.goBack()" -->
-            <a id="promo-button" ui-sref="app.shop.category({showCase: 'promo', categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
-                <span ng-if="!mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItems"></span>
-                <span ng-if="mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItemsActive"></span>
-            </a>
+
+            <div id="promo-button-wrapper">
+                <a id="promo-button" ui-sref="app.shop.category({showCase: 'promo', categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
+                    <span ng-if="!mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItems"></span>
+                    <span ng-if="mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItemsActive"></span>
+                </a>
+            </div>
 
             <div id="discount-badges">
                 <div class="badge discount" ng-if="(!mainVm.productService.isInPresales || mainVm.$state.current.name == 'app.shop' || mainVm.$state.current.name == 'app.shop.category') && (mainVm.$stateParams.showCase !== mainVm.ROUTING_SHOP_STATE.promo)" ng-bind-html="$root.translations.common.discountBadge"></div>
                 <div class="badge shipping" ng-bind-html="$root.translations.common.shippingBadge"></div>
+            </div>
+
+            <!-- PROMO INFORMATION POPUP -->
+            <div id="promo-info-popup" ng-class="{'show': !mainVm.hasClosedPromoInformationPopup && mainVm.$state.current.name == 'app.shop'}">
+                <button class="close-button" ng-click="mainVm.closePromoInformationPopup()"></button>
+                <div ng-bind-html="$root.translations.common.promoInformation"></div>
             </div>
 
             <section id="section-products">
@@ -296,6 +301,10 @@
 <script type="text/javascript" src="vendor/angular-local-storage.js"></script>
 <script type="text/javascript" src="vendor/angular-socialshare.min.js"></script>
 <script type="text/javascript" src="vendor/TweenMax.js"></script>
+
+<script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
+<script src="vendor/angular-perfect-scrollbar.js"></script>
+
 <script type="text/javascript" src="assets/js/main.js"></script>
 <!-- App -->
 <script type="text/javascript" src="js/app.js"></script>

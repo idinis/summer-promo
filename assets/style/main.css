@@ -52,11 +52,18 @@ body {
  * Branded item button
  */
 
+#promo-button-wrapper {
+    position: absolute;
+    z-index: 350;
+    left: 50%;
+    top: 50%;
+    width: 30%;
+    min-width: 415px;
+}
+
 #promo-button {
     position: absolute;
-    z-index: 450;
-    left: 70%;
-    top: 50%;
+    right: 0;
     width: 161px;
     height: 161px;
     border-radius: 50%;
@@ -84,7 +91,7 @@ body {
 #discount-badges {
     position: absolute;
     bottom: 400px;
-    z-index: 450;
+    z-index: 400;
     left: 50%;
     transform: translateX(160px);
     font-size: 14px;
@@ -103,7 +110,7 @@ body {
     color: #fff;
     width: 74px;
     height: 74px;
-    padding-top: 20px;
+    line-height: 74px;
 }
 
 #discount-badges .badge.discount strong {
@@ -141,11 +148,11 @@ body {
 #promo-info-popup {
     position: absolute;
     width: 250px;
-    z-index: 60;
+    z-index: 360;
     left: 50%;
     top: 50%;
     transform: translate(-560px, 0) scale(0.7, 0.7);
-    font-size: 21px;
+    font-size: 18px;
     text-transform: uppercase;
     background-color: rgba(255, 255, 255, 0.61);
     box-shadow: 0 2px 43px rgba(0, 0, 0, 0.18);
@@ -189,6 +196,7 @@ body {
     padding: 5px 10px 5px 35px;
     font-size: 10px;
     z-index: 450;
+    cursor: pointer;
 }
 
 #back-button.hide {
@@ -240,10 +248,16 @@ body {
     left: 0;
     right: 0;
     height: auto;
-    max-height: 505px;
+    max-height: 765px;
     overflow: auto;
     padding: 60px 0;
-    /*    transition: all 0.5s ease-out;*/
+    transition: all 0.3s ease-in-out;
+}
+
+#cart.hide {
+    padding: 0;
+    max-height: 0px;
+    overflow: hidden;
 }
 
 #cart .content {
@@ -379,6 +393,7 @@ body {
     padding: 25px 10px;
     font-size: 16px;
     font-weight: bold;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 #cart .total-table .regular strong {
@@ -423,7 +438,7 @@ body {
 }
 
 #cart .continue-button {
-    padding: 5px;
+    padding: 7px 5px 5px;
     margin-top: 13px;
     border: none;
     display: block;
@@ -439,7 +454,7 @@ body {
 
 #cart .promo-button {
     margin-top: 13px;
-    padding: 5px;
+    padding: 7px 5px 5px;
     color: #fff;
     font-size: 13px;
     text-transform: uppercase;
@@ -458,10 +473,6 @@ body {
     width: 42px;
     height: 40px;
     background: url(../img/cross-1.png) center no-repeat #000;
-}
-
-#cart.hide {
-    display: none;
 }
 
 
@@ -565,7 +576,7 @@ body {
     font-family: 'dearjoe_6_trialregular', cursive;
     font-weight: normal;
     position: absolute;
-    z-index: 400;
+    z-index: 340;
     left: 50%;
     bottom: 500px;
     width: 100%;
@@ -596,7 +607,7 @@ body {
 #products {
     margin: 0 auto;
     position: relative;
-    z-index: 400;
+    z-index: 350;
     width: 100%;
     min-height: 670px;
     max-width: 764px;
@@ -665,13 +676,14 @@ body {
     */
     margin: 0 auto;
     transform-origin: center 90%;
-    transform: translate(-50%, 0) scale(0.7, 0.7);
-    transition: transform 0.3s ease-in-out;
+    transform: translate(-50%, 0);
+    width: 91px;
+    transition: all 0.3s ease-in-out;
 }
 
 #products.overview .product:hover .product-image img {
-    transform: translate(-50%, 0) scale(1.0, 1.0);
-    ;
+    transform: translate(-50%, 0);
+    width: 130px;
 }
 
 #products .product .product-display {
@@ -741,6 +753,7 @@ body {
     margin-left: -75px;
     margin-bottom: 10px;
     font-weight: bold;
+    pointer-events: none;
 }
 
 .product .presale-infos {
@@ -1248,6 +1261,7 @@ body {
 
 #products .product-infos {
     position: absolute;
+    z-index: 10;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -1286,6 +1300,7 @@ body {
     margin-bottom: 13px;
     max-height: 160px;
     overflow: auto;
+    position: relative;
 }
 
 #products .product-links {
@@ -1295,7 +1310,48 @@ body {
 }
 
 #products .product-long-description {
-    display: none;
+    position: absolute;
+    z-index: 200;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0.7, 0.7);
+    width: 459px;
+    max-height: 340px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 33px 26px 30px;
+    color: #000;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px;
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-out;
+}
+
+#products .product-long-description.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1, 1);
+}
+
+#products .product-long-description .description-content {
+    max-height: 280px;
+    position: relative;
+}
+
+#products .product-long-description a {
+    color: #000;
+    text-transform: uppercase;
+}
+
+#products .product-long-description .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: url(../img/cross-1.png) center no-repeat #000;
+    cursor: pointer;
 }
 
 #products .product-links button {
@@ -1305,6 +1361,7 @@ body {
     color: #fff;
     border: none;
     cursor: pointer;
+    outline: none;
 }
 
 #products .product-links button:hover,
@@ -1328,8 +1385,9 @@ body {
  */
 
 #products .product-action {
-    max-width: 180px;
+    /*    max-width: 180px;*/
     margin: 0 auto;
+    text-align: center;
 }
 
 #products .product-action .label {
@@ -1353,11 +1411,11 @@ body {
 }
 
 #products .quantity {
-    float: right;
+    /*    float: right;*/
 }
 
 #products .product-price .price {
-    max-width: 50px;
+    /*    max-width: 50px;*/
     margin: 0 auto;
 }
 
@@ -1406,8 +1464,8 @@ body {
 #products .quantity .ctrl,
 #products .quantity .qty {
     display: inline-block;
-    height: 38px;
-    line-height: 40px;
+    height: 42px;
+    line-height: 42px;
     vertical-align: middle;
 }
 
@@ -1420,6 +1478,7 @@ body {
     background-color: #fff;
     font-weight: bold;
     padding: 0 7px;
+    line-height: 42px;
 }
 
 
@@ -1435,19 +1494,43 @@ body {
     background-color: #fff;
     border: none;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.24);
-    padding: 10px 15px;
+    padding: 11px 15px;
     font-weight: bold;
     width: 100%;
+    max-width: 180px;
+}
+
+#products .quick-buy[disabled],
+#products .add-to-cart[disabled] {
+    cursor: auto;
 }
 
 #products .branded-items-disabled-message {
     padding: 5px 0;
     color: #000;
+    max-width: 180px;
+    margin: 10px auto;
 }
 
 #products .quick-buy-wrapper {
     position: relative;
+    margin: 0 auto;
     margin-bottom: 10px;
+    z-index: 250;
+    max-width: 180px;
+}
+
+#products.overview .quick-buy {
+    max-width: none;
+}
+
+#products.overview .quick-buy-wrapper {
+    max-width: none;
+    margin: 12px 0 0;
+}
+
+#products.products-details .quick-buy-wrapper {
+    z-index: 150;
 }
 
 
@@ -1469,6 +1552,7 @@ body {
     color: #fff;
     text-transform: uppercase;
     text-align: center;
+    font-size: 12px;
 }
 
 #products .quick-buy-wrapper:hover .quick-buy-tooltip {
@@ -1487,6 +1571,24 @@ body {
     border-right-color: #c1c1c1;
     border-right-width: 8px;
     border-left: 0;
+}
+
+#products.overview .quick-buy-tooltip {
+    left: 50%;
+    top: 100%;
+    margin-top: 3px;
+    transform: translateX(-50%);
+}
+
+#products.overview .quick-buy-tooltip:before {
+    right: 50%;
+    top: auto;
+    bottom: 100%;
+    margin-right: -12px;
+    border: 12px solid transparent;
+    border-bottom-color: #c1c1c1;
+    border-bottom-width: 8px;
+    border-top: 0;
 }
 
 
@@ -1575,7 +1677,7 @@ body {
 
 #rituals .ritual-description {
     max-width: 250px;
-    max-height: 300px;
+    max-height: 345px;
     overflow-y: auto;
     text-align: justify;
     position: absolute;
@@ -1678,6 +1780,7 @@ body {
     z-index: 25;
     min-height: 110px;
     height: calc(32vh - 126px - 60px);
+    transition: all 0.3s ease-in-out;
 }
 #disclaimer {
     font-size: 9px;
@@ -1685,6 +1788,13 @@ body {
     max-width: 780px;
     margin: 0 auto;
     padding: 8px 0;
+    transition: all 0.3s ease-in-out;
+}
+body.cart-open #disclaimer,
+body.cart-open #main-footer {
+    opacity: 0;
+    transform: translate(0, 50px);
+    visibility: hidden;
 }
 
 /***
@@ -1708,7 +1818,7 @@ body {
 }
 
 /*.slick-prev */
-#cart-overview .carousel-prev {
+#cart-overview .carousel-ctrl {
     display: inline-block;
     border: none;
     padding: 0;
@@ -1716,7 +1826,7 @@ body {
     width: 32px;
     height: 18px;
     position: absolute;
-    bottom: 50px;
+    bottom: 35px;
     left: 50%;
     transform: translateX(-460px);
     margin-bottom: -9px;
@@ -1725,6 +1835,11 @@ body {
     white-space: nowrap;
     overflow: hidden;
     outline: 0;
+    cursor: pointer;
+}
+#cart-overview .carousel-next {
+    bottom: 65px;
+    transform: translateX(-460px) rotate(180deg);
 }
 #cart-overview .slick-arrow.next {
     display: none;
@@ -1770,6 +1885,7 @@ body {
     background-color: #fff;
     height: 100px;
     line-height: 100px;
+    cursor: pointer;
 }
 #cart-overview .product img {
     display: inline-block;
@@ -1797,6 +1913,7 @@ body {
     outline: 0;
     opacity: 0;
     transition: all 0.3s ease-out;
+    cursor: pointer;
 }
 #cart-overview .product-action {
     overflow: hidden;
@@ -1821,6 +1938,8 @@ body {
 #cart-overview .button-1 {
     /*    margin-top: 10px;*/
     
+    position: absolute;
+    bottom: 0;
     border: none;
     background-color: #989796;
 }

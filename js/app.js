@@ -5,6 +5,7 @@ angular
         '720kb.socialshare',
         //'slick',
 		'ngSanitize',
+        'perfect_scrollbar',
 		//'ngAnimate',
 		'LocalStorageModule',
 		'common.config',
@@ -22,6 +23,7 @@ angular
 	])
     .config(function ($stateProvider, $urlRouterProvider, DEFAULT_URL_PAGE,
         localStorageServiceProvider, $httpProvider) {
+
 
         // Routing 
         $stateProvider
@@ -132,14 +134,15 @@ function categoryController(categoryService, productService, $stateParams, shopp
         });
     }
 
-    categoryVm.closeMenus = function () {
+    categoryVm.closeMenus = function (product) {
         categoryVm.products.forEach(function (el, index) {
-            el.menuOpened = false;
+            if (el !== product) el.menuOpened = false;
         });
     }
 
     categoryVm.category = categoryService.getCategory($stateParams.categoryId);
     categoryVm.products = productService.getProductForCategory($stateParams.categoryId);
+
 
     return categoryVm;
 };
@@ -172,6 +175,11 @@ angular
                 autoAlpha: 1,
                 delay: 0.55
             });
+
+            setTimeout(function () {
+                $desc.perfectScrollbar('update');
+            }, 0)
+
         };
     })
 function faqController(faqService) {
@@ -201,6 +209,7 @@ function MainCtrl($state, categoryService, $window, $stateParams,
 
     $rootScope.translations = identityService.getTranslations();
 
+
     //local function
     mainVm.goBack = function () {
         $window.history.back();
@@ -210,6 +219,7 @@ function MainCtrl($state, categoryService, $window, $stateParams,
     mainVm.$stateParams = $stateParams;
     mainVm.productActive = $stateParams.productId;
     mainVm.categoryActive = $stateParams.categoryId;
+    mainVm.cartSrv = shoppingCartService;
     mainVm.canBuyPromoProducts = shoppingCartService.canBuyPromoProducts();
     mainVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
     mainVm.productService = productService;
@@ -385,6 +395,16 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
         }, 750);
     }
 
+    navigationCartVm.carouselNext = function () {
+        var currentScrollIndex = Math.round($carousel.scrollLeft() / 100);
+        if (currentScrollIndex++ >= $carousel.find('.box').length - 3) {
+            currentScrollIndex = 0;
+        }
+        $carousel.stop().animate({
+            scrollLeft: currentScrollIndex * 100
+        }, 750);
+    }
+
     return navigationCartVm;
 };
 
@@ -396,9 +416,9 @@ function productController(productService, $stateParams, shoppingCartService, $s
     var productVm = {
         products: []
     };
-    productVm.closeMenus = function () {
+    productVm.closeMenus = function (product) {
         productVm.products.forEach(function (el, index) {
-            el.menuOpened = false;
+            if (el !== product) el.menuOpened = false;
         });
     }
 
@@ -418,6 +438,10 @@ function productController(productService, $stateParams, shoppingCartService, $s
     productVm.displayLongDecription = function () {
         productVm.showLongDecription = !productVm.showLongDecription;
     }
+
+    setTimeout(function () {
+        $('.product-description').perfectScrollbar('update');
+    }, 0)
 
     return productVm;
 };
@@ -454,9 +478,9 @@ function productsController(productService, $stateParams, ROUTING_SHOP_STATE, $s
 
     productsVm.cartSrv = shoppingCartService;
 
-    productsVm.closeMenus = function () {
+    productsVm.closeMenus = function (product) {
         productsVm.products.forEach(function (el, index) {
-            el.menuOpened = false;
+            if (el !== product) el.menuOpened = false;
         });
     }
 
@@ -811,6 +835,7 @@ function productService($http, identityService, productModel,
 
 
     api.initAllProducts = function () {
+
         var allProducts = [];
         var products = _.chain(nuskin.summerPromo.categories.items)
             .pluck('products')
@@ -909,6 +934,23 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
     api.displayCart = function () {
         api.showCart = !api.showCart;
     }
+
+    api.cleanUpCart = function () {
+
+        var skus = _.chain(nuskin.summerPromo.categories.items)
+            .pluck('products')
+            .flatten(true)
+            .pluck('sku')
+            .flatten(true)
+            .value();
+
+        cart.products = _(cart.products).filter(function (item) {
+            return $.inArray(item.sku, skus) !== -1;
+        });
+
+        $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+
+    };
 
     api.resetCart = function () {
         cart.products = [];
@@ -1043,6 +1085,8 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
             products: nuskinCart.productsOutOfStock
         };
     }
+
+    api.cleanUpCart();
 
     return api;
 };
