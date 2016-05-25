@@ -243,6 +243,8 @@ function MainCtrl($state, categoryService, $window, $stateParams,
     });
 
     $scope.$watch('mainVm.$stateParams.categoryId', function (n, o) {
+
+
         mainVm.categoryActive = $stateParams.categoryId;
 
         TweenMax.to($('#site-title'), 0.5, {
@@ -256,14 +258,17 @@ function MainCtrl($state, categoryService, $window, $stateParams,
                     var cat = categoryService.getCategory(mainVm.categoryActive);
                     mainVm.siteTitle = cat.name;
                 }
-                $scope.$apply();
 
-                TweenMax.fromTo($('#site-title'), 0.5, {
-                    opacity: 0,
-                    scale: 0.8,
-                }, {
-                    opacity: 1,
-                    scale: 1,
+                $scope.$apply(function () {
+
+                    TweenMax.fromTo($('#site-title'), 0.5, {
+                        opacity: 0,
+                        scale: 0.8,
+                    }, {
+                        opacity: 1,
+                        scale: 1,
+                    });
+
                 });
 
             }

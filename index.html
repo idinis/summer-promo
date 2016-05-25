@@ -10,7 +10,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Nuskin Summer Promo</title>
-    <meta name="description" content="">
+
+    <meta name="description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:image:secure_url" content="" />
+    <meta property="og:image:width" content="" />
+    <meta property="og:image:height" content="" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:site_name" content="" />
+    <meta property="og:locale" content="" />
 
     <!-- mobile meta -->
     <meta name="HandheldFriendly" content="True">
@@ -194,6 +206,7 @@
                         twitterDescription: "Lorem Ipsum",
                         twitterHashtags: "nuskin, summer",
                         shareURL: "https://goo.gl/dzow3r",
+                        shareMedia: "http://lab.shake.be/nuskin/576/projects/nuskin-summer-2016/website/repository/assets/img/HP-version-01.png",
                         brandItemsDisabledMessage: "you need to have minimum <strong>3 different products</strong> to be able to purchase a branded item",
                     }
                 }
@@ -202,7 +215,7 @@
     </script>
 </head>
 
-<body ng-controller="mainController as mainVm" class="{{bodylayout}}" ng-class="{'cart-open' : mainVm.cartSrv.showCart}">
+<body ng-controller="mainController as mainVm" class="{{bodylayout}} module-1" ng-class="{'cart-open' : mainVm.cartSrv.showCart}">
     <!-- SPINNER -->
     <div id="spinner" spinner-loader>
         <div class="ajax-loader">
@@ -241,7 +254,9 @@
             <!-- WELCOME -->
             <h1 id="site-title" dynamic="mainVm.siteTitle"></h1>
 
-            <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
+            <div class="logo-wrapper">
+                <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
+            </div>
             <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
             <!-- ng-click="mainVm.goBack()" -->
 

@@ -197,8 +197,8 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "<div id=\"products\" class=\"overview {{productsVm.activeCategory}}\" ng-class=\"{promo: product.selected}\" ng-animate-children=true>\n" +
     "    <article id=\"product-display-{{::product.sku}}\" class=\"product product-{{$index+1}} product-{{::product.categoryId}}\" ng-repeat=\"product in productsVm.products\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\" ng-mouseleave=\"productsVm.setActiveCategory('');\" products-repeat-directive>\n" +
     "        <div class=\"product-display\">\n" +
-    "            <!-- ui-sref=\"app.shop.category.product({productId:'{{::product.sku}}', categoryId:'{{::product.categoryId}}'})\" ::product.isInPresales &&  -->\n" +
-    "            <div class=\"product-image {{::product.isInPresales}}\">\n" +
+    "\n" +
+    "            <div class=\"product-image\">\n" +
     "                <div class=\"presale-infos\" ng-if=\"::product.isOutOfStock === false && product.isInPresales\">\n" +
     "                    <div class=\"presale-label\" ng-bind=\"$root.translations.common.presaleLabel\"></div>\n" +
     "                    <div class=\"presale-quickbuy\">\n" +
