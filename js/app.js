@@ -892,8 +892,8 @@ function productService($http, identityService, productModel,
 
 angular
     .module('common.services')
-    .service('productService', productService);
-function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
+    .service('productService', productService, ['identityService', identityService]);
+function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStorageService,
     LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
     CHECKOUT_URL) {
     var api = {}
@@ -1065,7 +1065,13 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
     };
 
     api.checkout = function () {
-        $window.location.href = CHECKOUT_URL;
+        var userType = identityService.getUserType();
+        if (userType == "NotLoggedIn") {
+            $window.showLoginPopup();
+        }
+        else {
+            $window.location.href = CHECKOUT_URL;
+        }
     }
 
     api.addAndCheckout = function (product) {
