@@ -98,6 +98,7 @@ angular
     .run(function ($rootScope, $location, $state, $timeout, ROUTING_TIMEOUT) {
         $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
             // toState.name === "app.shop.category.product" &&
+            /*
             if (!$rootScope.forceRedirect) {
                 e.preventDefault();
                 clearStage();
@@ -108,6 +109,7 @@ angular
             } else {
                 $rootScope.forceRedirect = false;
             }
+            */
         });
     });
 angular.module('common.directives', []);
@@ -212,7 +214,7 @@ function MainCtrl($state, categoryService, $window, $stateParams,
 
     //local function
     mainVm.goBack = function () {
-        $window.history.back();
+        //$window.history.back();
     }
     mainVm.ROUTING_SHOP_STATE = ROUTING_SHOP_STATE;
     mainVm.$state = $state;
@@ -294,13 +296,21 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
         products: [],
         placeholders: [],
         regularProductsLength: 0,
+        socialVisible: false,
     };
+
+
+    navigationCartVm.$state = $state;
 
     var Placeholder = function (nb) {
         return {
             number: nb,
             urlImage: DEFAULT_IMAGE_URL
         }
+    }
+
+    navigationCartVm.socialToggle = function () {
+        navigationCartVm.socialVisible = !navigationCartVm.socialVisible;
     }
 
     function initPlaceholders(products) {
@@ -425,6 +435,12 @@ function productController(productService, $stateParams, shoppingCartService, $s
         productVm.products.forEach(function (el, index) {
             if (el !== product) el.menuOpened = false;
         });
+    }
+    productVm.closeToolTip = function () {
+        $('.quick-buy-tooltip').hide();
+    }
+    productVm.showToolTip = function () {
+        $('.quick-buy-tooltip').show();
     }
 
     productVm.goToProduct = function (product) {
@@ -560,6 +576,7 @@ function shoppingCartController(shoppingCartService, $rootScope,
     //shoppingCartVm.showCart = false;
     shoppingCartVm.redirectToCheckout = shoppingCartService.checkout;
     shoppingCartVm.displayCart = shoppingCartService.displayCart;
+    shoppingCartVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
 
     initVm();
 
@@ -892,8 +909,8 @@ function productService($http, identityService, productModel,
 
 angular
     .module('common.services')
-    .service('productService', productService, ['identityService', identityService]);
-function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStorageService,
+    .service('productService', productService);
+function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
     LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
     CHECKOUT_URL) {
     var api = {}
@@ -1065,13 +1082,7 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
     };
 
     api.checkout = function () {
-        var userType = identityService.getUserType();
-        if (userType == "NotLoggedIn") {
-            $window.showLoginPopup();
-        }
-        else {
-            $window.location.href = CHECKOUT_URL;
-        }
+        $window.location.href = CHECKOUT_URL;
     }
 
     api.addAndCheckout = function (product) {
@@ -1089,6 +1100,7 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
     };
 
     api.getErrorFromCheckout = function () {
+
         var nuskinCart = localStorageService.get(LOCAL_STORAGE_KEYS.shoppingCartForNuskin) || {};
         return {
             hasError: nuskinCart.errorMsg != undefined && cart.errorMsg != '',
@@ -1098,6 +1110,8 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
     }
 
     api.cleanUpCart();
+    var errorMessages = api.getErrorFromCheckout();
+    if (errorMessages.hasError) api.showCart = true;
 
     return api;
 };
@@ -1137,22 +1151,26 @@ function productModel(IMAGES_URL, PROMO_PRODUCTS_KEY) {
         var imagePathArray = fullImage.split('/');
 
         var imageSizeArray = imagePathArray[8].split('.');
-        imageSizeArray[2] = "120";
-        imageSizeArray[3] = "300";
+        imageSizeArray[2] = "130";
+        imageSizeArray[3] = "228";
         imagePathArray[8] = imageSizeArray.join('.');
         var fullImagePath = imagePathArray.join('/');
 
+        /*
         var thumbnailSizeArray = imagePathArray[8].split('.');
         thumbnailSizeArray[2] = "130";
         thumbnailSizeArray[3] = "214";
         imagePathArray[8] = thumbnailSizeArray.join('.');
         var thumbnailImagePath = imagePathArray.join('/');
+        */
 
         var product = {
             sku: sku,
             categoryId: categoryId,
-            urlThumbnail: IMAGES_URL + thumbnailImagePath,
+            urlThumbnail: IMAGES_URL + fullImagePath,
             urlImage: IMAGES_URL + fullImagePath,
+            //urlThumbnail: thumbnailImagePath,
+            //urlImage: fullImagePath,
             shortDescription: shortDescription,
             longDescription: longDescription,
             name: name,

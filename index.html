@@ -165,6 +165,7 @@
                         viewProduct: 'View this product',
                         discoverRitual: 'Discover the ritual',
                         checkout: 'Go to payment',
+                        checkoutHomeMobile: 'Check out',
                         moreInformations: 'More informations',
                         remove: 'Remove',
                         goBack: 'Back',
@@ -174,26 +175,30 @@
                         titleProduct: 'Product',
                         basket: 'Cart',
                         loading: 'Loading',
-                        cartInvitation0: 'Choose <strong>3 products</strong> out of 9 <br> to get <strong>20%</strong> and access <br> the <strong>exclusive branded items</strong>',
+                        cartInvitation0: 'select <strong>3 products</strong> to get <strong>20% off</strong> and access the <strong>exclusive accessories<strong>',
                         cartInvitation1: 'Add <strong>2 more products</strong> out of 9<br/> to get 20% and access<br/> the exclusive branded items',
                         cartInvitation2: 'Nearly there! <strong>1 more product</strong><br/> to get <strong>20</strong>% and access<br/> the <strong>exclusive branded items</strong>',
                         cartInvitation3: "well done, you have <strong>20%</strong>!<br/> you have access to the<br/> <strong>exclusive branded items</strong>",
+                        cartInvitationMobile0: 'select <strong>3 products</strong> to get <strong>20% off</strong> and access the <strong>exclusive accessories</strong>',
+                        cartInvitationMobile1: 'Add <strong>2 more products</strong> out of 9<br/> to get 20% and access<br/> the exclusive branded items',
+                        cartInvitationMobile2: 'Nearly there! <strong>1 more product</strong><br/> to get <strong>20</strong>% and access<br/> the <strong>exclusive branded items</strong>',
+                        cartInvitationMobile3: "well done, you have <strong>20%</strong>!<br/> you have access to the<br/> <strong>exclusive branded items</strong>",
                         cartButton1: "Continue shopping",
                         cartButton2: "Go to checkout",
-                        cartButton3: "Discover branded items",
+                        cartButton3: "Discover exclusive accessories",
                         promoInformation: 'Buy at least <strong>3 different products</strong> to discover the <strong>unique branded items</strong>',
                         priceLabel: 'Price:',
                         psvLabel: 'PSV:',
                         quantityLabel: 'Quantity :',
                         suggestedProducts: 'You may<br/>also like',
-                        presaleDetailTitle: 'Avant premiere 24h!',
+                        presaleDetailTitle: 'New! <br/> 24h offer',
                         disclaimer: "*This promotion is valid until 31 July 2015 or until stocks last. The 20% discount is calculated on the standard price, and no additional discounts will be taken into account (web). The protection package discount is calculated on the Sunright SPF 35 and Sunright Lipbalm SPF 15, the Sunright SPF 50 will have the same price as on its official launch date, namely 01/07/2015. The promotion is available only through the web, single order. 70% off shipping rate applies. However, this rate only applies for standard shipping, and not to express shipping. If you add any other products to this order you will need to pay full shipping.  The Nu Skin So Summer bag will only be added to your order when you purchase the packages together in 1 order with SKU XXX. Market registration restrictions may apply. Nu Skin EMEA ©",
                         basketTitle: "Your basket",
                         emptyBasket: "Your basket is empty.",
                         totalTitle: "Total",
                         basketTotalLabel: "Order total: ",
                         basketDiscountTotalLabel: "Discount price: ",
-                        cartCheckoutDisabledMessage: "Ooops, you need to have minimum <strong>3 different products</strong> to be able to check out",
+                        cartCheckoutDisabledMessage: "Oops, you need to have minimum <strong>3 different products</strong> to be able to check out",
                         discountBadge: '-<strong>20<span class="percent">%</span></strong><sup>*</sup>',
                         shippingBadge: '-<strong>70<span class="percent">%</span></strong><sup>*</sup><br/> <span class="label">shipping</span>',
                         soldOutLabel: 'Sold out',
@@ -205,9 +210,13 @@
                         facebookDescription: "Lorem Ipsum",
                         twitterDescription: "Lorem Ipsum",
                         twitterHashtags: "nuskin, summer",
+                        shareLabelMobile: "Share on",
                         shareURL: "https://goo.gl/dzow3r",
                         shareMedia: "http://lab.shake.be/nuskin/576/projects/nuskin-summer-2016/website/repository/assets/img/HP-version-01.png",
                         brandItemsDisabledMessage: "you need to have minimum <strong>3 different products</strong> to be able to purchase a branded item",
+                        outOfStockError: "outOfStockError",
+                        invalidCartError: "invalidCartError",
+                        orderCouldNotBeCompletedError: "orderCouldNotBeCompletedError",
                     }
                 }
             }
@@ -216,6 +225,7 @@
 </head>
 
 <body ng-controller="mainController as mainVm" class="{{bodylayout}} module-1" ng-class="{'cart-open' : mainVm.cartSrv.showCart}">
+
     <!-- SPINNER -->
     <div id="spinner" spinner-loader>
         <div class="ajax-loader">
@@ -223,15 +233,7 @@
         </div>
     </div>
 
-    <!-- SHOPPING CART ERROR MESSAGE -->
-    <!--
-  <div ng-class="{'hide': !mainVm.cartErrorMessage.hasError}">
-    <p ng-bind="mainVm.cartErrorMessage.message"></p>
-    <div ng-repeat="product in mainVm.cartErrorMessage.products">
-        <span ng-bind="product"></span>
-    </div>
-</div>
--->
+
     <div class="background">
         <div class="wall"></div>
         <div class="floor"></div>
@@ -249,12 +251,29 @@
         </div>
 
 
+        <div class="mobile-menu">
+            <ul>
+                <li>
+                    <div>Langue</div>
+                    <ul>
+                        <li>English</li>
+                        <li>Nederlands</li>
+                        <li>Francais</li>
+                    </ul>
+                </li>
+                <li>Aide</li>
+                <li>Contact</li>
+                <li>Connexion</li>
+            </ul>
+        </div>
+
+
         <div id="section-wrapper">
 
             <!-- WELCOME -->
             <h1 id="site-title" dynamic="mainVm.siteTitle"></h1>
 
-            <div class="logo-wrapper">
+            <div class="logo-wrapper regular-only">
                 <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
             </div>
             <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
@@ -289,6 +308,9 @@
         </div>
 
         <div id="main-footer" ui-view="footer"></div>
+
+
+
 
         <div id="disclaimer" ng-bind="$root.translations.common.disclaimer"></div>
 
