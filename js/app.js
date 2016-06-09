@@ -95,8 +95,10 @@ angular
         //remove default prefix
         localStorageServiceProvider.setPrefix('');
     })
-    .run(function ($rootScope, $location, $state, $timeout, ROUTING_TIMEOUT) {
+    .run(function ($rootScope, $location, $state, $timeout, ROUTING_TIMEOUT, $anchorScroll) {
         $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState) {
+
+            $anchorScroll(0);
             // toState.name === "app.shop.category.product" &&
             /*
             if (!$rootScope.forceRedirect) {
@@ -569,6 +571,7 @@ function shoppingCartController(shoppingCartService, $rootScope,
         shoppingCartVm.products = shoppingCartService.getProducts();
         shoppingCartVm.canCheckout = shoppingCartService.canCheckout();
         shoppingCartVm.totalPrice = shoppingCartService.getTotalPrice();
+        shoppingCartVm.totalPSV = shoppingCartService.getTotalPSV();
         shoppingCartVm.totalDiscountPrice = shoppingCartService.getTotalDiscountPrice();
     }
 
@@ -578,6 +581,10 @@ function shoppingCartController(shoppingCartService, $rootScope,
     shoppingCartVm.displayCart = shoppingCartService.displayCart;
     shoppingCartVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
 
+    shoppingCartVm.toggleMobileMenu = function () {
+        console.log('ok');
+        $('body').toggleClass('mobile-menu-display');
+    }
     initVm();
 
     $rootScope.$on(EVENT_NAMES.shoppingCartUpdated, function () {
@@ -909,8 +916,8 @@ function productService($http, identityService, productModel,
 
 angular
     .module('common.services')
-    .service('productService', productService);
-function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
+    .service('productService', productService, ['identityService', identityService]);
+function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStorageService,
     LOCAL_STORAGE_KEYS, PROMO_PRODUCTS_KEY, $window,
     CHECKOUT_URL) {
     var api = {}
@@ -1081,8 +1088,23 @@ function ShoppingCartService($rootScope, EVENT_NAMES, localStorageService,
         return totalPrice;
     };
 
+    api.getTotalPSV = function () {
+        var totalPSV = 0;
+        if (cart.products) {
+            for (var i = 0; i < cart.products.length; i++) {
+                totalPSV += cart.products[i].quantity * (cart.products[i].isPromo ? 0 : cart.products[i].psv);
+            }
+        }
+        return totalPSV;
+    };
+
     api.checkout = function () {
-        $window.location.href = CHECKOUT_URL;
+        var userType = identityService.getUserType();
+        if (userType == "NotLoggedIn") {
+            $window.showLoginPopup();
+        } else {
+            $window.location.href = CHECKOUT_URL;
+        }
     }
 
     api.addAndCheckout = function (product) {
@@ -1181,6 +1203,7 @@ function productModel(IMAGES_URL, PROMO_PRODUCTS_KEY) {
             quantity: 1,
             selected: false,
             menuOpened: false,
+            quickBuyToolTipOpened: false,
             isOutOfStock: isOutOfStock || false,
             isInPresales: isInPresales || false,
             incrementQuantity: function () {

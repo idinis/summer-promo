@@ -273,10 +273,7 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "\n" +
     "    <div class=\"suggested-items-title\" ng-bind-html=\"$root.translations.common.suggestedProducts\"></div>\n" +
     "\n" +
-    "</div>\n" +
-    "<script>\n" +
-    "    fillStage();\n" +
-    "</script>");
+    "</div>");
 }]);
 
 angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -307,7 +304,7 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "                    </div>\n" +
     "                </div>\n" +
     "                <div ng-if=\"::product.isOutOfStock && product.isInPresales\" class=\"soldout-label\" ng-bind=\"$root.translations.common.soldOutLabel\"></div>\n" +
-    "                <img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\">\n" +
+    "                <img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\" ng-click=\"productsVm.closeMenus(product); product.menuOpened = !product.menuOpened\">\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </article>\n" +
@@ -316,9 +313,9 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "        <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
     "\n" +
     "            <div class=\"quick-buy-wrapper tablets-only\" ng-if=\"product.isInPresales\">\n" +
-    "                <button class=\"quick-buy\" ng-click=\"productsVm.cartSrv.addAndCheckout(product)\" ng-bind=\"$root.translations.common.quickBuy\"></button>\n" +
+    "                <button class=\"quick-buy\" ng-click=\"product.quickBuyToolTipOpened = true; $event.stopPropagation();\" ng-bind=\"$root.translations.common.quickBuy\"></button>\n" +
     "                <div class=\"quick-buy-tooltip\" ng-bind=\"$root.translations.common.quickBuyToolTip\"></div>\n" +
-    "                <div class=\"actions clearfix\">\n" +
+    "                <div class=\"actions clearfix\" ng-if=\"product.quickBuyToolTipOpened\">\n" +
     "                    <div class=\"quantity\">\n" +
     "                        <div class=\"label\" ng-bind=\"$root.translations.common.quantityLabel\"></div>\n" +
     "                        <button class=\"ctrl minus\" ng-class=\"{'disabled': product.quantity == 1}\" ng-click=\"product.decrementQuantity(); $event.stopPropagation();\">-</button>\n" +
@@ -345,9 +342,9 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "<header id=\"main-header\">\n" +
     "\n" +
     "\n" +
-    "    <button class=\"menu-toggle mobile-only\"></button>\n" +
+    "    <button class=\"menu-toggle mobile-only\" ng-click=\"shoppingCartVm.toggleMobileMenu();\"></button>\n" +
     "\n" +
-    "    <a href=\"#\" class=\"logo mobile-only\"><img src=\"assets/img/nuskin-logo.png\" alt=\"Nu Skin : Discover the best you\"></a>\n" +
+    "    <a href=\"#\" class=\"logo mobile-only\" ng-click=\"shoppingCartVm.cartSrv.showCart = false;\"><img src=\"assets/img/nuskin-logo.png\" alt=\"Nu Skin : Discover the best you\"></a>\n" +
     "\n" +
     "    <div class=\"socials\">\n" +
     "        <a href=\"#\" socialshare socialshare-provider=\"twitter\" socialshare-text=\"{{$root.translations.common.twitterDescription}}\" socialshare-hashtags=\"{{$root.translations.common.twitterHashtags}}\" socialshare-url=\"{{$root.translations.common.shareURL}}\" class=\"twitter-button\" target=\"_blank\">\n" +
@@ -368,7 +365,7 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "        <span class=\"mobile-only num-product\" ng-bind=\"shoppingCartVm.totalQuantity\"></span>\n" +
     "    </button>\n" +
     "\n" +
-    "    <div id=\"cart\">\n" +
+    "    <div id=\"shopping-cart\">\n" +
     "        <button class=\"close-button\" ng-click=\"shoppingCartVm.displayCart()\"></button>\n" +
     "        <div class=\"content\">\n" +
     "\n" +
@@ -395,20 +392,27 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "                            </div>\n" +
     "\n" +
     "                            <div class=\"clearfix\">\n" +
-    "                                <div class=\"prices\">\n" +
-    "                                    <div class=\"product-price regular\" ng-class=\"{promo: product.isPromo}\" ng-bind=\"::product.price | customCurrency\"></div>\n" +
-    "                                    <div class=\"product-price discount\" ng-if=\"!product.isPromo\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
     "\n" +
-    "                                </div>\n" +
-    "                                <div class=\"actions\">\n" +
+    "                                <table cellpadding=0 border=0 cellspacing=0 class=\"prices\">\n" +
+    "                                    <tr>\n" +
+    "                                        <td class=\"product-price regular\" ng-class=\"{promo: product.isPromo}\" ng-bind=\"::product.price | customCurrency\"></td>\n" +
+    "                                        <td class=\"product-price discount\" ng-if=\"!product.isPromo\" ng-bind=\"::product.priceReduced | customCurrency\"></td>\n" +
+    "                                        <td class=\"product-price psv\" ng-if=\"::product.psv !== null && !product.isPromo\" ng-bind=\"::product.psv + ' PSV'\"></td>\n" +
+    "                                    </tr>\n" +
+    "                                </table>\n" +
+    "                                <table cellpadding=0 border=0 cellspacing=0 class=\"actions\">\n" +
+    "                                    <tr>\n" +
+    "                                        <td class=\"quantity\">\n" +
+    "                                            <button class=\"ctrl minus\" ng-class=\"{'disabled': product.quantity == 1}\" ng-click=\"shoppingCartVm.cartSrv.decrementQuantityOfProduct(product)\">-</button>\n" +
+    "                                            <span class=\"qty\" ng-bind=\"product.quantity\"></span>\n" +
+    "                                            <button class=\"ctrl plus\" ng-click=\"shoppingCartVm.cartSrv.incrementQuantityOfProduct(product)\">+</button>\n" +
+    "                                        </td>\n" +
+    "                                        <td>\n" +
+    "                                            <button class=\"remove-button\" ng-click=\"shoppingCartVm.cartSrv.removeProduct(product)\" ng-bind=\"$root.translations.common.remove\"></button>\n" +
+    "                                        </td>\n" +
+    "                                    </tr>\n" +
+    "                                </table>\n" +
     "\n" +
-    "                                    <div class=\"quantity\">\n" +
-    "                                        <button class=\"ctrl minus\" ng-class=\"{'disabled': product.quantity == 1}\" ng-click=\"shoppingCartVm.cartSrv.decrementQuantityOfProduct(product)\">-</button>\n" +
-    "                                        <span class=\"qty\" ng-bind=\"product.quantity\"></span>\n" +
-    "                                        <button class=\"ctrl plus\" ng-click=\"shoppingCartVm.cartSrv.incrementQuantityOfProduct(product)\">+</button>\n" +
-    "                                    </div>\n" +
-    "                                    <button class=\"remove-button\" ng-click=\"shoppingCartVm.cartSrv.removeProduct(product)\" ng-bind=\"$root.translations.common.remove\"></button>\n" +
-    "                                </div>\n" +
     "                            </div>\n" +
     "                        </div>\n" +
     "\n" +
@@ -425,6 +429,11 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "                            <td>\n" +
     "                                <div class=\"product-price regular\" ng-class=\"{promo: product.isPromo}\" ng-bind=\"::product.price | customCurrency\"></div>\n" +
     "                                <div class=\"product-price discount\" ng-if=\"!product.isPromo\" ng-bind=\"::product.priceReduced | customCurrency\"></div>\n" +
+    "\n" +
+    "                                <div class=\"product-price psv\" ng-if=\"::product.psv !== null && !product.isPromo\" ng-bind=\"::product.psv + ' PSV'\"></div>\n" +
+    "\n" +
+    "\n" +
+    "\n" +
     "                            </td>\n" +
     "                            <td>\n" +
     "                                <div class=\"quantity\">\n" +
@@ -442,6 +451,7 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "                    <div class=\"total-table\">\n" +
     "                        <div class=\"regular\"><span ng-bind=\"$root.translations.common.basketTotalLabel\"></span> <strong ng-bind=\"shoppingCartVm.totalPrice | customCurrency\"></strong></div>\n" +
     "                        <div class=\"discount\"><span ng-bind=\"$root.translations.common.basketDiscountTotalLabel\"></span> <strong ng-bind=\"shoppingCartVm.totalDiscountPrice | customCurrency\"></strong></div>\n" +
+    "                        <div class=\"psv\" ng-if=\"shoppingCartVm.totalPSV > 0\"><span ng-bind=\"$root.translations.common.psvLabel\"></span> <strong ng-bind=\"shoppingCartVm.totalPSV | number:2\"></strong></div>\n" +
     "                    </div>\n" +
     "                    <button ng-if=\"mainVm.canBuyPromoProducts\" class=\"checkout-button\" ng-class=\"{'disabled': !mainVm.canBuyPromoProducts}\" ng-bind=\"$root.translations.common.checkout\"></button>\n" +
     "                    <div ng-if=\"!mainVm.canBuyPromoProducts\" class=\"checkout-disabled\" ng-bind-html=\"$root.translations.common.cartCheckoutDisabledMessage\"></div>\n" +

@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="assets/style/perfect-scrollbar.css">
     <link rel="stylesheet" href="assets/style/main.css">
 
+
     <!-- REMOVE THAT FOR PRODCUTION -->
     <script>
         var userType = "10";
@@ -175,7 +176,7 @@
                         titleProduct: 'Product',
                         basket: 'Cart',
                         loading: 'Loading',
-                        cartInvitation0: 'select <strong>3 products</strong> to get <strong>20% off</strong> and access the <strong>exclusive accessories<strong>',
+                        cartInvitation0: 'select <strong>3 products</strong> to get <strong>20% off</strong> <br/>and access the <strong>exclusive accessories<strong>',
                         cartInvitation1: 'Add <strong>2 more products</strong> out of 9<br/> to get 20% and access<br/> the exclusive branded items',
                         cartInvitation2: 'Nearly there! <strong>1 more product</strong><br/> to get <strong>20</strong>% and access<br/> the <strong>exclusive branded items</strong>',
                         cartInvitation3: "well done, you have <strong>20%</strong>!<br/> you have access to the<br/> <strong>exclusive branded items</strong>",
@@ -251,19 +252,20 @@
         </div>
 
 
-        <div class="mobile-menu">
+        <div class="mobile-menu mobile-only">
             <ul>
                 <li>
-                    <div>Langue</div>
-                    <ul>
-                        <li>English</li>
-                        <li>Nederlands</li>
-                        <li>Francais</li>
+                    <div class="sub-menu-toggle">Langue</div>
+                    <ul class="sub-menu">
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Nederlands</a></li>
+                        <li><a href="#">Francais</a></li>
                     </ul>
                 </li>
-                <li>Aide</li>
-                <li>Contact</li>
-                <li>Connexion</li>
+                <li><a href="#">Aide</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Connexion</a></li>
+                <li class="home"><a href="#">Home</a></li>
             </ul>
         </div>
 

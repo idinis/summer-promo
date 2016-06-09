@@ -51,7 +51,11 @@ var clearStage = function () {
 
 
 }
-var fillStage = function () {
 
+$(function () {
 
-}
+    $('.sub-menu-toggle').on('click', function (e) {
+        e.preventDefault();
+        $(this).parents('li').toggleClass('sub-menu-display');
+    })
+});
