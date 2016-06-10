@@ -3,9 +3,9 @@
     cursor: default;
 }
 
-*,
-*:before,
-*:after {
+#summer-app-body *,
+#summer-app-body *:before,
+#summer-app-body *:after {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -19,6 +19,9 @@
 
 body {
     position: relative;
+}
+
+#summer-app-body {
     margin: 0;
     padding: 0;
     font-family: "libby", Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -1038,7 +1041,7 @@ body {
     overflow: hidden;
 }
 
-body.cart-open #section-wrapper {
+#summer-app-body.cart-open #section-wrapper {
     opacity: 0;
     visibility: hidden;
 }
@@ -2826,6 +2829,16 @@ body.cart-open #section-wrapper {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
+#rituals .ritual-description h2 {
+    font-size: 1.5em;
+    margin: 0.83em 0;
+    font-weight: bold;
+}
+
+#rituals .ritual-description p {
+    margin: 1em 0;
+}
+
 #rituals .ritual-description iframe {
     width: 230px;
     height: 150px;
@@ -3006,8 +3019,8 @@ body.cart-open #section-wrapper {
     padding: 8px;
     transition: all 0.3s ease-in-out;
 }
-body.cart-open #disclaimer,
-body.cart-open #main-footer {
+#summer-app-body.cart-open #disclaimer,
+#summer-app-body.cart-open #main-footer {
     opacity: 0;
     visibility: hidden;
 }
@@ -3100,11 +3113,13 @@ body.cart-open #main-footer {
     text-align: center;
     font-size: 0;
 }
-#cart-overview .carousel {
+#cart-overview .cart-carousel {
     width: 300px;
     overflow: hidden;
     display: inline-block;
     text-align: left;
+    float: none;
+    padding: 0;
 }
 #cart-overview .elements {
     display: none;
@@ -3373,4 +3388,16 @@ body.cart-open #main-footer {
         transform: scale3d(1, 1, 1);
         opacity: 1;
     }
+}
+
+/***
+ * Nuskin overwrite
+ */
+#content {
+    padding: 0;
+    width: 100%;
+    max-width: none;
+}
+.parsys.bodyContent {
+    margin-bottom: 0;
 }

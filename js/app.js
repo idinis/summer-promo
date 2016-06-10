@@ -393,7 +393,7 @@ function navigationCartController(shoppingCartService, $rootScope, EVENT_NAMES, 
     navigationCartVm.regularProductsLength = shoppingCartService.getTotalRegularProduct();
 
 
-    var $carousel = $('#cart-overview .carousel'),
+    var $carousel = $('#cart-overview .cart-carousel'),
         $carouselInner = $carousel.find('.inner');
 
     setTimeout(function () {
@@ -582,8 +582,7 @@ function shoppingCartController(shoppingCartService, $rootScope,
     shoppingCartVm.cartErrorMessage = shoppingCartService.getErrorFromCheckout();
 
     shoppingCartVm.toggleMobileMenu = function () {
-        console.log('ok');
-        $('body').toggleClass('mobile-menu-display');
+        $('#summer-app-body').toggleClass('mobile-menu-display');
     }
     initVm();
 

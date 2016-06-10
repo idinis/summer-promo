@@ -93,7 +93,7 @@ angular.module("../dev/app/modules/navigationCart/navigationCart.tpl.html", []).
     "    <div class=\"carousel-prev carousel-ctrl\" ng-click=\"navigationCartVm.carouselPrev();\" ng-if=\"navigationCartVm.products.length > 3\"></div>\n" +
     "    <div class=\"carousel-next carousel-ctrl\" ng-click=\"navigationCartVm.carouselNext();\" ng-if=\"navigationCartVm.products.length > 3\"></div>\n" +
     "\n" +
-    "    <div class=\"carousel\">\n" +
+    "    <div class=\"cart-carousel\">\n" +
     "\n" +
     "        <div class=\"inner\">\n" +
     "            <div class=\"box product\" ng-repeat=\"product in navigationCartVm.products\">\n" +

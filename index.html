@@ -1,41 +1,10 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
 <html lang="en" ng-csp="" ng-app="coreApp">
-<!--<![endif]-->
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Nuskin Summer Promo</title>
-
-    <meta name="description" content="" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="" />
-    <meta property="og:description" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:image" content="" />
-    <meta property="og:image:secure_url" content="" />
-    <meta property="og:image:width" content="" />
-    <meta property="og:image:height" content="" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:site_name" content="" />
-    <meta property="og:locale" content="" />
-
-    <!-- mobile meta -->
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-    <!--[if IE]>
-  			<link rel="shortcut icon" href="images/favicon.ico">
-  		<![endif]-->
-    <!-- or, set /favicon.ico for IE10 win -->
-    <meta name="msapplication-TileColor" content="#f01d4f">
 
     <!-- CSS -->
+    <link rel="stylesheet" href="https://test.nuskin.com/etc/designs/hello/packaged/css/screen.css">
     <link rel="stylesheet" type="text/css" href="assets/style/spinner.css">
     <link rel="stylesheet" href="vendor/normalize.css">
     <link rel="stylesheet" href="assets/fonts/dearjoe/stylesheet.css">
@@ -225,97 +194,119 @@
     </script>
 </head>
 
-<body ng-controller="mainController as mainVm" class="{{bodylayout}} module-1" ng-class="{'cart-open' : mainVm.cartSrv.showCart}">
-
-    <!-- SPINNER -->
-    <div id="spinner" spinner-loader>
-        <div class="ajax-loader">
-            <div class="loader" ng-bind="$root.translations.common.loading"></div>
-        </div>
-    </div>
+<body>
 
 
-    <div class="background">
-        <div class="wall"></div>
-        <div class="floor"></div>
-        <div class="halos">
-            <div class="halo regular"></div>
-            <div class="halo promo"></div>
-        </div>
-    </div>
-
-    <div id="main-wrapper">
-        <!-- ZONE HEADER -->
-
-        <div id="header-wrapper">
-            <div ui-view="header"></div>
-        </div>
 
 
-        <div class="mobile-menu mobile-only">
-            <ul>
-                <li>
-                    <div class="sub-menu-toggle">Langue</div>
-                    <ul class="sub-menu">
-                        <li><a href="#">English</a></li>
-                        <li><a href="#">Nederlands</a></li>
-                        <li><a href="#">Francais</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Aide</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Connexion</a></li>
-                <li class="home"><a href="#">Home</a></li>
-            </ul>
-        </div>
+    <div class="container ns-atomic">
 
 
-        <div id="section-wrapper">
 
-            <!-- WELCOME -->
-            <h1 id="site-title" dynamic="mainVm.siteTitle"></h1>
 
-            <div class="logo-wrapper regular-only">
-                <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
+        <div id="content">
+
+
+
+            <div class="parsys bodyContent">
+                <div class="section summerPromo">
+
+
+                    <div id="summer-app-body" ng-controller="mainController as mainVm" class="{{bodylayout}} module-1" ng-class="{'cart-open' : mainVm.cartSrv.showCart}">
+                        <!-- SPINNER -->
+                        <div id="spinner" spinner-loader>
+                            <div class="ajax-loader">
+                                <div class="loader" ng-bind="$root.translations.common.loading"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="background">
+                            <div class="wall"></div>
+                            <div class="floor"></div>
+                            <div class="halos">
+                                <div class="halo regular"></div>
+                                <div class="halo promo"></div>
+                            </div>
+                        </div>
+
+                        <div id="main-wrapper">
+                            <!-- ZONE HEADER -->
+
+                            <div id="header-wrapper">
+                                <div ui-view="header"></div>
+                            </div>
+
+
+                            <div class="mobile-menu mobile-only">
+                                <ul>
+                                    <li>
+                                        <div class="sub-menu-toggle">Langue</div>
+                                        <ul class="sub-menu">
+                                            <li><a href="#">English</a></li>
+                                            <li><a href="#">Nederlands</a></li>
+                                            <li><a href="#">Francais</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Aide</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                    <li><a href="#">Connexion</a></li>
+                                    <li class="home"><a href="#">Home</a></li>
+                                </ul>
+                            </div>
+
+
+                            <div id="section-wrapper">
+
+                                <!-- WELCOME -->
+                                <div id="site-title" dynamic="mainVm.siteTitle"></div>
+
+                                <div class="logo-wrapper regular-only">
+                                    <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
+                                </div>
+                                <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
+                                <!-- ng-click="mainVm.goBack()" -->
+
+                                <div id="promo-button-wrapper">
+                                    <a id="promo-button" ui-sref="app.shop.category({showCase: 'promo', categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
+                                        <span ng-if="!mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItems"></span>
+                                        <span ng-if="mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItemsActive"></span>
+                                    </a>
+                                </div>
+
+                                <div id="discount-badges">
+                                    <div class="badge discount" ng-if="(!mainVm.productService.isInPresales || mainVm.$state.current.name == 'app.shop' || mainVm.$state.current.name == 'app.shop.category') && (mainVm.$stateParams.showCase !== mainVm.ROUTING_SHOP_STATE.promo)" ng-bind-html="$root.translations.common.discountBadge"></div>
+                                    <div class="badge shipping" ng-bind-html="$root.translations.common.shippingBadge"></div>
+                                </div>
+
+                                <!-- PROMO INFORMATION POPUP -->
+                                <div id="promo-info-popup" ng-class="{'show': !mainVm.hasClosedPromoInformationPopup && mainVm.$state.current.name == 'app.shop'}">
+                                    <button class="close-button" ng-click="mainVm.closePromoInformationPopup()"></button>
+                                    <div ng-bind-html="$root.translations.common.promoInformation"></div>
+                                </div>
+
+                                <section id="section-products">
+                                    <!-- ZONE CATEGORIES -->
+                                    <nav id="nav-rituals">
+                                        <a ui-sref="app.shop.category({categoryId:'{{::category.key}}'})" ng-repeat="category in mainVm.categories" ng-bind="::category.name" ng-class="{'active': mainVm.categoryActive == category.key}"></a>
+                                    </nav>
+                                    <!-- ZONE CORE -->
+                                    <div id="main-view" ui-view="container"></div>
+                                </section>
+                            </div>
+
+                            <div id="main-footer" ui-view="footer"></div>
+
+
+
+
+                            <div id="disclaimer" ng-bind="$root.translations.common.disclaimer"></div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
-            <!-- ng-click="mainVm.goBack()" -->
-
-            <div id="promo-button-wrapper">
-                <a id="promo-button" ui-sref="app.shop.category({showCase: 'promo', categoryId:'promoProducts'})" ng-class="{'hide': mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.promo}}', 'disabled': !mainVm.canBuyPromoProducts}">
-                    <span ng-if="!mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItems"></span>
-                    <span ng-if="mainVm.canBuyPromoProducts" ng-bind-html="$root.translations.common.discoverBrandedItemsActive"></span>
-                </a>
-            </div>
-
-            <div id="discount-badges">
-                <div class="badge discount" ng-if="(!mainVm.productService.isInPresales || mainVm.$state.current.name == 'app.shop' || mainVm.$state.current.name == 'app.shop.category') && (mainVm.$stateParams.showCase !== mainVm.ROUTING_SHOP_STATE.promo)" ng-bind-html="$root.translations.common.discountBadge"></div>
-                <div class="badge shipping" ng-bind-html="$root.translations.common.shippingBadge"></div>
-            </div>
-
-            <!-- PROMO INFORMATION POPUP -->
-            <div id="promo-info-popup" ng-class="{'show': !mainVm.hasClosedPromoInformationPopup && mainVm.$state.current.name == 'app.shop'}">
-                <button class="close-button" ng-click="mainVm.closePromoInformationPopup()"></button>
-                <div ng-bind-html="$root.translations.common.promoInformation"></div>
-            </div>
-
-            <section id="section-products">
-                <!-- ZONE CATEGORIES -->
-                <nav id="nav-rituals">
-                    <a ui-sref="app.shop.category({categoryId:'{{::category.key}}'})" ng-repeat="category in mainVm.categories" ng-bind="::category.name" ng-class="{'active': mainVm.categoryActive == category.key}"></a>
-                </nav>
-                <!-- ZONE CORE -->
-                <div id="main-view" ui-view="container"></div>
-            </section>
         </div>
-
-        <div id="main-footer" ui-view="footer"></div>
-
-
-
-
-        <div id="disclaimer" ng-bind="$root.translations.common.disclaimer"></div>
-
     </div>
 </body>
 
