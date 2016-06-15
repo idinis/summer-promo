@@ -453,7 +453,7 @@ angular.module("../dev/app/modules/shoppingCart/shoppingCart.tpl.html", []).run(
     "                        <div class=\"discount\"><span ng-bind=\"$root.translations.common.basketDiscountTotalLabel\"></span> <strong ng-bind=\"shoppingCartVm.totalDiscountPrice | customCurrency\"></strong></div>\n" +
     "                        <div class=\"psv\" ng-if=\"shoppingCartVm.totalPSV > 0\"><span ng-bind=\"$root.translations.common.psvLabel\"></span> <strong ng-bind=\"shoppingCartVm.totalPSV | number:2\"></strong></div>\n" +
     "                    </div>\n" +
-    "                    <button ng-if=\"mainVm.canBuyPromoProducts\" class=\"checkout-button\" ng-class=\"{'disabled': !mainVm.canBuyPromoProducts}\" ng-bind=\"$root.translations.common.checkout\"></button>\n" +
+    "                    <button ng-click=\"shoppingCartVm.redirectToCheckout()\" ng-if=\"mainVm.canBuyPromoProducts\" class=\"checkout-button\" ng-class=\"{'disabled': !mainVm.canBuyPromoProducts}\" ng-bind=\"$root.translations.common.checkout\"></button>\n" +
     "                    <div ng-if=\"!mainVm.canBuyPromoProducts\" class=\"checkout-disabled\" ng-bind-html=\"$root.translations.common.cartCheckoutDisabledMessage\"></div>\n" +
     "                    <a ng-click=\"shoppingCartVm.displayCart()\" href=\"#\" class=\"continue-button\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
     "                    <a ng-if=\"mainVm.canBuyPromoProducts\" ng-click=\"shoppingCartVm.displayCart()\" class=\"promo-button\" ui-sref=\"app.shop.category({showCase: 'promo', categoryId:'promoProducts'})\" ng-bind-html=\"$root.translations.common.cartButton3\"></a>\n" +

@@ -885,8 +885,13 @@ body {
     #shopping-cart .product-row .product-info {
         display: table;
     }
-    #shopping-cart .product-row .product-info {
-        display: table;
+    #shopping-cart .product-row table {
+        margin: 0;
+    }
+    #shopping-cart .product-row table td {
+        border: none;
+        vertical-align: middle;
+        padding: 0;
     }
     #shopping-cart .total {
         float: none;
