@@ -578,6 +578,7 @@ body {
     vertical-align: middle;
     text-align: center;
     position: relative;
+    padding: 0;
 }
 
 #shopping-cart .product-name {
@@ -1245,7 +1246,8 @@ body {
 
 .product .presale-infos {
     position: absolute;
-    top: 0;
+    z-index: 10;
+    bottom: 80px;
     right: 100%;
 }
 
