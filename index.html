@@ -265,7 +265,7 @@
                                 <div id="site-title" dynamic="mainVm.siteTitle"></div>
 
                                 <div class="logo-wrapper regular-only">
-                                    <a href="#" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
+                                    <a ui-sref="app.shop({showCase: 'normal'})" class="logo"><img src="assets/img/nuskin-logo.png" alt="Nu Skin : Discover the best you"></a>
                                 </div>
                                 <button id="back-button" ui-sref="app.shop({showCase: 'normal'})" ng-class="{'hide': mainVm.$state.current.name == 'app.shop' && mainVm.$stateParams.showCase == '{{::mainVm.ROUTING_SHOP_STATE.normal}}'}" ng-bind="$root.translations.common.goBack"></button>
                                 <!-- ng-click="mainVm.goBack()" -->

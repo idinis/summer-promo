@@ -125,15 +125,15 @@ angular.module("../dev/app/modules/navigationCart/navigationCart.tpl.html", []).
     "            </div>\n" +
     "            <div ng-switch-when=\"1\">\n" +
     "                <div class=\"alert-text text-1\" ng-bind-html=\"$root.translations.common.cartInvitation1\"></div>\n" +
-    "                <a href=\"#\" class=\"button-1\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
+    "                <a ui-sref=\"app.shop({showCase: 'normal'})\" class=\"button-1\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
     "            </div>\n" +
     "            <div ng-switch-when=\"2\">\n" +
     "                <div class=\"alert-text text-2\" ng-bind-html=\"$root.translations.common.cartInvitation2\"></div>\n" +
-    "                <a href=\"#\" class=\"button-1\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
+    "                <a ui-sref=\"app.shop({showCase: 'normal'})\" class=\"button-1\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
     "            </div>\n" +
     "            <div ng-switch-default>\n" +
     "                <div class=\"alert-text text-3\" ng-bind-html=\"$root.translations.common.cartInvitation3\"></div>\n" +
-    "                <a href=\"#\" class=\"button-1\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
+    "                <a ui-sref=\"app.shop({showCase: 'normal'})\" class=\"button-1\" ng-bind=\"$root.translations.common.cartButton1\"></a>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
