@@ -806,8 +806,8 @@ body {
     .cart-open #shopping-cart {
         background-color: #008ab0;
         color: #fff;
-        padding: 0 0 250px 0;
-        height: calc(100vh - 45px);
+        padding: 0 0 0 0;
+        height: calc(100vh - 65px);
     }
     #shopping-cart .close-button {
         width: 32px;
@@ -825,6 +825,7 @@ body {
     }
     #shopping-cart .products {
         float: none;
+        padding-bottom: 300px;
     }
     #shopping-cart .product-row {
         background-color: #fff;
