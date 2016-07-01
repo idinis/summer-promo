@@ -71,7 +71,7 @@ body {
     position: absolute;
     z-index: 450;
     right: 50%;
-    top: 10%;
+    top: 0;
     width: 30%;
     min-width: 460px;
 }
@@ -98,17 +98,18 @@ body {
         padding: 0;
         text-align: center;
     }
+
     #main-header .menu-toggle {
         float: left;
         width: 62px;
         height: 46px;
         border: none;
-        background: url(../img/icon-menu-toggle.png) center no-repeat;
+        background: url(/content/dam/eu-images/summerpromo2016/icon-menu-toggle.png) center no-repeat;
         border-right: 1px solid #e7e7e7;
         outline: none;
     }
     .mobile-menu-display #main-header .menu-toggle {
-        background: url(../img/icon-menu-toggle-white.png) center no-repeat #363636;
+        background: url(/content/dam/eu-images/summerpromo2016/icon-menu-toggle-white.png) center no-repeat #363636;
     }
     #main-header .logo {
         padding: 0;
@@ -129,6 +130,10 @@ body {
     }
     #header-wrapper .socials {
         display: none;
+    }
+
+    #mobileSearch {
+        display: none !important;
     }
 }
 
@@ -221,7 +226,7 @@ body {
     display: inline-block;
     width: 28px;
     height: 25px;
-    background: url(../img/icon-home.png) center no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/icon-home.png) center no-repeat;
     margin: -5px 10px 0 0;
 }
 
@@ -254,7 +259,7 @@ body {
     border-radius: 50%;
     font-size: 11px;
     transform: translateY(-100%);
-    background: url(../img/branded-items-1.png) left 20px no-repeat #0191b7;
+    background: url(/content/dam/eu-images/summerpromo2016/branded-items-1.png) left 20px no-repeat #0191b7;
     text-decoration: none;
     text-transform: uppercase;
     text-align: center;
@@ -402,7 +407,7 @@ body {
     top: 0;
     width: 25px;
     height: 25px;
-    background: url(../img/cross-1.png) center no-repeat #000;
+    background: url(/content/dam/eu-images/summerpromo2016/cross-1.png) center no-repeat #000;
 }
 
 
@@ -437,7 +442,7 @@ body {
     left: 50%;
     margin-left: -380px;
     border: none;
-    background: url(../img/arrow-left-1.png) 10px center no-repeat #000;
+    background: url(/content/dam/eu-images/summerpromo2016/arrow-left-1.png) 10px center no-repeat #000;
     color: #fff;
     text-transform: uppercase;
     padding: 5px 10px 5px 35px;
@@ -463,7 +468,7 @@ body {
         top: 10px;
         left: 10px;
         color: #000;
-        background: url(../img/arrow-left-1-black.png) 10px center no-repeat transparent;
+        background: url(/content/dam/eu-images/summerpromo2016/arrow-left-1-black.png) 10px center no-repeat transparent;
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
 }
@@ -747,7 +752,7 @@ body {
     border: none;
     width: 42px;
     height: 40px;
-    background: url(../img/cross-1.png) center no-repeat #000;
+    background: url(/content/dam/eu-images/summerpromo2016/cross-1.png) center no-repeat #000;
 }
 
 @media (max-width: 1023px) {
@@ -770,7 +775,7 @@ body {
         margin: 20px 0;
     }
     #cart-toggle {
-        background: url(../img/cart-icon-mobile.png) center no-repeat #fff;
+        background: url(/content/dam/eu-images/summerpromo2016/cart-icon-mobile.png) center no-repeat;
         background-size: 21px 23px;
         width: 48px;
         height: 45px;
@@ -796,7 +801,7 @@ body {
         font-size: 13px;
     }
     .cart-open #cart-toggle {
-        background: url(../img/cart-icon-mobile-hover.png) center no-repeat;
+        background: url(/content/dam/eu-images/summerpromo2016/cart-icon-mobile-hover.png) center no-repeat;
         background-size: 28px 27px;
     }
     .cart-open #cart-toggle .num-product {
@@ -976,7 +981,7 @@ body {
     max-height: 683px;
     left: 0;
     width: 100%;
-    background: url(../img/wall.jpg) bottom left no-repeat, url(../img/wall-pattern.jpg) bottom left repeat-x;
+    background: url(/content/dam/eu-images/summerpromo2016/wall.jpg) bottom left no-repeat, url(/content/dam/eu-images/summerpromo2016/wall-pattern.jpg) bottom left repeat-x;
 }
 
 .background .halos {
@@ -997,35 +1002,35 @@ body {
 }
 
 .background .halos .halo.regular {
-    background: url(../img/halo-yellow.png) bottom center no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/halo-yellow.png) bottom center no-repeat;
 }
 
 .background .halos .halo.promo {
-    background: url(../img/halo-yellow.png) bottom center no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/halo-yellow.png) bottom center no-repeat;
 }
 
 .module-2 .background .halos .halo.regular {
-    background-image: url(../img/halo-orange.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/halo-orange.png);
 }
 
 .module-2 .background .halos .halo.promo {
-    background-image: url(../img/halo-orange.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/halo-orange.png);
 }
 
 .module-3 .background .halos .halo.regular {
-    background-image: url(../img/halo-blue.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/halo-blue.png);
 }
 
 .module-3 .background .halos .halo.promo {
-    background-image: url(../img/halo-blue.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/halo-blue.png);
 }
 
 .module-4 .background .halos .halo.regular {
-    background-image: url(../img/halo-green.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/halo-green.png);
 }
 
 .module-4 .background .halos .halo.promo {
-    background-image: url(../img/halo-green.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/halo-green.png);
 }
 
 .background .floor {
@@ -1035,7 +1040,7 @@ body {
     left: 0;
     height: 100%;
     width: 200vw;
-    background: url(../img/floor.jpg) bottom center;
+    background: url(/content/dam/eu-images/summerpromo2016/floor.jpg) bottom center;
     transition: transform 1s ease-in-out;
 }
 
@@ -1078,19 +1083,19 @@ body {
     }
     .background .halos .halo.regular,
     .background .halos .halo.promo {
-        background-image: url(../img/halo-yellow-mobile.png);
+        background-image: url(/content/dam/eu-images/summerpromo2016/halo-yellow-mobile.png);
     }
     .module-2 .background .halos .halo.regular,
     .module-2 .background .halos .halo.promo {
-        background-image: url(../img/halo-orange-mobile.png);
+        background-image: url(/content/dam/eu-images/summerpromo2016/halo-orange-mobile.png);
     }
     .module-3 .background .halos .halo.regular,
     .module-3 .background .halos .halo.promo {
-        background-image: url(../img/halo-blue-mobile.png);
+        background-image: url(/content/dam/eu-images/summerpromo2016/halo-blue-mobile.png);
     }
     .module-4 .background .halos .halo.regular,
     .module-4 .background .halos .halo.promo {
-        background-image: url(../img/halo-green-mobile.png);
+        background-image: url(/content/dam/eu-images/summerpromo2016/halo-green-mobile.png);
     }
     .background .floor {
         background: #e2a201;
@@ -1270,7 +1275,7 @@ body {
     color: #008aaf;
     text-transform: uppercase;
     padding-right: 16px;
-    background: url(../img/arrow-left-2.png) right 3px no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/arrow-left-2.png) right 3px no-repeat;
     width: 220px;
     text-align: right;
 }
@@ -1283,7 +1288,7 @@ body {
     width: 261px;
     height: 97px;
     z-index: -1;
-    background: url(../img/stands/module-1/stand-1-shadow.png) top left no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-1-shadow.png) top left no-repeat;
 }
 
 #products .product.product-1 .product-display,
@@ -1315,35 +1320,35 @@ body {
 }
 
 #products .product.product-1 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-1.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-1.png);
 }
 
 #products .product.product-1 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-1-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-1-hover.png);
 }
 
 .module-2 #products .product.product-1 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-1.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-1.png);
 }
 
 .module-2 #products .product.product-1 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-1-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-1-hover.png);
 }
 
 .module-3 #products .product.product-1 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-1.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-1.png);
 }
 
 .module-3 #products .product.product-1 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-1-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-1-hover.png);
 }
 
 .module-4 #products .product.product-1 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-1.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-1.png);
 }
 
 .module-4 #products .product.product-1 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-1-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-1-hover.png);
 }
 
 
@@ -1356,7 +1361,7 @@ body {
 #products .product.product-1:after {
     left: -22px;
     bottom: -57px;
-    background-image: url(../img/stands/module-1/stand-1-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-1-shadow.png);
 }
 
 #products .product.product-2 {
@@ -1370,41 +1375,41 @@ body {
 }
 
 #products .product.product-2 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-2.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-2.png);
 }
 
 #products .product.product-2 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-2-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-2-hover.png);
 }
 
 .module-2 #products .product.product-2 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-2.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-2.png);
 }
 
 .module-2 #products .product.product-2 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-2-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-2-hover.png);
 }
 
 .module-3 #products .product.product-2 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-2.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-2.png);
 }
 
 .module-3 #products .product.product-2 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-2-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-2-hover.png);
 }
 
 .module-4 #products .product.product-2 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-2.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-2.png);
 }
 
 .module-4 #products .product.product-2 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-2-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-2-hover.png);
 }
 
 #products .product.product-2:after {
     left: 0;
     bottom: -55px;
-    background-image: url(../img/stands/module-1/stand-2-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-2-shadow.png);
 }
 
 #products .product.product-3 {
@@ -1418,40 +1423,40 @@ body {
 }
 
 #products .product.product-3 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-3.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-3.png);
 }
 
 #products .product.product-3 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-3-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-3-hover.png);
 }
 
 .module-2 #products .product.product-3 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-3.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-3.png);
 }
 
 .module-2 #products .product.product-3 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-3-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-3-hover.png);
 }
 
 .module-3 #products .product.product-3 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-3.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-3.png);
 }
 
 .module-3 #products .product.product-3 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-3-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-3-hover.png);
 }
 
 .module-4 #products .product.product-3 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-3.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-3.png);
 }
 
 .module-4 #products .product.product-3 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-3-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-3-hover.png);
 }
 
 #products .product.product-3:after {
     left: 3px;
-    background-image: url(../img/stands/module-1/stand-3-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-3-shadow.png);
 }
 
 #products .product.product-4 {
@@ -1465,41 +1470,41 @@ body {
 }
 
 #products .product.product-4 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-4.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-4.png);
 }
 
 #products .product.product-4 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-4-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-4-hover.png);
 }
 
 .module-2 #products .product.product-4 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-4.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-4.png);
 }
 
 .module-2 #products .product.product-4 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-4-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-4-hover.png);
 }
 
 .module-3 #products .product.product-4 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-4.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-4.png);
 }
 
 .module-3 #products .product.product-4 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-4-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-4-hover.png);
 }
 
 .module-4 #products .product.product-4 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-4.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-4.png);
 }
 
 .module-4 #products .product.product-4 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-4-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-4-hover.png);
 }
 
 #products .product.product.product-4:after {
     left: -21px;
     bottom: -56px;
-    background-image: url(../img/stands/module-1/stand-4-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-4-shadow.png);
 }
 
 #products .product.product-5 {
@@ -1513,40 +1518,39 @@ body {
 }
 
 #products .product.product-5 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-5.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-5.png);
 }
 
 #products .product.product-5 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-5-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-5-hover.png);
 }
 
 .module-2 #products .product.product-5 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-5.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-5.png);
 }
 
 .module-2 #products .product.product-5 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-5-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-5-hover.png);
 }
 
 .module-3 #products .product.product-5 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-5.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-5.png);
 }
 
 .module-3 #products .product.product-5 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-5-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-5-hover.png);
 }
 
 .module-4 #products .product.product-5 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-5.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-5.png);
 }
 
 .module-4 #products .product.product-5 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-5-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-5-hover.png);
 }
 
 
 /*
-
 #products .product.product-5 .product-image {
     transform: translateY(-91%);
 }
@@ -1555,7 +1559,7 @@ body {
 #products .product.product-5:after {
     left: 0;
     bottom: -55px;
-    background-image: url(../img/stands/module-1/stand-5-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-5-shadow.png);
 }
 
 #products .product.product-6 {
@@ -1569,40 +1573,39 @@ body {
 }
 
 #products .product.product-6 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-6.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-6.png);
 }
 
 #products .product.product-6 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-6-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-6-hover.png);
 }
 
 .module-2 #products .product.product-6 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-6.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-6.png);
 }
 
 .module-2 #products .product.product-6 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-6-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-6-hover.png);
 }
 
 .module-3 #products .product.product-6 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-6.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-6.png);
 }
 
 .module-3 #products .product.product-6 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-6-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-6-hover.png);
 }
 
 .module-4 #products .product.product-6 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-6.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-6.png);
 }
 
 .module-4 #products .product.product-6 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-6-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-6-hover.png);
 }
 
 
 /*
-
 #products .product.product-6 .product-image {
     transform: translate(8%, -72%);
 }
@@ -1611,7 +1614,7 @@ body {
 #products .product.product-6:after {
     left: 1px;
     top: 75px;
-    background-image: url(../img/stands/module-1/stand-6-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-6-shadow.png);
 }
 
 #products .product.product-7 {
@@ -1625,35 +1628,35 @@ body {
 }
 
 #products .product.product-7 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-7.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-7.png);
 }
 
 #products .product.product-7 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-7-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-7-hover.png);
 }
 
 .module-2 #products .product.product-7 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-7.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-7.png);
 }
 
 .module-2 #products .product.product-7 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-7-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-7-hover.png);
 }
 
 .module-3 #products .product.product-7 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-7.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-7.png);
 }
 
 .module-3 #products .product.product-7 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-7-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-7-hover.png);
 }
 
 .module-4 #products .product.product-7 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-7.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-7.png);
 }
 
 .module-4 #products .product.product-7 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-7-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-7-hover.png);
 }
 
 
@@ -1666,7 +1669,7 @@ body {
 #products .product.product-7:after {
     left: -18px;
     bottom: -56px;
-    background-image: url(../img/stands/module-1/stand-7-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-7-shadow.png);
 }
 
 #products .product.product-8 {
@@ -1680,35 +1683,35 @@ body {
 }
 
 #products .product.product-8 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-8.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-8.png);
 }
 
 #products .product.product-8 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-8-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-8-hover.png);
 }
 
 .module-2 #products .product.product-8 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-8.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-8.png);
 }
 
 .module-2 #products .product.product-8 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-8-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-8-hover.png);
 }
 
 .module-3 #products .product.product-8 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-8.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-8.png);
 }
 
 .module-3 #products .product.product-8 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-8-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-8-hover.png);
 }
 
 .module-4 #products .product.product-8 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-8.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-8.png);
 }
 
 .module-4 #products .product.product-8 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-8-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-8-hover.png);
 }
 
 
@@ -1721,7 +1724,7 @@ body {
 #products .product.product-8:after {
     left: 0px;
     bottom: -59px;
-    background-image: url(../img/stands/module-1/stand-8-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-8-shadow.png);
 }
 
 #products .product.product-9 {
@@ -1735,41 +1738,41 @@ body {
 }
 
 #products .product.product-9 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-9.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-9.png);
 }
 
 #products .product.product-9 .product-display:after {
-    background-image: url(../img/stands/module-1/stand-9-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-9-hover.png);
 }
 
 .module-2 #products .product.product-9 .product-display:before {
-    background-image: url(../img/stands/module-2/stand-9.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-9.png);
 }
 
 .module-2 #products .product.product-9 .product-display:after {
-    background-image: url(../img/stands/module-2/stand-9-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-9-hover.png);
 }
 
 .module-3 #products .product.product-9 .product-display:before {
-    background-image: url(../img/stands/module-3/stand-9.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-9.png);
 }
 
 .module-3 #products .product.product-9 .product-display:after {
-    background-image: url(../img/stands/module-3/stand-9-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-9-hover.png);
 }
 
 .module-4 #products .product.product-9 .product-display:before {
-    background-image: url(../img/stands/module-4/stand-9.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-9.png);
 }
 
 .module-4 #products .product.product-9 .product-display:after {
-    background-image: url(../img/stands/module-4/stand-9-hover.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-9-hover.png);
 }
 
 #products .product.product-9:after {
     left: -11px;
     bottom: -55px;
-    background-image: url(../img/stands/module-1/stand-9-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-9-shadow.png);
 }
 
 @media (max-width: 1023px) {
@@ -1923,7 +1926,7 @@ body {
     content: "";
     position: absolute;
     left: -40px;
-    background: url(../img/plus-sign.png) center no-repeat rgba(255, 255, 255, 0.66);
+    background: url(/content/dam/eu-images/summerpromo2016/plus-sign.png) center no-repeat rgba(255, 255, 255, 0.66);
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -1932,7 +1935,7 @@ body {
 }
 
 .product-menu.active:before {
-    background: url(../img/minus-sign.png) center no-repeat #000;
+    background: url(/content/dam/eu-images/summerpromo2016/minus-sign.png) center no-repeat #000;
 }
 
 .product-menu .links {
@@ -2159,13 +2162,13 @@ body {
 }
 
 #products.products-details .product-idx-2 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-8-aside.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-8-aside.png);
 }
 
 #products.products-details .product-idx-2:after {
     left: 0px;
     bottom: -59px;
-    background-image: url(../img/stands/module-1/stand-8-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-8-shadow.png);
 }
 
 #products.products-details .product-idx-3 {
@@ -2179,14 +2182,14 @@ body {
 }
 
 #products.products-details .product-idx-3 .product-display:before {
-    background-image: url(../img/stands/module-1/stand-9-aside.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-9-aside.png);
 }
 
 #products.products-details .product-idx-3:after {
     left: -11px;
     top: auto;
     bottom: -55px;
-    background-image: url(../img/stands/module-1/stand-9-shadow.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-9-shadow.png);
 }
 
 #products.products-details .suggested-items-title {
@@ -2200,7 +2203,7 @@ body {
     font-size: 12px;
     color: #fff;
     padding-top: 18px;
-    background: url(../img/top-arrow-1.png) center top no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/top-arrow-1.png) center top no-repeat;
     text-shadow: 0 3px 20px rgba(0, 0, 0, 0.6);
 }
 
@@ -2349,7 +2352,7 @@ body {
     right: 0;
     width: 30px;
     height: 30px;
-    background: url(../img/cross-1.png) center no-repeat #000;
+    background: url(/content/dam/eu-images/summerpromo2016/cross-1.png) center no-repeat #000;
     cursor: pointer;
 }
 
@@ -2737,7 +2740,7 @@ body {
         left: 50%;
         margin: 0 0 -12px -12px;
         border-radius: 50%;
-        background: url(../img/cross-1.png) center no-repeat #000;
+        background: url(/content/dam/eu-images/summerpromo2016/cross-1.png) center no-repeat #000;
         background-size: 15px auto;
     }
     #products .quick-buy[disabled],
@@ -2947,13 +2950,13 @@ body {
     #rituals {
         padding-top: 160px;
     }
-    
+
     #rituals .ritual-description h2,
     #rituals .ritual-description h3,
     #rituals .ritual-description h4 {
         text-align: center;
     }
-    
+
     #rituals .ritual-description {
         position: static;
         width: 100%;
@@ -2962,53 +2965,53 @@ body {
         max-height: none;
         touch-action: auto;
     }
-    
+
     #rituals .products {
         position: static;
         width: 100%;
         text-align: center;
     }
-    
+
     #rituals .product {
         margin-left: -10px;
         margin-right: -10px;
     }
-    
+
     #rituals .product .product-image {
         width: 100%;
         height: auto;
     }
-    
+
     #rituals .product-1 .product-menu {
         bottom: 30%;
         right: 50%;
     }
-    
+
     #rituals .product-1 .product-menu .links {
         top: 40px;
         left: -90px;
     }
-    
+
     #rituals .product-2 .product-menu {
         bottom: 45%;
         right: 50%;
     }
-    
+
     #rituals .product-2 .product-menu .links {
         top: 40px;
         left: -90px;
     }
-    
+
     #rituals .product-3 .product-menu {
         bottom: 60%;
         right: 50%;
     }
-    
+
     #rituals .product-3 .product-menu .links {
         top: 40px;
         right: -50px;
     }
-    
+
     #rituals .product-menu:before {
         width: 31px;
         height: 31px;
@@ -3092,9 +3095,9 @@ body {
     top: 0;
     left: 50%;
     margin: -18px 0 0 -18px;
-    background: url(../img/cross-1.png) center no-repeat #000;
+    background: url(/content/dam/eu-images/summerpromo2016/cross-1.png) center no-repeat #000;
     /*    border: 3px solid rgba(255, 255, 255, 0.3);*/
-    
+
     border: none;
     width: 36px;
     height: 36px;
@@ -3145,7 +3148,7 @@ body {
     display: inline-block;
     border: none;
     padding: 0;
-    background: url(../img/arrow-left-3.png) center no-repeat;
+    background: url(/content/dam/eu-images/summerpromo2016/arrow-left-3.png) center no-repeat;
     width: 32px;
     height: 18px;
     position: absolute;
@@ -3179,7 +3182,7 @@ body {
     text-align: center;
 }
 #cart-overview .box.placeholder {
-    background: url(../img/cart-icon-spray.png) center no-repeat #e4e4e4;
+    background: url(/content/dam/eu-images/summerpromo2016/cart-icon-spray.png) center no-repeat #e4e4e4;
 }
 #cart-overview .box + .box {
     /*
@@ -3188,13 +3191,13 @@ body {
 */
 }
 #cart-overview .box.placeholder-1 {
-    background-image: url(../img/cart-icon-spray.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/cart-icon-spray.png);
 }
 #cart-overview .box.placeholder-2 {
-    background-image: url(../img/cart-icon-tube.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/cart-icon-tube.png);
 }
 #cart-overview .box.placeholder-3 {
-    background-image: url(../img/cart-icon-pot.png);
+    background-image: url(/content/dam/eu-images/summerpromo2016/cart-icon-pot.png);
 }
 #cart-overview .box.alert {
     width: 100%;
@@ -3260,7 +3263,7 @@ body {
 }
 #cart-overview .button-1 {
     /*    margin-top: 10px;*/
-    
+
     position: absolute;
     bottom: 0;
     border: none;
@@ -3307,7 +3310,6 @@ body {
     animation: growInBottom 0.3s both ease-in;
     z-index: 9999;
 }
-
 #cart-overview .product.ng-leave {
     animation: slideOutBottom 0.3s both ease-in;
     z-index: 9999;
@@ -3323,20 +3325,16 @@ body {
     animation: slideInLeft 0.3s both ease-in;
     z-index: 8888;
 }
-
 .product.ng-enter-stagger {
     animation-delay: 0.1s;
 }
-
 #main-view.ng-leave {
     transition: 0.5s linear all;
 }
-
 #main-view.ng-leave .product {
     animation: slideOutLeft 0.3s both ease-in;
     z-index: 9999;
 }
-
 #main-view.ng-leave .product {
     animation-delay: 0.1s;
 }
@@ -3376,7 +3374,7 @@ body {
         transform: translateX(100px);
         opacity: 0;
     }
-    
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -3387,7 +3385,7 @@ body {
         transform: translateX(-100px);
         opacity: 0;
     }
-    
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -3398,7 +3396,7 @@ body {
         transform: scale3d(0.2, 0.2, 1);
         opacity: 0;
     }
-    
+
     to {
         transform: scale3d(1, 1, 1);
         opacity: 1;
@@ -3459,26 +3457,26 @@ body {
     #countries {
         margin: 50px auto;
     }
-    
+
     #countries .country-list ul {
         display: block;
     }
 }
 @media (max-width: 767px) {
     .country-selection {
-        background: url(../img/wall.jpg) bottom left no-repeat #fff;
+        background: url(/content/dam/eu-images/summerpromo2016/wall.jpg) bottom left no-repeat #fff;
     }
-    
+
     .country-selection .background {
         display: none;
     }
-    
+
     #countries .country-list {
         float: none;
         width: 90%;
         margin: 0 auto;
     }
-    
+
     #countries .country-list ul {
         display: inline-block;
     }
@@ -3495,6 +3493,22 @@ body {
 .parsys.bodyContent {
     margin-bottom: 0;
 }
+#footer-wrap {
+    width: 100%;
+    color: #707173;
+    padding-bottom: 30px;
+    background: #fff;
+    display: none !important;
+}
+
+div#logo .desktopLogo {
+    display: none !important;
+}
+
 #header {
     height: auto !important;
+}
+
+#mobileCart {
+    display: none !important;
 }
