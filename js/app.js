@@ -1071,7 +1071,9 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
         var totalPrice = 0;
         if (cart.products) {
             for (var i = 0; i < cart.products.length; i++) {
-                totalPrice += cart.products[i].quantity * cart.products[i].price;
+                if (!isNaN(cart.products[i].price)) {
+                    totalPrice += cart.products[i].quantity * cart.products[i].price;
+                }
             }
         }
         return totalPrice;
@@ -1079,9 +1081,13 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
 
     api.getTotalDiscountPrice = function () {
         var totalPrice = 0;
+        var tempPrice;
         if (cart.products) {
             for (var i = 0; i < cart.products.length; i++) {
-                totalPrice += cart.products[i].quantity * (cart.products[i].isPromo ? cart.products[i].price : cart.products[i].priceReduced);
+                tempPrice = (cart.products[i].isPromo ? cart.products[i].price : cart.products[i].priceReduced);
+                if (!isNaN(tempPrice)) {
+                    totalPrice += cart.products[i].quantity * tempPrice;
+                }
             }
         }
         return totalPrice;
