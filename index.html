@@ -68,66 +68,16 @@
                     }],
                     items: [{
                         "key": "category1",
-                        "products": [{
-                            //"sku": "97161801",
-                            "sku": "85883742", //97003887
-                            "isOutOfStock": false,
-                            "isInPresales": true
-                        }, {
-                            "sku": "97101241",
-                            "isOutOfStock": true,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97102851",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }]
+                        "products": []
                     }, {
                         "key": "category2",
-                        "products": [{
-                            "sku": "97102704",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97003903",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97003906",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }]
+                        "products": []
                     }, {
                         "key": "category3",
-                        "products": [{
-                            "sku": "97101220",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97001344",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97110369",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }]
-
+                        "products": []
                     }, {
                         "key": "promoProducts",
-                        "products": [{
-                            "sku": "97003882",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97102707",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }, {
-                            "sku": "97110809",
-                            "isOutOfStock": false,
-                            "isInPresales": false
-                        }]
+                        "products": []
                     }]
                 },
                 translations: {
@@ -194,6 +144,111 @@
                 }
             }
         }
+
+
+        nuskin.summerPromo.categories.items.push({
+            key: nuskin.summerPromo.categories.data[0].key,
+            products: []
+        });
+
+        var product = {};
+        product.sku = "97161801";
+        product.isOutOfStock = false;
+        product.isInPresales = true;
+
+        nuskin.summerPromo.categories.items[0].products.push(product);
+
+        var product = {};
+        product.sku = "97138865";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[0].products.push(product);
+
+        var product = {};
+        product.sku = "97138868";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[0].products.push(product);
+
+        nuskin.summerPromo.categories.items.push({
+            key: nuskin.summerPromo.categories.data[1].key,
+            products: []
+        });
+
+        var product = {};
+        product.sku = "97138852";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[1].products.push(product);
+
+        var product = {};
+        product.sku = "97138855";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[1].products.push(product);
+
+        var product = {};
+        product.sku = "97138866";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[1].products.push(product);
+
+        nuskin.summerPromo.categories.items.push({
+            key: nuskin.summerPromo.categories.data[2].key,
+            products: []
+        });
+
+        var product = {};
+        product.sku = "97138863";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[2].products.push(product);
+
+        var product = {};
+        product.sku = "97138864";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[2].products.push(product);
+
+        var product = {};
+        product.sku = "97138858";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[2].products.push(product);
+
+        nuskin.summerPromo.categories.items.push({
+            key: nuskin.summerPromo.categories.data[3].key,
+            products: []
+        });
+
+        var product = {};
+        product.sku = "86998664";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[3].products.push(product);
+
+        var product = {};
+        product.sku = "86998844";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[3].products.push(product);
+
+        var product = {};
+        product.sku = "86998843";
+        product.isOutOfStock = false;
+        product.isInPresales = false;
+
+        nuskin.summerPromo.categories.items[3].products.push(product);
     </script>
 </head>
 

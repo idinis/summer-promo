@@ -370,7 +370,7 @@ body {
 
 #promo-info-popup {
     position: absolute;
-    width: 250px;
+    width: 280px;
     z-index: 360;
     left: 50%;
     top: 50%;
@@ -1977,9 +1977,14 @@ body {
     background-color: #008ab0;
 }
 
-#products.products-details .product-menu {
-    left: 90%;
-    top: -30%;
+#products.products-details .product-menu.product-idx-1 {
+    bottom: 225px;
+    right: 76px;
+}
+
+#products.products-details .product-menu.product-idx-2 {
+    bottom: 176px;
+    right: 141px;
 }
 
 #products.overview .product-menu.product-1 {
@@ -2237,6 +2242,9 @@ body {
 
 @media (max-width: 767px) {
     #products.products-details .product {
+        display: none;
+    }
+    #products.products-details .product-menu {
         display: none;
     }
     #products.products-details .suggested-items-title {
@@ -2895,6 +2903,8 @@ body {
 #rituals .product-3 {}
 
 #rituals .product .product-image {
+    max-height: 300px;
+    margin-left: -20px;
     /*
     position: absolute;
     position: absolute;

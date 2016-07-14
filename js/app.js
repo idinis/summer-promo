@@ -271,6 +271,7 @@ function MainCtrl($state, categoryService, $window, $stateParams,
                     }, {
                         opacity: 1,
                         scale: 1,
+                        clearProps: "transform"
                     });
 
                 });
@@ -1178,23 +1179,23 @@ function productModel(IMAGES_URL, PROMO_PRODUCTS_KEY) {
         var imagePathArray = fullImage.split('/');
 
         var imageSizeArray = imagePathArray[8].split('.');
-        imageSizeArray[2] = "130";
-        imageSizeArray[3] = "228";
+        imageSizeArray[2] = "199";
+        imageSizeArray[3] = "350";
         imagePathArray[8] = imageSizeArray.join('.');
         var fullImagePath = imagePathArray.join('/');
 
-        /*
+
         var thumbnailSizeArray = imagePathArray[8].split('.');
         thumbnailSizeArray[2] = "130";
-        thumbnailSizeArray[3] = "214";
+        thumbnailSizeArray[3] = "228";
         imagePathArray[8] = thumbnailSizeArray.join('.');
         var thumbnailImagePath = imagePathArray.join('/');
-        */
+
 
         var product = {
             sku: sku,
             categoryId: categoryId,
-            urlThumbnail: IMAGES_URL + fullImagePath,
+            urlThumbnail: IMAGES_URL + thumbnailImagePath,
             urlImage: IMAGES_URL + fullImagePath,
             //urlThumbnail: thumbnailImagePath,
             //urlImage: fullImagePath,

@@ -257,19 +257,19 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "        <img ng-src=\"{{::product.urlImage}}\" class=\"product-select-image\" alt=\"\" ng-if=\"product.selected\">\n" +
     "\n" +
     "        <div class=\"product-display\" ng-if=\"!product.selected\">\n" +
-    "            <!-- ui-sref=\"app.shop.category.product({productId:'{{::product.sku}}', categoryId:'{{::product.categoryId}}'})\" -->\n" +
-    "            <!--            <div ng-if=\"::product.isInPresales\" ng-bind=\"$root.translations.common.newProduct\"></div>-->\n" +
     "            <span class=\"product-image\"><img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\"></span>\n" +
-    "\n" +
-    "            <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-{{$index+1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"productVm.closeMenus(product); product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\">\n" +
-    "                <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
-    "                    <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
-    "                    <a class=\"ritual-link\" ui-sref=\"app.shop.category({categoryId: '{{::product.categoryId}}'})\" ng-bind=\"$root.translations.common.discoverRitual\" ng-if=\"product.menuOpened\"></a>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
     "        </div>\n" +
     "\n" +
+    "\n" +
     "    </article>\n" +
+    "\n" +
+    "\n" +
+    "    <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-idx-{{$index+1}} product-{{::product.skuIndex + 1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"productVm.closeMenus(product); product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\" ng-repeat=\"product in productVm.products | filter : {selected: false}\" product-repeat-directive>\n" +
+    "        <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
+    "            <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
+    "            <a class=\"ritual-link\" ui-sref=\"app.shop.category({categoryId: '{{::product.categoryId}}'})\" ng-bind=\"$root.translations.common.discoverRitual\" ng-if=\"product.menuOpened\"></a>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "\n" +
     "    <div class=\"suggested-items-title\" ng-bind-html=\"$root.translations.common.suggestedProducts\"></div>\n" +
     "\n" +
