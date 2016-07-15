@@ -3531,3 +3531,6 @@ div#logo .desktopLogo {
 #mobileCart {
     display: none !important;
 }
+#mainWrapper {
+    overflow: visible !important;
+}

@@ -1137,9 +1137,9 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
         };
     }
 
-    api.cleanUpCart();
     var errorMessages = api.getErrorFromCheckout();
     if (errorMessages.hasError) api.showCart = true;
+    api.cleanUpCart();
 
     return api;
 };
