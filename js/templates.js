@@ -18,7 +18,11 @@ angular.module("../dev/app/modules/category/category.tpl.html", []).run(["$templ
     "\n" +
     "            <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"categoryVm.closeMenus(product); product.menuOpened = !product.menuOpened\">\n" +
     "                <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
-    "                    <a ng-click=\"product.menuOpened = false; categoryVm.goToProduct(product);\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
+    "                    <a ng-click=\"product.menuOpened = false; categoryVm.goToProduct(product);\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened  && !product.isOutOfStock\"></a>\n" +
+    "\n" +
+    "                    <a ng-click=\"product.menuOpened = false; categoryVm.goToProduct(product);\" ng-bind=\"$root.translations.common.viewProductOutOfStock\" ng-if=\"product.menuOpened  && product.isOutOfStock\"></a>\n" +
+    "\n" +
+    "\n" +
     "                </div>\n" +
     "            </div>\n" +
     "\n" +
@@ -266,7 +270,10 @@ angular.module("../dev/app/modules/product/product.tpl.html", []).run(["$templat
     "\n" +
     "    <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-idx-{{$index+1}} product-{{::product.skuIndex + 1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened}\" ng-click=\"productVm.closeMenus(product); product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\" ng-repeat=\"product in productVm.products | filter : {selected: false}\" product-repeat-directive>\n" +
     "        <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
-    "            <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
+    "            <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened && !product.isOutOfStock\"></a>\n" +
+    "\n" +
+    "            <a ng-click=\"product.menuOpened = false; productVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProductOutOfStock\" ng-if=\"product.menuOpened && product.isOutOfStock \"></a>\n" +
+    "\n" +
     "            <a class=\"ritual-link\" ui-sref=\"app.shop.category({categoryId: '{{::product.categoryId}}'})\" ng-bind=\"$root.translations.common.discoverRitual\" ng-if=\"product.menuOpened\"></a>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -303,7 +310,7 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "\n" +
     "                    </div>\n" +
     "                </div>\n" +
-    "                <div ng-if=\"::product.isOutOfStock && product.isInPresales\" class=\"soldout-label\" ng-bind=\"$root.translations.common.soldOutLabel\"></div>\n" +
+    "                <div ng-if=\"::product.isOutOfStock && product.isInPresales\" class=\"soldout-label\" ng-bind-html=\"$root.translations.common.soldOutLabel\"></div>\n" +
     "                <img ng-src=\"{{::product.urlThumbnail}}\" alt=\"\" ng-click=\"productsVm.closeMenus(product); product.menuOpened = !product.menuOpened\">\n" +
     "            </div>\n" +
     "        </div>\n" +
@@ -312,7 +319,7 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "    <div id=\"product-menu-{{::product.sku}}\" class=\"product-menu product-{{$index+1}} product-category-{{::product.categoryId}}\" ng-class=\"{'active' : product.menuOpened, 'presale' : product.isInPresales}\" ng-click=\"productsVm.closeMenus(product); product.menuOpened = !product.menuOpened\" ng-mouseenter=\"productsVm.setActiveCategory(product.categoryId);\" ng-mouseleave=\"productsVm.setActiveCategory('');\" ng-repeat=\"product in productsVm.products\" products-repeat-directive>\n" +
     "        <div class=\"links\" ng-if=\"product.menuOpened\">\n" +
     "\n" +
-    "            <div class=\"quick-buy-wrapper tablets-only\" ng-if=\"product.isInPresales\">\n" +
+    "            <div class=\"quick-buy-wrapper tablets-only\" ng-if=\"product.isInPresales  && !product.isOutOfStock\">\n" +
     "                <button class=\"quick-buy\" ng-click=\"product.quickBuyToolTipOpened = true; $event.stopPropagation();\" ng-bind=\"$root.translations.common.quickBuy\"></button>\n" +
     "                <div class=\"quick-buy-tooltip\" ng-bind=\"$root.translations.common.quickBuyToolTip\"></div>\n" +
     "                <div class=\"actions clearfix\" ng-if=\"product.quickBuyToolTipOpened\">\n" +
@@ -328,7 +335,8 @@ angular.module("../dev/app/modules/products/products.tpl.html", []).run(["$templ
     "\n" +
     "            </div>\n" +
     "\n" +
-    "            <a ng-click=\"product.menuOpened = false; productsVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened\"></a>\n" +
+    "            <a ng-click=\"product.menuOpened = false; productsVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProduct\" ng-if=\"product.menuOpened && !product.isOutOfStock \"></a>\n" +
+    "            <a ng-click=\"product.menuOpened = false; productsVm.goToProduct(product)\" ng-bind=\"$root.translations.common.viewProductOutOfStock\" ng-if=\"product.menuOpened && product.isOutOfStock \"></a>\n" +
     "\n" +
     "            <a class=\"ritual-link\" ng-click=\"product.menuOpened = false;\" ui-sref=\"app.shop.category({categoryId: '{{::product.categoryId}}'})\" ng-bind=\"$root.translations.common.discoverRitual\" ng-if=\"product.menuOpened\"></a>\n" +
     "        </div>\n" +

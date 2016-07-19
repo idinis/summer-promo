@@ -140,6 +140,7 @@
                         outOfStockError: "outOfStockError",
                         invalidCartError: "invalidCartError",
                         orderCouldNotBeCompletedError: "orderCouldNotBeCompletedError",
+                        viewProductOutOfStock: 'this product is out of stock'
                     }
                 }
             }
@@ -153,7 +154,7 @@
 
         var product = {};
         product.sku = "97161801";
-        product.isOutOfStock = false;
+        product.isOutOfStock = true;
         product.isInPresales = true;
 
         nuskin.summerPromo.categories.items[0].products.push(product);
