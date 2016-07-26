@@ -1104,6 +1104,15 @@ body {
     .background .floor {
         background: #e2a201;
     }
+    .module-2 .background .floor {
+        background: #f45c47;
+    }
+    .module-3 .background .floor {
+        background: #17add5;
+    }
+    .module-4 .background .floor {
+        background: #76bf2f;
+    }
 }
 
 

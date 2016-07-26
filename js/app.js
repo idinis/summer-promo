@@ -46,7 +46,7 @@ angular
                     },
                     InitProducts: function (productService) {
                         return productService.initAllProducts();
-                    }
+                    },
                 }
             })
             .state('app.faq', {
@@ -754,7 +754,7 @@ angular
 
 function productService($http, identityService, productModel,
     PRODUCT_WEBSERVICE_URL_TEMPLATE, $q,
-    ROUTING_SHOP_STATE, PROMO_PRODUCTS_KEY, categoryService, USER_TYPES) {
+    ROUTING_SHOP_STATE, PROMO_PRODUCTS_KEY, categoryService, USER_TYPES, shoppingCartService) {
 
     var api = {
         isInPresales: false,
@@ -880,6 +880,7 @@ function productService($http, identityService, productModel,
         }
         return $q.all(allProducts).then(function (data) {
             productsCache = data;
+            shoppingCartService.updateCart(data);
             return data;
         }, function (err) {
             return err;
@@ -976,6 +977,25 @@ function ShoppingCartService($rootScope, identityService, EVENT_NAMES, localStor
         cart.products = _(cart.products).filter(function (item) {
             return $.inArray(item.sku, skus) !== -1;
         });
+
+        $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
+
+    };
+
+    api.updateCart = function (products) {
+
+        angular.forEach(cart.products, function (item, key) {
+
+            var product = _(products).find(function (_product) {
+                return _product.sku == item.sku;
+            });
+
+            var quantity = item.quantity;
+            cart.products[key] = angular.copy(product);
+            cart.products[key].quantity = quantity;
+
+        });
+
 
         $rootScope.$broadcast(EVENT_NAMES.shoppingCartUpdated);
 
