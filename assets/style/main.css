@@ -2198,6 +2198,18 @@ body {
     background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-8-aside.png);
 }
 
+.module-2 #products.products-details .product-idx-2 .product-display:before {
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-8-aside.png);
+}
+
+.module-3 #products.products-details .product-idx-2 .product-display:before {
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-"1"/stand-8-aside.png);
+}
+
+.module-4 #products.products-details .product-idx-2 .product-display:before {
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-8-aside.png);
+}
+
 #products.products-details .product-idx-2:after {
     left: 0px;
     bottom: -59px;
@@ -2216,6 +2228,18 @@ body {
 
 #products.products-details .product-idx-3 .product-display:before {
     background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-1/stand-9-aside.png);
+}
+
+.module-2 #products.products-details .product-idx-3 .product-display:before {
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-2/stand-9-aside.png);
+}
+
+.module-3 #products.products-details .product-idx-3 .product-display:before {
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-3/stand-9-aside.png);
+}
+
+.module-4 #products.products-details .product-idx-3 .product-display:before {
+    background-image: url(/content/dam/eu-images/summerpromo2016/stands/module-4/stand-9-aside.png);
 }
 
 #products.products-details .product-idx-3:after {
