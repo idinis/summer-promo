@@ -2933,8 +2933,8 @@ body {
 #rituals .product {
     display: inline-block;
     position: relative;
-    margin-left: -20px;
-    width: 30%;
+/*    margin-left: -20px;*/
+    width: 33%;
 }
 
 #rituals .product-1 {}
@@ -2945,7 +2945,9 @@ body {
 
 #rituals .product .product-image {
     max-height: 300px;
-    margin-left: -20px;
+/*    margin-left: -20px;*/
+    max-width: 125%;
+    
     /*
     position: absolute;
     position: absolute;
