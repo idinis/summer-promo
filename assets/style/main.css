@@ -437,7 +437,7 @@ body {
 
 #back-button {
     position: absolute;
-    bottom: 330px;
+    bottom: 360px;
     left: 50%;
     margin-left: -380px;
     border: none;
@@ -1295,6 +1295,8 @@ body {
     z-index: 10;
     bottom: 80px;
     right: 100%;
+    width: 240px;
+    text-align: right;
 }
 
 .product .presale-label {
@@ -3026,6 +3028,7 @@ body {
     position: relative;
     background: none;
     padding-right: 0;
+    text-align: center;    
 }
 #rituals .product .presale-label:after {
     content: "";
