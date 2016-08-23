@@ -1289,7 +1289,9 @@ body {
     font-weight: bold;
     pointer-events: none;
 }
-
+.module-2 #products .product .soldout-label{
+    color: #bb4800;    
+}
 .product .presale-infos {
     position: absolute;
     z-index: 10;
@@ -2001,6 +2003,10 @@ body {
     background-color: #008ab0;
 }
 
+.module-2 #products .product-menu .ritual-link {
+    background-color: #ffb40c;
+}
+
 #products.products-details .product-menu.product-idx-1 {
     bottom: 225px;
     right: 76px;
@@ -2565,6 +2571,13 @@ body {
     line-height: 42px;
     padding: 0 5px;
     margin-left: 3px;
+}
+
+
+.module-2 #products .product-price .price.discount,
+.module-2 #products .product-psv .psv{
+    background-color: #FFB403;
+    
 }
 
 #products .quantity .ctrl,
